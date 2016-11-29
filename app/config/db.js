@@ -7,9 +7,9 @@ var database =  "sampledb"; // "dashboardapp";
 var username = "";
 var password = "";
 
-mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL;
+var mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL || "";
 
-if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
+if (mongoURL == undefined && process.env.DATABASE_SERVICE_NAME) {
   var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
       mongoHost = process.env[mongoServiceName + '_SERVICE_HOST'],
       mongoPort = process.env[mongoServiceName + '_SERVICE_PORT'],

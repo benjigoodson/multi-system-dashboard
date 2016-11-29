@@ -18,6 +18,11 @@ require('./app/routes')(app);
 
 // connect to our Mongo database
 console.log('Connecting to database...   ' + db.url);
+
+if(!db.url) {
+  console.warn("No database connection string set.");
+}
+
 mongoose.connect(db.url);
 
 mongoose.Promise = global.Promise;
