@@ -1,6 +1,6 @@
 // database config details
 
-var host = "127.0.0.1";
+var host = "172.30.25.87";
 var port = "27017";
 var database =  "sampledb"; // "dashboardapp";
 var username = "userA3F";
