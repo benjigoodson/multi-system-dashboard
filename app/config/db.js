@@ -2,14 +2,16 @@
 
 var host = "127.0.0.1";
 var port = "27017";
-var database = "dashboardapp";
-var username = "";
-var password = "";
+var database =  "sampledb"; // "dashboardapp";
+var username = "userA3F";
+var password = "Mcsv3q0yWuIDuUmX";
 
 module.exports = {
 
     uri : "mongodb://" + host + ":" + port + "/" + database,
     options : {
+        user : username,
+        password : password
     }
 
 };

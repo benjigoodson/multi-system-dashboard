@@ -20,6 +20,7 @@ var port = process.env.PORT || 3000;
 require('./app/routes')(app);
 
 // connect to our Mongo database
+console.log('Connecting to database...');
 mongoose.connect(db.uri, db.options);
 
 mongoose.Promise = global.Promise;
