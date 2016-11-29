@@ -1,0 +1,104 @@
+<div class="row" ng-controller="EndpointController as endpointCtrl" ng-init="endpointCtrl.setupCreatePage()">			
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Create Endpoint</h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+
+        <form class="form-horizontal form-label-left" ng-submit="endpointCtrl.createEndpoint()" role="form">
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="created-by">Created By <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" ng-model="endpoint.createdBy" id="created-by" name="created-by" required="required" readonly="readonly" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="created-date">Created Date <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" ng-model="endpoint.createdDate" id="created-date" name="created-date" required="required" readonly="readonly" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="endpoint-name">Endpoint Name <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" ng-model="endpoint.name" id="endpoint-name" name="endpoint-name" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="control-label col-md-3 col-sm-3 col-xs-12">Description <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <textarea ng-model="endpoint.description" required="required" class="form-control" name="description" id="description" rows="2"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="parent-system">Parent System <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+               <select ng-model="endpoint.parentSystem" ng-change="endpointCtrl.systemChanged()" class="select2_single form-control" id="parent-system" name="parent-system">
+                 <option ng-repeat="system in systems" value="{{system.id}}">{{system.name}}</option>
+               </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="endpoint-url">URL <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12 input-group input-group-sm">
+              <label ng-show="endpointCtrl.systemURL" class="input-group-addon" for="endpoint-url">{{endpointCtrl.systemURL}}</label>
+              <input type="text" ng-model="endpoint.url" id="endpoint-url" name="endpoint-url" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="request-type" class="control-label col-md-3 col-sm-3 col-xs-12">Request Type<span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <select ng-model="endpoint.requestType" id="request-type" name="request-type" required="required" class="form-control col-md-7 col-xs-12">
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="requires-body" class="control-label col-md-3 col-sm-3 col-xs-12">Requires Body
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input ng-model="endpoint.requiresBody" type="checkbox" id="requires-body" name="requires-body">
+            </div>
+          </div>
+
+          <div class="form-group" ng-show="endpoint.requiresBody">
+            <label for="body" class="control-label col-md-3 col-sm-3 col-xs-12">Body
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <textarea ng-model="endpoint.body" class="form-control" name="body" id="body" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="ln_solid"></div>
+            <div class="form-group">
+              <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+{
+  "name": "pnotify",
+  "version": "3.0.0",
+  "main": "dist/pnotify.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sciactive/pnotify.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/sciactive/pnotify/issues"
+  },
+  "homepage": "https://github.com/sciactive/pnotify",
+  "dependencies": {
+    "jquery": ">=1.6.0"
+  },
+  "gitHead": "2c6a12b5d8a6b55d21beae5b35c2a643fcfe4a90",
+  "description": "[![Stories in Ready](https://badge.waffle.io/sciactive/pnotify.png?label=ready&title=Ready)](http://waffle.io/sciactive/pnotify) [![Stories in Progress](https://badge.waffle.io/sciactive/pnotify.png?label=in progress&title=In Progress)](http://waffle.io/s",
+  "_id": "pnotify@3.0.0",
+  "scripts": {},
+  "_shasum": "39b150d62dcd5b56dc73c52966b2039897c7a885",
+  "_from": "pnotify@latest",
+  "_npmVersion": "1.4.21",
+  "_npmUser": {
+    "name": "sciactive",
+    "email": "hperrin@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "sciactive",
+      "email": "hperrin@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "39b150d62dcd5b56dc73c52966b2039897c7a885",
+    "tarball": "https://registry.npmjs.org/pnotify/-/pnotify-3.0.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/pnotify/-/pnotify-3.0.0.tgz"
+}

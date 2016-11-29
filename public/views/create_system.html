@@ -1,0 +1,98 @@
+<div class="row" id="wystemController" ng-controller="SystemController as systemCtrl" ng-init="systemCtrl.setupCreatePage()">			
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Create System</h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+
+        <form class="form-horizontal form-label-left" ng-submit="systemCtrl.createSystem()" role="form">
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="created-by">Created By <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" ng-model="system.createdBy" id="created-by" name="created-by" required="required" readonly="readonly" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="created-date">Created Date <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" ng-model="system.createdDate" id="created-date" name="created-date" required="required" readonly="readonly" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="system-name">System Name <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="text" ng-model="system.name" id="system-name" name="system-name" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="contact-email">Contact Email <span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="email" ng-model="system.contact" id="contact-email" name="contact-email" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="url" class="control-label col-md-3 col-sm-3 col-xs-12">URL<span class="required">*</span>
+              <br>
+              <small>
+                Must start with 'http://'
+              </small>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input type="url" ng-model="system.url" id="url" name="url" required="required" class="form-control col-md-7 col-xs-12">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="status" class="control-label col-md-3 col-sm-3 col-xs-12">Status<span class="required">*</span>
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <input
+                bs-switch
+                ng-model="system.status"
+                type="checkbox"
+                value="online"
+                ng-value="offline"
+                switch-active="true"
+                switch-on-text="Online"
+                switch-off-text="Offline"
+                switch-on-color="primary"
+                switch-off-color="danger"
+                ng-true-value="'online'"
+                ng-false-value="'offline'"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="control-label col-md-3 col-sm-3 col-xs-12">Description
+            </label>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <textarea ng-model="system.description" class="form-control" name="description" id="description" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="ln_solid"></div>
+            <div class="form-group">
+              <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>

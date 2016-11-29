@@ -1,0 +1,37 @@
+<div class="row" ng-controller="EndpointController as endpointCtrl">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>View Endpoints</h2>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content" ng-init="endpointCtrl.getEndpoints()">
+        <table id="datatable" class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Endpoint Name</th>
+              <th>Description</th>
+              <th>Parent System</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr ng-repeat="endpoint in endpoints">
+              <td>{{endpoint.name}}
+              <br />
+              <small>Created {{endpoint.createdDate}}</small>
+              </td>
+              <td>{{endpoint.description}}</td>
+              <td><a href="/system/{{endpoint.parentSystem}}">{{endpoint.systemName}}</a></td>
+              <td>
+                <a class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                <a ng-click="endpointCtrl.deleteEndpoint(endpoint._id)" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+              </td>
+            </tr>        
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

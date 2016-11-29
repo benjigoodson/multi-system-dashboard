@@ -1,0 +1,204 @@
+<div class="row" id="widgetController" ng-controller="WidgetController as widgetCtrl" ng-init="widgetCtrl.setupCreatePage()">			
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Create Widget</h2>
+        <div class="clearfix"></div>
+      </div>
+      
+      <div class="x_content">
+
+        <div id="wizard" class="form_wizard wizard_horizontal">
+          <ul class="wizard_steps">
+            <li>
+              <a href="#step-1">
+                <span class="step_no">1</span>
+                <span class="step_descr">
+                    Step 1<br />
+                    <small>Enter widget details</small>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="#step-2">
+                <span class="step_no">2</span>
+                <span class="step_descr">
+                    Step 2<br />
+                    <small>Select an endpoint</small>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="#step-3">
+                <span class="step_no">3</span>
+                <span class="step_descr">
+                    Step 3<br />
+                    <small>Choose graph settings</small>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a href="#step-4">
+                <span class="step_no">4</span>
+                <span class="step_descr">
+                    Step 4<br />
+                    <small>View Widget</small>
+                </span>
+              </a>
+            </li>
+          </ul>
+
+          <br />
+
+          <div id="step-1">
+            
+            <form class="form-horizontal form-label-left">
+                
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="created-by">Created By <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" ng-model="widget.createdBy" id="created-by" name="created-by" required="required" readonly="readonly" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="created-date">Created Date <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" ng-model="widget.createdDate" id="created-date" name="created-date" required="required" readonly="readonly" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="widget-name">Widget Name <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" ng-model="widget.name" id="widget-name" name="widget-name" required="required" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="description" class="control-label col-md-3 col-sm-3 col-xs-12">Description
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <textarea ng-model="widget.description" class="form-control" name="description" id="description" rows="3"></textarea>
+                </div>
+              </div>
+
+            </form> 
+
+          </div>
+          <div id="step-2">
+
+            <form class="form-horizontal form-label-left">
+
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="system">System <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="select2_single form-control" id="system" name="system" ng-model="widget.system" ng-change="widgetCtrl.systemChanged()">
+                    <option></option>
+                    <option ng-repeat="system in systems" value="{{system.id}}">{{system.name}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="endpoint">Endpoint <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="select2_single form-control" id="endpoint" name="endpoint"
+                       ng-model="widget.endpoint" ng-change="widgetCtrl.endpointChanged()" ng-disabled="!widget.system">
+                    <option ng-repeat="endpoint in endpoints" value="{{endpoint.id}}">{{endpoint.url}}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="auth-token">Authentication Token</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" ng-model="widget.authToken" id="auth-token" name="auth-token" class="form-control col-md-7 col-xs-12">
+                </div>
+              </div>
+
+              <div class="form-group" ng-show="requiresBody">
+                <label for="body" class="control-label col-md-3 col-sm-3 col-xs-12">Body
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <textarea class="form-control" ng-model="widget.body" name="body" id="body" ng-model="widget.body" rows="3"></textarea>
+                </div>
+              </div>
+
+            </form>
+
+          </div>
+          <div id="step-3">
+
+            <form class="form-horizontal form-label-left">
+
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="graph-type">Graph Type <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="select2_single form-control" id="graph-type" name="graph-type" ng-model="widget.graphType" ng-change="widgetCtrl.graphChanged()">
+                    <option value="bar">Bar</option>
+                    <option value="pie">Pie</option>
+                    <option value="line">Line</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="chartCreate">
+                <canvas class="chart-base" chart-type="type" chart-data="data" chart-labels="labels" 
+                  chart-series="series" width="305px" height="152px"></canvas>
+              </div>
+
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="field">Field <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <select class="select2_single form-control" id="field" name="field" ng-model="widget.field" ng-change="widgetCtrl.fieldChanged()">
+                    <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
+                  </select>
+                </div>
+              </div>
+
+            </form>
+
+          </div>
+          <div id="step-4">            
+            <h2 class="StepTitle">Created Widget:</h2>
+
+            <div class="sampleChart">
+              <canvas class="chart-base" chart-type="chart.graphType" chart-data="chart.data" chart-labels="chart.labels" 
+                  width="450px" height="204px"></canvas>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script> 
+  $(document).ready(function() {
+
+    $('#wizard').smartWizard({
+        transitionEffect: 'fade',
+        onFinish: onFinishCallback
+    });
+
+    $('.buttonNext').addClass('btn btn-success');
+    $('.buttonPrevious').addClass('btn btn-primary');
+    $('.buttonFinish').addClass('btn btn-default');
+
+  });
+
+  function onFinishCallback() {
+      // Use methods in controller instead
+      angular.element(document.getElementById("widgetController")).scope().widgetCtrl.onFinish();
+  }
+</script>

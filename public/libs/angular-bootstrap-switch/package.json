@@ -1,0 +1,71 @@
+{
+  "name": "angular-bootstrap-switch",
+  "version": "0.5.1",
+  "main": "dist/angular-bootstrap-switch.js",
+  "author": {
+    "name": "Francesco Pontillo",
+    "email": "francescopontillo@gmail.com",
+    "url": "https://github.com/frapontillo"
+  },
+  "homepage": "https://github.com/frapontillo/angular-bootstrap-switch",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/frapontillo/angular-bootstrap-switch.git"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-clean": "~0.7.0",
+    "grunt-contrib-concat": "~0.5.1",
+    "grunt-contrib-jshint": "~0.11.0",
+    "grunt-contrib-uglify": "~0.11.0",
+    "grunt-karma": "~0.12.1",
+    "grunt-ng-annotate": "^1.0.1",
+    "jasmine-core": "^2.4.1",
+    "karma": "^0.13.19",
+    "karma-chrome-launcher": "~0.2.2",
+    "karma-firefox-launcher": "~0.1.7",
+    "karma-jasmine": "~0.3.6",
+    "karma-phantomjs-launcher": "~1.0.0",
+    "matchdep": "~1.0.0",
+    "phantomjs-prebuilt": "^2.1.3"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "scripts": {
+    "test": "grunt test-travis"
+  },
+  "gitHead": "68086720d33ccc9969c9b9222cfc1407ae2a2e34",
+  "description": "angular-bootstrap-switch ========================",
+  "bugs": {
+    "url": "https://github.com/frapontillo/angular-bootstrap-switch/issues"
+  },
+  "_id": "angular-bootstrap-switch@0.5.1",
+  "_shasum": "b36d2e6841963b53053236296e071665fc93b1b9",
+  "_from": "angular-bootstrap-switch@latest",
+  "_npmVersion": "3.8.6",
+  "_nodeVersion": "6.1.0",
+  "_npmUser": {
+    "name": "frapontillo",
+    "email": "francescopontillo@gmail.com"
+  },
+  "dist": {
+    "shasum": "b36d2e6841963b53053236296e071665fc93b1b9",
+    "tarball": "https://registry.npmjs.org/angular-bootstrap-switch/-/angular-bootstrap-switch-0.5.1.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "frapontillo",
+      "email": "francescopontillo@gmail.com"
+    }
+  ],
+  "_npmOperationalInternal": {
+    "host": "packages-16-east.internal.npmjs.com",
+    "tmp": "tmp/angular-bootstrap-switch-0.5.1.tgz_1465038563035_0.12623612815514207"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/angular-bootstrap-switch/-/angular-bootstrap-switch-0.5.1.tgz",
+  "readme": "ERROR: No README data found!"
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Multi-System Dashboarding App</title>
+
+    <!-- Bootstrap -->
+    <link href="libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Switch-->
+    <link href="libs/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="libs/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="libs/nprogress/nprogress.css" rel="stylesheet">
+    <!-- PNotify -->
+    <link href="libs/pnotify/dist/pnotify.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="css/custom.css" rel="stylesheet">
+
+  </head>
+
+  <body class="nav-md footer_fixed" ng-class = "{'login' : fullPage }" ng-app="app" ng-controller="MainController as MainCtrl">
+    <div class="container body" ng-controller="UserController as user">
+      <div class="main_container">
+        <div class="col-md-3 left_col menu_fixed" ng-show="!fullPage">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="#/" class="site_title"><i class="fa fa-paw"></i> <span>Dashboarding App</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile">
+              <div class="profile_pic">
+                <a href="#user"><img ng-src="api/user/image/small/{{user.image}}" alt="Profile Picture" class="img-circle profile_img"></a>
+              </div>
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>{{ user.forename }}</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">            
+              <div class="menu_section">
+                <h3>Menu</h3>
+                <br />
+                <ul class="nav side-menu">
+                  <li>
+                    <a href="#/"><i class="fa fa-home"></i> Home </a>
+                  </li>				  
+                  <li>
+                      <a><i class="fa fa-desktop"></i> Systems <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                          <li><a href="#systems/create">Create a new system</a></li>
+                          <li><a href="#systems">View all systems</a></li>
+                      </ul>
+                  </li>
+                  <li>
+                      <a><i class="fa fa-sitemap"></i> Endpoints <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                          <li><a href="#endpoints/create">Create a new endpoint</a></li>
+                          <li><a href="#endpoints">View all endpoints</a></li>
+                      </ul>
+                  </li>
+                  <li>
+                      <a><i class="fa fa-edit"></i> Dashboards <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                          <li><a href="create_dashboard_form.html">Create a new dashboard</a></li>
+                          <li><a href="view_dashboards.html">View all dashboards</a></li>
+                      </ul>
+                  </li>
+                  <li>
+                      <a><i class="fa fa-bar-chart-o"></i> Widgets <span class="fa fa-chevron-down"></span></a>
+                      <ul class="nav child_menu">
+                          <li><a href="#widgets/create">Create a new widget</a></li>
+                          <li><a href="#widgets">View all widgets</a></li>
+                      </ul>
+                  </li>
+                </ul>
+              </div>  
+            </div>
+          <!-- /sidebar menu -->
+          </div>
+        </div>
+
+        <!-- top navigation -->
+        <div class="top_nav" ng-show="!fullPage">
+          <div class="nav_menu">
+            <nav>
+              <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+              </div>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li>
+                  <a class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img ng-src="api/user/image/small/{{user.image}}" alt="Profile Picture">{{ user.forename }}
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                    <li><a href="#user"> Profile</a></li>	
+                    <li><a href="#login" ng-click="MainCtrl.logout()"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class='right_col' ng-class="{loginCol : fullPage}" role="main">
+		
+            <!-- DYNAMIC ANGULAR CONTENT -->
+            <div ng-view></div>            
+
+		    </div>
+		    <!-- /page content -->
+
+        <!-- footer content -->
+        <footer ng-hide="fullPage" ng-include="'views/footer.html'"></footer>
+        <!-- /footer content -->
+
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="libs/jquery/dist/jquery.min.js"></script>
+    <!-- jQuery Smart Wizard -->
+    <script src="libs/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+    <!-- Bootstrap -->
+    <script src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Switch-->
+    <script src="libs/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+    <!-- NProgress -->
+    <script src="libs/nprogress/nprogress.js"></script>
+    <!-- Underscore -->
+    <script src="libs/underscore/underscore-min.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script src="libs/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <!-- Chart.js -->
+    <script src="libs/chart.js/dist/Chart.js"></script>
+    <!-- Moment -->
+    <script src="libs/moment/moment.js"></script>
+    <!-- PNotify -->
+    <script src="libs/pnotify/dist/pnotify.js"></script>
+
+    <!-- Angular -->
+    <script src="libs/angular/angular.js"></script>
+    <!-- Angular Route -->
+    <script src="libs/angular-route/angular-route.min.js"></script>
+    <!-- Angular Cookies -->
+    <script src="libs/angular-cookies/angular-cookies.min.js"></script>
+    <!-- Angular Charts -->
+    <script src="libs/angular-chart.js/angular-chart.js"></script>
+    <!-- Angular Bootstrap Switch -->
+    <script src="libs/angular-bootstrap-switch/dist/angular-bootstrap-switch.js"></script>
+    <!-- Angular File Upload -->
+    <script src="libs/angular-file-upload/dist/angular-file-upload.min.js"></script>
+    <!-- Angular PNotify -->
+    <script src="libs/angular-pnotify/src/angular-pnotify.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="js/custom.min.js"></script>
+
+    <!-- Main App -->
+    <script src="js/app.js"></script>
+
+    <!-- Services -->
+    <script src="js/services/_Service.js"></script>
+    <script src="js/services/UserService.js"></script>
+    <script src="js/services/AuthorisationService.js"></script>
+    <script src="js/services/SystemService.js"></script>
+    <script src="js/services/EndpointService.js"></script>
+    <script src="js/services/WidgetService.js"></script>
+    <script src="js/services/ChartService.js"></script>
+    <script src="js/services/DashboardService.js"></script>
+
+    <!-- Controllers -->
+    <script src="js/controllers/MainCtrl.js"></script>
+    <script src="js/controllers/HomeCtrl.js"></script>
+    <script src="js/controllers/LoginCtrl.js"></script>
+    <script src="js/controllers/RegisterCtrl.js"></script>
+    <script src="js/controllers/UserCtrl.js"></script>
+    <script src="js/controllers/SystemCtrl.js"></script>
+    <script src="js/controllers/EndpointCtrl.js"></script>
+    <script src="js/controllers/WidgetCtrl.js"></script>
+    <script src="js/controllers/DashboardCtrl.js"></script>
+
+  </body>
+</html>

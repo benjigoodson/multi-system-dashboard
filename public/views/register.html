@@ -1,0 +1,48 @@
+<div>
+
+  <div class="login_wrapper">
+
+    <div class="form registration_form" ng-class="registerClass" ng-controller="RegisterController as registerCtrl">
+      <section class="login_content">
+
+        <form name="registerForm" ng-submit="registerCtrl.submit()" role="form">
+          
+          <h1>Create Account</h1>
+          <div>
+            <input ng-model="registerCtrl.user.forename" type="text" class="form-control" placeholder="Forename" required/>
+          </div>
+          <div>
+            <input ng-model="registerCtrl.user.surname" type="text" class="form-control" placeholder="Surname" required/>
+          </div>
+          <div>
+            <input ng-model="registerCtrl.user.email" type="email" class="form-control" placeholder="Email" type="email" required />
+          </div>
+          <div>
+            <input ng-model="registerCtrl.user.password" type="password" class="form-control" placeholder="Password" required />
+          </div>
+          <div>
+            <input type="file" class="form-control" nv-file-select uploader="registerCtrl.uploader" placeholder="Profile Image" required />
+          </div>
+          <div>
+            <button type="submit" ng-disabled="form.$invalild" class="btn btn-default submit">Submit</button>
+          </div>
+
+          <div class="clearfix"></div>
+
+          <div class="separator">
+            <p class="change_link">Already a member ?
+              <a href="#signin" class="to_register"> Log in </a>
+            </p>
+
+            <div class="clearfix"></div>
+
+            <div>
+              <h1><i class="fa fa-paw"></i> Multi-System Dashboarding Application </h1>
+              <p> University of Sunderland - <a href="https://eportfolio.sunderland.ac.uk/view/view.php?id=34120"> Benjamin Goodson </a> </p>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>

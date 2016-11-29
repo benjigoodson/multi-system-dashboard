@@ -1,0 +1,60 @@
+{
+  "name": "angular-pnotify",
+  "version": "0.1.2",
+  "description": "AngularJS wrapper for PNotify",
+  "main": "src/angular-pnotify.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacqueslareau/angular-pnotify.git"
+  },
+  "author": {
+    "name": "Jacques Lareau",
+    "email": "jack.lareau@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jacqueslareau/angular-pnotify/issues"
+  },
+  "homepage": "https://github.com/jacqueslareau/angular-pnotify#readme",
+  "keywords": [
+    "angular",
+    "notification",
+    "pines",
+    "pnotify"
+  ],
+  "dependencies": {
+    "angular": "~1.5.5",
+    "bootstrap": "^3.3.6",
+    "jquery": ">=1.9",
+    "pnotify": "~3.0.0"
+  },
+  "gitHead": "a38bf21b168983a23c37ebe1b513a4b3dc85e289",
+  "_id": "angular-pnotify@0.1.2",
+  "_shasum": "16450f1558f05c70178fc2fcf89926c21adcdf63",
+  "_from": "angular-pnotify@latest",
+  "_npmVersion": "3.8.6",
+  "_nodeVersion": "6.1.0",
+  "_npmUser": {
+    "name": "jlareau",
+    "email": "jack.lareau@gmail.com"
+  },
+  "dist": {
+    "shasum": "16450f1558f05c70178fc2fcf89926c21adcdf63",
+    "tarball": "https://registry.npmjs.org/angular-pnotify/-/angular-pnotify-0.1.2.tgz"
+  },
+  "maintainers": [
+    {
+      "name": "jlareau",
+      "email": "jack.lareau@gmail.com"
+    }
+  ],
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/angular-pnotify-0.1.2.tgz_1464702850191_0.8179806754924357"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/angular-pnotify/-/angular-pnotify-0.1.2.tgz"
+}

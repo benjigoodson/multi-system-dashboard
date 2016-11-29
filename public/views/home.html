@@ -1,0 +1,52 @@
+<div class="row" id="homeController" ng-controller="HomeController as homeCtrl" ng-init="homeCtrl.init()">
+  
+  <div ng-repeat="widget in widgets">
+
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <div class="x_panel">
+        <div class="x_title">
+          <h2>{{ widget.name }}</h2>
+          <ul class="nav navbar-right panel_toolbox">
+            <li><a class="collapse-link" ng-click="MainCtrl.collapse($event)"><i class="fa fa-chevron-up"></i></a>
+            </li>
+            <li>
+              <a href=""><i class="fa fa-wrench"></i></a>
+            </li>
+            <li>
+              <a class="close-link"><i class="fa fa-close"></i></a>
+            </li>
+          </ul>
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <canvas id="{{ widget._id }}" class="chart chart-base" chart-type="widget.graphType" chart-data="widget.data" chart-labels="widget.labels"
+            chart-options="widget.options" ></canvas> 
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-md-4 col-sm-6 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Line Graph</h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li><a class="collapse-link" ng-click="MainCtrl.collapse($event)"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <li>
+            <a href="#"><i class="fa fa-wrench"></i></a>
+          </li>
+          <li>
+            <a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <canvas class="chart chart-line" chart-data="homeCtrl.data" chart-labels="homeCtrl.labels" chart-series="homeCtrl.series"></canvas> 
+      </div>
+    </div>
+  </div>
+</div>
+
