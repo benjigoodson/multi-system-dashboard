@@ -31,7 +31,7 @@ function AuthorizationService($http, $cookieStore, $rootScope, $timeout, UserSer
             }
         };
 
-        $http.defaults.headers.common['authorization'] = "token " + token; // jshint ignore:line
+        $http.defaults.headers.common['authorization'] = "token " + token;
         $cookieStore.put('globals', $rootScope.globals);
     }
 
