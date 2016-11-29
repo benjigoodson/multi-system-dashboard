@@ -17,8 +17,8 @@ var db = require('./app/config/db');
 require('./app/routes')(app);
 
 // connect to our Mongo database
-console.log('Connecting to database...');
-mongoose.connect(db.uri, db.options);
+console.log('Connecting to database...   ' + db.url);
+mongoose.connect(db.url);
 
 mongoose.Promise = global.Promise;
 
