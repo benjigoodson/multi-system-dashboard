@@ -2,12 +2,13 @@
   "name": "multi-systemdashboardtool",
   "version": "1.0.0",
   "description": "",
-  "scripts": {
-    "start": "node server.js"
-  },
   "main": "server.js",
   "author": "Benjmain Goodson",
   "license": "ISC",
+  "engine": {
+    "node": "*",
+    "npm": "*"
+  },
   "dependencies": {
     "angular-bootstrap-switch": "^0.5.1",
     "angular-chart.js": "^1.0.3",
@@ -27,5 +28,12 @@
     "pnotify": "^3.0.0",
     "sharp": "^0.16.2",
     "underscore": "^1.8.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benjigoodson/multi-system-dashboard.git"
+  },
+  "scripts": {
+    "start": "node server.js"
   }
 }
