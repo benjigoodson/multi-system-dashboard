@@ -31,20 +31,12 @@ mongoose.Promise = global.Promise;
 app.use(express.static('public'));
 
 // Select port and IP
-var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000;
-var server_ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0';
+var server_port = process.env.SERVICE_PORT || 3000;
+var server_ip = process.env.SERVICE_IP || '127.0.0.1';
  
 app.listen(server_port, server_ip, function () {
   console.log( "Listening on " + server_ip + ", port " + server_port )
 });
-
-// LOCAL SETTINGS
-// var server_port = process.env.PORT || 3000;
-
-// start listening on the port, display message once complete
-// app.listen(server_port, server_ip_address, function () {
-  // console.log('Server listening on port ' + port + '...');
-// });
 
 // expose app
 exports = module.exports = app;

@@ -14,7 +14,7 @@ var router = express.Router();
 router.route('/')
     .post(function(req, res) {
 
-        var email = req.body.username;
+        var email = req.body.username.toLowerCase();
 
         console.log("Requested: POST - /api/authenticate");
         console.log("User login - " + email);
@@ -55,7 +55,6 @@ router.route('/')
             });
         });
     });
-
 
 router.use(function(req, res, next) {
     console.log("Authorizing at middleware");
