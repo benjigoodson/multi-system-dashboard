@@ -71,7 +71,17 @@ WidgetModule.controller('WidgetController', function($scope, $http, $location, W
 					// Reset fields
 					$scope.fields = [];
 
-					for(var field in result.data[0])
+					var searchableObject;
+					
+					// If an object is returned containing a single array
+					if(Array.isArray(result.data[Object.keys(result.data)[0]]) && Object.keys(result.data).length == 1) {
+						// Use first object in that array
+						searchableObject = result.data[Object.keys(result.data)[0]][0];
+					} else {
+						searchableObject = result.data[0];
+					}
+
+					for(var field in searchableObject)
 					{	
 						if(!_.contains(self.fieldBlacklist, field)) {
 							$scope.fields.push(field);

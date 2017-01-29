@@ -7,7 +7,7 @@ var controller = require('../controllers/system');
 var System = require('../models/system');
 
 // instance of an express router
-var router = express.Router();;
+var router = express.Router();
 
 // Systems api routes
 router.route('/')

@@ -22,7 +22,15 @@ function ChartService ($q, widgetService) {
                 // Make REST calls to get the data for each widgets             
                 var promise = widgetService.makeRESTCall(widget.method, widget.apiURL).then(function(apiResponse) {
 
-                    var resultArray = apiResponse.data;
+                    var resultArray;
+
+                    // If an object is returned containing a single array
+					if(Array.isArray(apiResponse.data[Object.keys(apiResponse.data)[0]]) && Object.keys(apiResponse.data).length == 1) {
+						// Use that array
+						resultArray = apiResponse.data[Object.keys(apiResponse.data)[0]];
+					} else {
+						resultArray = apiResponse.data;
+					}
 
                     widget.data = [];
                     widget.labels = [];

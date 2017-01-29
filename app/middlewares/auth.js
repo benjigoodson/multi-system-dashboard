@@ -9,10 +9,68 @@ var User = require('../models/user');
 // Get config
 var apiConfig = require('../config/api');
 
-var router = express.Router();
+module.exports = function (app) {
 
-router.route('/')
-    .post(function(req, res) {
+    app.use(function(req, res, next) {
+
+        // Website you wish to allow to connect
+        res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
+
+        // Request methods you wish to allow
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+
+        // Headers to allow
+        res.setHeader('Access-Control-Allow-Headers', '*, authorization');
+
+        // Allow senidng of cookies for sessions etc
+        res.setHeader('Access-Control-Allow-Credentials', true);
+
+        next();
+
+    });
+
+    app.use(function(req, res, next) {
+        console.log("Authorizing at middleware");
+
+        console.log("Auth deactivated");
+
+        // // check header or url parameters or post parameters for token
+        // var token = req.body.token || req.query.token || req.headers['authorization'];
+
+        // // decode token
+        // if (token) {
+
+        //     // Remove leading token text
+        //     token = token.substring(6);
+
+        //     // verifies secret and checks exp
+        //     jwt.verify(token, apiConfig.secret, function(err, decoded) {      
+        //         if (err) {
+        //             return res.json({ success: false, message: 'Failed to authenticate token.' });    
+        //         } else {
+        //             // if everything is good, save to request for use in other routes
+        //             req.decoded = decoded;    
+                     next();
+        //         }
+        //     });
+
+        // } else {
+
+        //     // if there is no token
+        //     // return an error
+        //     return res.status(403).send({ 
+        //         success: false, 
+        //         message: 'No authentication token provided.' 
+        //     });
+        // }
+    });
+
+    app.route('/api/authenticate/').post(function(req, res) {
+
+        if(!req.body) {
+            console.log('No request body.');
+            return res.status(500).send({message: "Unable to login."});
+        }
 
         var email = req.body.username.toLowerCase();
 
@@ -29,7 +87,7 @@ router.route('/')
 
             } else if (user) {
 
-                 // check if password matches
+                // check if password matches
                 if (user.password != req.body.password) {
 
                     res.json({ success: false, message: 'Authentication failed. Wrong password.' });
@@ -49,45 +107,10 @@ router.route('/')
                 }
             }   
         })
-         .catch(function errorHandler (err) {
+        .catch(function errorHandler (err) {
             return res.status(500).send({  
                 message: "Unable to login - " + err.message
             });
         });
     });
-
-router.use(function(req, res, next) {
-    console.log("Authorizing at middleware");
-
-    // check header or url parameters or post parameters for token
-    var token = req.body.token || req.query.token || req.headers['authorization'];
-
-    // decode token
-    if (token) {
-
-        // Remove leading token text
-        token = token.substring(6);
-
-        // verifies secret and checks exp
-        jwt.verify(token, apiConfig.secret, function(err, decoded) {      
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });    
-            } else {
-                // if everything is good, save to request for use in other routes
-                req.decoded = decoded;    
-                next();
-            }
-        });
-
-    } else {
-
-        // if there is no token
-        // return an error
-        return res.status(403).send({ 
-            success: false, 
-            message: 'No authentication token provided.' 
-        });
-    }
-});
-
-module.exports = router;
+}
