@@ -27,7 +27,6 @@
   min-height: 265px;
   max-height: 265px; }
 
-
 @media only screen and (min-height: 800px) { 
 
   .stepContainer {
@@ -80,7 +79,7 @@
   margin: 13px 0 0 3px; }
 
 .site_title i {
-  border: 1px solid #EAEAEA;
+  border: 2px solid #EAEAEA;
   padding: 5px 6px;
   border-radius: 50%; }
 
@@ -974,8 +973,6 @@ legend {
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px; }
 
-/** Contacts **/
-/* *********  /custom accordion  **************************** */
 /* *********  dashboard widget  **************************** */
 table.tile h3, table.tile h4, table.tile span {
   font-weight: bold;
@@ -2482,30 +2479,6 @@ ul.social li {
   height: 27px;
   border-radius: 50%; }
 
-.chat .status {
-  float: left;
-  margin: 16px 0 0 -16px;
-  font-size: 14px;
-  font-weight: bold;
-  width: 12px;
-  height: 12px;
-  display: block;
-  border: 2px solid #FFF;
-  z-index: 12312;
-  border-radius: 50%; }
-
-.chat .status.online {
-  background: #1ABB9C; }
-
-.chat .status.away {
-  background: #F39C12; }
-
-.chat .status.offline {
-  background: #ccc; }
-
-.chat .media-body {
-  padding-top: 5px; }
-
 /* *********  /profile/social  **************************** */
 /* *********  widgets  **************************** */
 .dashboard_graph .x_title {
@@ -3344,6 +3317,11 @@ ul.notifications {
   opacity: 1; }
 
 /** /PNotify **/
+
+.editWidget {
+  width: 50%;
+}
+
 /** bootstrap-daterangepicker **/
 .daterangepicker.dropdown-menu {
   font-size: 13px;
@@ -3587,20 +3565,3 @@ ul.notifications {
   vertical-align: middle; }
 
 /** bootstrap-daterangepicker **/
-/** FullCalendar **/
-.fc-state-default {
-  background: #f5f5f5;
-  color: #73879C; }
-
-.fc-state-down,
-.fc-state-active {
-  color: #333;
-  background: #ccc; }
-
-/** /FullCalendar **/
-/** Dropzone.js **/
-.dropzone {
-  min-height: 300px;
-  border: 1px solid #e5e5e5; }
-
-/** /Dropzone.js **/

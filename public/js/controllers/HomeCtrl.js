@@ -7,11 +7,12 @@ MainModule.controller('HomeController', HomeController);
 HomeController.$inject = ['$scope', 'WidgetService', 'ChartService', 'notificationService'];
 function HomeController ($scope, widgetService, chartService, notificationService) { 
 
+    var self = this;
+
     this.init = function() {
-
-        this.errorHandler("error000001");
-
         $scope.type = "pie";
+
+        $scope.widgets = [];
 
         this.getWidgets();
 
@@ -21,41 +22,65 @@ function HomeController ($scope, widgetService, chartService, notificationServic
 
 		widgetService.getAll().then(function(widgets) {
 
-            var promise = chartService.generateChartData(widgets)
-            
-            if(promise) {
-                promise.then(function(widgets) {
+            widgets.forEach(function (widget, i) {
+                
+                // Display each widget box as loading
+                widget.loading = true;
 
-                    widgets.forEach(function (widget, index) {
+                // Add widget to scope
+                $scope.widgets.push(widget);
 
-                        if(widget.graphType == "bar") {
+                try {
 
-                            widget.options = { 
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            min : 0,
-                                            stepSize : 1
-                                        }
-                                    }]
-                                }
-                            }; 
+                    // Generate chart for widget
+                    chartService.generateChartData(widget)
+                        .then(function(widget) {
+                            if(widget.graphType == "bar") {
 
-                        } else {
-                            widget.options = {};
-                        }
+                                widget.options = { 
+                                    scales: {
+                                        yAxes: [{
+                                            ticks: {
+                                                min : 0,
+                                                stepSize : 1
+                                            }
+                                        }]
+                                    }
+                                }; 
 
+                            } else {
+                                widget.options = {};
+                            }
+
+                        self.updateWidgetInScope(widget);
+
+                    }, function(errorMessage) {
+                        widget.loading = false;
+                        widget.error = errorMessage;
+
+                        self.updateWidgetInScope(widget);
+
+                        console.log("Unable to contact sever for widget: " + widget._id);
                     });
-
-                    $scope.widgets = widgets;
-                });
-            }
-
+                } catch(err) {
+                    self.errorHandler(err);
+                }
+            });
         });
 	};
 
-    $scope.onClick = function(){
-        
+    this.updateWidgetInScope = function(widget) {
+        // Find widget in scope and update
+        $scope.widgets.forEach(function (scopeWidget, count) {
+
+            if(widget._id == scopeWidget._id) {
+                
+                widget.loading = false;
+
+                scopeWidget = widget;
+            }
+
+        });
     }
 
     this.labels = ["January", "February", "March", "April", "May", "June", "July"];
@@ -69,7 +94,7 @@ function HomeController ($scope, widgetService, chartService, notificationServic
 
     this.errorHandler = function(error) {
 
-        notificationService.info("message");
+        notificationService.error(error);
     }
 
 };

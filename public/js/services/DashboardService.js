@@ -1,35 +1,39 @@
-angular.module('DashboardService', []).factory('Dashboards', ['$http', function($http) {
+var DashboardModule = angular.module('DashboardModule');
+
+DashboardModule.factory('DashboardService', function ($http) {
 	
+	var url = '/api/dashboard/';
+
 	return {
-		get : function() {
+
+		getAll : function() {
 			
-			return $http.get('/api/widget');
-			
-		},
-		
-		get : function(id) {
-			
-			return $http.get('/api/widget' + id);
-			
+			var promise = $http.get(url) .then(function(response) {
+				return response.data;
+			}, function(error) {
+
+			})
+			return promise;			
 		},
 		
 		get : function(dashboardId) {
 			
-			return $http.get('/api/widget/dashboard' + dashboardId);
-			
+			var promise = $http.get(url + dashboardId) .then(function(response) {
+				return response.data;
+			}, function(error) {
+
+			})
+			return promise;			
 		},
 		
-		create : function(widgetData) {
-			
-			return $http.post('/api/widget', widgetData);
-			
-		},
-		
-		delete : function(id) {
-			
-			return $http.delete('/api/widget/' + id);
-			
-		},
-	};
+		create : function(dashboardData) {
+			var promise = $http.post(url, dashboardData) .then(function(response) {
+				return response.data;
+			}, function(error) {
+
+			})
+			return promise;	
+		}
+	}
 	
-}]);
+});

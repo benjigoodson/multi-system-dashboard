@@ -71,7 +71,7 @@ router.route('/:system_id')
 
     // Get a unique system
     .get(function(req, res) {
-        console.log("Requested: GET - /api/system/:system_id");
+        console.log("Requested: GET - /api/system/" + req.params.system_id);
 
         // Get system by the id passed
         System.findById(req.params.system_id, function(err, system) {
@@ -86,7 +86,7 @@ router.route('/:system_id')
 
     // Update a system
     .put(function(req, res) {
-        console.log("Requested: GET - /api/system/:system_id");
+        console.log("Requested: PUT - /api/system/:system_id");
 
         // Get system by the id passed
         System.findById(req.params.system_id, function(err, system) {

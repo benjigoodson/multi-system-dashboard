@@ -11,7 +11,7 @@ angular.module('DashboardModule', ['MainModule']);
 angular.module('WidgetModule', ['MainModule']);
 
 var app = angular.module('app', ['ngRoute', 'ngCookies',
-     'jlareau.pnotify', 'UserModule', 'SystemModule', 'EndpointModule', 'WidgetModule']);
+     'jlareau.pnotify', 'UserModule', 'SystemModule', 'EndpointModule', 'WidgetModule', 'DashboardModule']);
 
 app.config(config);
 app.run(run);
@@ -48,7 +48,7 @@ function config($routeProvider, $locationProvider) {
             controller : 'SystemController'
         })
         // Create System Page
-        .when('/systems/create', {	
+        .when('/system/create', {	
             templateUrl : 'views/create_system.html',
             controller : 'SystemController'
         })
@@ -60,18 +60,38 @@ function config($routeProvider, $locationProvider) {
             controller : 'EndpointController'
         })
         // Create Endpoint Page
-        .when('/endpoints/create', {	
+        .when('/endpoint/create', {	
             templateUrl : 'views/create_endpoint.html',
             controller : 'EndpointController'
         })
 
 
         // Create Widget Page
-        .when('/widgets/create', {	
+        .when('/widget/create', {	
             templateUrl : 'views/create_widget.html',
             controller : 'WidgetController'
         })
+        // View All Widgets Page
+        .when('/widgets', {	
+            templateUrl : 'views/view_widgets.html',
+            controller : 'WidgetController'
+        })
+        // Widget Page
+        .when('/widget/:widget_id', {	
+            templateUrl : 'views/widget.html',
+            controller : 'WidgetController'
+        })
 
+        // Create Dashboard Page
+        .when('/dashboard/create', {	
+            templateUrl : 'views/create_dashboard.html',
+            controller : 'DashboardController'
+        })
+        // Dashboard Page
+        .when('/dashboard/:dashboard_id', {	
+            templateUrl : 'views/dashboard.html',
+            controller : 'DashboardController'
+        })
 
         .otherwise({
             redirectTo : '/error_pages/page_404.html'
@@ -84,7 +104,7 @@ function run($rootScope, $location, $cookieStore, $http) {
     $rootScope.globals = $cookieStore.get('globals') || {};
 
     if ($rootScope.globals.currentUser) {
-        $http.defaults.headers.common['authorization'] = "token " + $rootScope.globals.currentUser.token;
+        $http.defaults.headers.common['authorization'] = $rootScope.globals.currentUser.token;
     }
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {

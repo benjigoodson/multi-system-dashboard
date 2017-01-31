@@ -42,7 +42,7 @@ router.route('/').post(function(req, res) {
                     res.status(500).send(err);
                 }
 
-                res.send(newWidget);
+                res.send({success:true, message: "Widget created.", data : newWidget});
 
             });
 
@@ -54,7 +54,7 @@ router.route('/:widget_id')
 
     // Get a unique widget
     .get(function(req, res) {
-        console.log("Requested: GET - /api/sywidgetstem/:widget_id");
+        console.log("Requested: GET - /api/widget/" + req.params.widget_id);
 
         // Get widget by the id passed
         Widget.findById(req.params.widget_id, function(err, widget) {
@@ -69,28 +69,39 @@ router.route('/:widget_id')
 
     // Update a widget
     .put(function(req, res) {
-        console.log("Requested: GET - /api/widget/:widget_id");
+        console.log("Requested: PUT - /api/widget/" + req.params.widget_id);
 
-        // Get widget by the id passed
-        Widget.findById(req.params.widget_id, function(err, widget) {
+        var updatedWidget = req.body;
+
+        controller.update(updatedWidget, function(err, response) {
+
             if(err) {
-                res.send(err);
+                res.send(500, { success : false, error: err });
             }
 
-            // Map fields
+            // return the message
+            res.json(response);
 
-            widget.save(function(err) {
-                if(err) {
-                    res.send(err);
-                }
+        });
+    })
 
-                // return the message
-                res.json({message : "Widget updated."});
-            });
+    // Delete a widget
+    .delete(function(req, res) {
+
+        var widgetId = req.params.widget_id;
+
+        console.log("Requested: DELETE - /api/widget/" + widgetId);
+
+        controller.delete(widgetId, function(err) {
+
+            if(err) {
+                res.send(500, { success : false, error: err });
+            }
+
+            // return the message
+            res.json({success : true, message : "Widget removed."});
 
         });
     });
-
-
 
 module.exports = router;

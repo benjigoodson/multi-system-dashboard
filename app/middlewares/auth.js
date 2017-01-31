@@ -40,9 +40,6 @@ module.exports = function (app) {
         // // decode token
         // if (token) {
 
-        //     // Remove leading token text
-        //     token = token.substring(6);
-
         //     // verifies secret and checks exp
         //     jwt.verify(token, apiConfig.secret, function(err, decoded) {      
         //         if (err) {

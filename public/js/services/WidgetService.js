@@ -46,16 +46,23 @@ WidgetModule.factory('WidgetService', function ($http) {
 			})
 			return promise;	
 		},
+
+		update : function(widgetData) {
+			var promise = $http.put(url + widgetData._id, widgetData) .then(function(response) {
+				return response.data;
+			}, function(error) {
+
+			})
+			return promise;	
+		},
 		
-		delete : function(widgetIdid) {
-			
+		delete : function(widgetId) {
 			return $http.delete('/api/widget/' + widgetId);
-			
 		},
 
 		getSystems : function() {
 			
-			var promise = $http.get("/api/system/basic") .then(function(response) {
+			var promise = $http.get("/api/system/basic").then(function(response) {
 				return response.data;
 			}, function(error) {
 
@@ -75,15 +82,17 @@ WidgetModule.factory('WidgetService', function ($http) {
 
 		makeRESTCall : function(method, apiURL) {
 
+			// Time out of 15 seconds
 			var promise = $http(
 				{ 
 					method: method, 
-					url: apiURL 
+					url: apiURL,
+					timeout: 15000 
 				})
 			.then(function (response) {	  
-					return response;
+				return response;
 			}, function (error) {
-				// error
+				return error;
 			});
 
 			return promise;

@@ -1,0 +1,78 @@
+            <div class="row" ng-controller="WidgetController as widgetCtrl">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_content" ng-init="widgetCtrl.getWidget()">
+                    <div class="col-md-5 col-sm-5 col-xs-12 profile_left">
+                      <br>
+                      <div ng-show="widget.loading || widget.error" style="text-align: center;">
+                        <br>
+                        <br>
+                        <br>
+                        <i ng-show="widget.loading" class="fa fa-refresh fa-spin fa-5x fa-fw"></i>
+                        <i ng-show="widget.error" class="fa fa-exclamation-circle fa-5x fa-fw"></i>
+                        <div ng-show"widget.error">
+                          {{widget.error}}
+                        </div>
+                        <br>
+                      </div>
+                      <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" chart-type="widget.graphType" 
+                        chart-data="widget.data" chart-labels="widget.labels">
+                      </canvas>
+                    </div>
+                    <div class="col-md-7 col-sm-7 col-xs-12">
+                      <h3>Widget: {{widget.name}}</h3>
+                        <div ng-show="!edit">
+                          Description: {{widget.description}}
+                        </div>
+                        <div ng-show="edit">
+                          Description: 
+                          <br>
+                          <textarea rows="2" ng-model="widget.description">{{widget.description}}</textarea>
+                        </div>
+                        <ul class="list-unstyled user_data">
+                          <li>
+                            <i class="fa fa-user-circle"></i> Created By: {{widget.createdBy}}
+                          </li>
+                          <li>
+                            <i class="fa fa-calendar-check-o"></i> Created Date: {{widget.createdDate}}
+                          </li>
+                          <li>
+                            <i class="fa fa-globe"></i> API URL: {{widget.apiURL}}
+                          </li>
+                          <li>
+                            <i class="fa fa-envelope-o"></i> Method: {{widget.method}}
+                          </li>
+                          <li ng-show="!edit">
+                            <i class="fa fa-{{widget.graphType}}-chart"></i> Graph type: {{widget.graphType}}
+                          </li>
+                          <li ng-show="edit">
+                            <i class="fa fa-{{widget.graphType}}-chart"></i> Graph type:
+                            <select class="select2_single form-control editWidget" id="graph-type" name="graph-type" ng-model="widget.graphType">
+                              <option value="bar">Bar</option>
+                              <option value="pie">Pie</option>
+                              <option value="line">Line</option>
+                            </select>
+                          </li>
+                          <li ng-show="!edit">
+                            <i class="fa fa-bullseye"></i> Field: {{widget.field}}
+                          </li>
+                          <li ng-show="edit">
+                            <i class="fa fa-bullseye"></i> Field:
+                            <select class="select2_single form-control editWidget" ng-model="widget.field">
+                              <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
+                            </select>
+                          </li>
+                        </ul>
+                        <br>
+                        <a class="btn btn-success" ng-show="!edit" ng-click="widgetCtrl.setEdit()"><i class="fa fa-edit m-right-xs"></i> Edit Widget</a>
+                        <a class="btn btn-success" ng-show="edit" ng-click="widgetCtrl.saveWidget()"><i class="fa fa-floppy-o m-right-xs"></i> Save Widget</a>
+                        
+                        <a class="btn btn-danger" ng-show="!edit" ng-click="widgetCtrl.deleteWidget(widget._id)"><i class="fa fa-trash m-right-xs"></i> Delete Widget</a>
+                        <a class="btn btn-danger" ng-show="edit" ng-click="widgetCtrl.setEdit()"><i class="fa fa-minus-circle m-right-xs"></i> Cancel Edit</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>

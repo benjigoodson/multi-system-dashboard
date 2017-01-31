@@ -5,13 +5,159 @@ var WidgetModule = angular.module('WidgetModule');
 // Imports
 WidgetModule.constant("moment", moment);
 
-WidgetModule.controller('WidgetController', function($scope, $http, $location, WidgetService, ChartService, UserService) { 
+WidgetModule.controller('WidgetController', function($scope, $http, $routeParams, $location, WidgetService, 
+	ChartService, UserService, notificationService) { 
+
+	this.id = $routeParams.widget_id;
+
+	var self = this;
+
+	self.fieldBlacklist = [
+		"_id",
+		"__v"
+	];
+
+	$scope.edit = false;
 
 	this.createWidget = function(widgetData) {
 		WidgetService.create(widgetData).then(function(response) {
-			$location.path("/");
+			if(response.success == true) {
+				notificationService.success(response.message);
+				$location.path("/");
+			} else {
+				self.errorHandler("Unable to create widget:" + response.message);	
+			}
 		}, function(error) {
+			self.errorHandler("Unable to create widget:" + response.message);
+		});
+	};
 
+	this.getWidget = function() {
+		WidgetService.getWidget(this.id).then(function(data) {
+
+			var widget = data;
+			widget.loading = true;
+
+			$scope.widget = widget;
+
+			// Now generate the graph
+			try {
+
+				// Generate chart for widget
+				ChartService.generateChartData(widget)
+					.then(function(widget) {
+						if(widget.graphType == "bar") {
+
+							widget.options = { 
+								scales: {
+									yAxes: [{
+										ticks: {
+											min : 0,
+											stepSize : 1
+										}
+									}]
+								}
+							}; 
+
+						} else {
+							widget.options = {};
+                        }
+
+						widget.loading = false;
+                        $scope.widget = widget;
+
+                    }, function(errorMessage) {
+						$scope.widget.loading = false;
+                        $scope.widget.error = errorMessage;
+
+						console.log("Unable to contact sever for widget: " + widget._id);
+                    });
+			} catch(err) {
+				self.errorHandler(err);
+			}
+
+		});
+	};
+	
+	this.setEdit = function() {
+
+		if($scope.edit == true) {
+			$scope.edit = false;
+		} else {
+			$scope.edit = true;
+
+			this.getFields($scope.widget.method, $scope.widget.apiURL).then(function(fields) {
+				$scope.fields = fields;
+			});
+		}
+
+	};
+
+	this.saveWidget = function() {
+
+		WidgetService.update($scope.widget).then(function(response) {
+
+			if(response.success == true) {
+				notificationService.info(response.message);
+
+				// Now generate the graph
+				try {
+
+					// Generate chart for widget
+					ChartService.generateChartData($scope.widget)
+						.then(function(widget) {
+							if(widget.graphType == "bar") {
+
+								widget.options = { 
+									scales: {
+										yAxes: [{
+											ticks: {
+												min : 0,
+												stepSize : 1
+											}
+										}]
+									}
+								}; 
+
+							} else {
+								widget.options = {};
+							}
+
+							widget.loading = false;
+							$scope.widget = widget;
+
+						}, function(errorMessage) {
+							$scope.widget.loading = false;
+							$scope.widget.error = errorMessage;
+
+							console.log("Unable to contact sever for widget: " + widget._id);
+						});
+				} catch(err) {
+					self.errorHandler(err);
+				}
+
+				self.setEdit();
+			} else {
+				self.errorHandler(response.message)
+			}
+
+		}, function(err) {
+			self.errorHandler(err.error);
+		});
+	}
+
+	this.deleteWidget = function(widgetId) {
+		WidgetService.delete(widgetId).then(function(response) {
+
+			if(response.data.success == true) {
+				notificationService.success(response.data.message);
+				$location.path("/");
+			} else {
+				self.errorHandler("Unable to delete widget:" + response.data.message);
+			}
+
+		}, function(error) {
+			self.errorHandler("Unable to delete widget.");
 		});
 	};
 
@@ -63,40 +209,50 @@ WidgetModule.controller('WidgetController', function($scope, $http, $location, W
 			$scope.widget.method = method;
 			$scope.widget.apiURL = apiURL;
 
-			// Test endpoint and get data back
-			WidgetService.makeRESTCall(method, apiURL).then(function(result) {
 
-				if(result && result.status == 200) {
-
-					// Reset fields
-					$scope.fields = [];
-
-					var searchableObject;
-					
-					// If an object is returned containing a single array
-					if(Array.isArray(result.data[Object.keys(result.data)[0]]) && Object.keys(result.data).length == 1) {
-						// Use first object in that array
-						searchableObject = result.data[Object.keys(result.data)[0]][0];
-					} else {
-						searchableObject = result.data[0];
-					}
-
-					for(var field in searchableObject)
-					{	
-						if(!_.contains(self.fieldBlacklist, field)) {
-							$scope.fields.push(field);
-						}
-					}
-
-				} else {
-					// display error with REST call
-				}
-
+			this.getFields(method, apiURL).then(function(fields) {
+				$scope.fields = fields
 			});
-
+			
 		} else {
 			$scope.requiresBody = false;
 		}
+	};
+
+	this.getFields = function(method, apiURL) {
+
+		// Test endpoint and get data back
+		return WidgetService.makeRESTCall(method, apiURL).then(function(result) {
+
+			if(result && result.status == 200) {
+
+				// Reset fields
+				var fields = [];
+
+				var searchableObject;
+				
+				// If an object is returned containing a single array
+				if(Array.isArray(result.data[Object.keys(result.data)[0]]) && Object.keys(result.data).length == 1) {
+					// Use first object in that array
+					searchableObject = result.data[Object.keys(result.data)[0]][0];
+				} else {
+					searchableObject = result.data[0];
+				}
+
+				for(var field in searchableObject)
+				{	
+					if(!_.contains(self.fieldBlacklist, field)) {
+						fields.push(field);
+					}
+				}
+
+				return fields;
+
+			} else {
+				// display error with REST call
+			}
+
+		});
 	};
 
 	this.graphChanged = function() {
@@ -138,14 +294,13 @@ WidgetModule.controller('WidgetController', function($scope, $http, $location, W
 		if($scope.widget.field) {
 
 			// Display sample graph
-			var promise = ChartService.generateChartData([$scope.widget]);
-            
-            if(promise) {
-                promise.then(function(widgetData) {
-                    $scope.chart = widgetData[0];
-                });
-            }
-
+			ChartService.generateChartData($scope.widget).then(function(widgetData) {
+				$scope.chart = {};
+				
+				$scope.chart.graphType = widgetData.graphType;
+				$scope.chart.data = widgetData.data;
+				$scope.chart.labels = widgetData.labels;
+			});
 		}
 	};
 
@@ -153,16 +308,9 @@ WidgetModule.controller('WidgetController', function($scope, $http, $location, W
 		
 		this.getSystems();
 
-		// Get endpoints once system is selected
-
 		$scope.widget = {};
 		$scope.requiresBody = false;
 		$scope.fields = [];
-
-		this.fieldBlacklist = [
-			"_id",
-			"__v"
-		];
 
 		$scope.widget.createdDate = moment().format('DD/MM/YYYY');
 
@@ -176,6 +324,10 @@ WidgetModule.controller('WidgetController', function($scope, $http, $location, W
 		this.createWidget($scope.widget);
 
 	};
+
+	this.errorHandler = function(error) {
+        notificationService.error(error);
+    }
 
 	$scope.type = "pie";
 

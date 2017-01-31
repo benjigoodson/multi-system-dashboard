@@ -9,28 +9,26 @@ function ChartService ($q, widgetService) {
 	
 	return {
 
-        generateChartData : function(widgets) {
+        generateChartData : function(widget) {
+ 
+            // Make REST calls to get the data for each widget           
+            var promise = widgetService.makeRESTCall(widget.method, widget.apiURL).then(function(apiResponse) {
 
-            var self = this;
-            self.promises = [];
+                var resultArray;
 
-            var deferred = $q.defer();
-
-            // Loop through the widgets returned.
-            widgets.forEach(function(widget, i) {         
-
-                // Make REST calls to get the data for each widgets             
-                var promise = widgetService.makeRESTCall(widget.method, widget.apiURL).then(function(apiResponse) {
-
-                    var resultArray;
+                try {
+                    // If no data in response
+                    if(!apiResponse || apiResponse.status == -1 || !apiResponse.data) {
+                        throw "No response from server.";
+                    }
 
                     // If an object is returned containing a single array
-					if(Array.isArray(apiResponse.data[Object.keys(apiResponse.data)[0]]) && Object.keys(apiResponse.data).length == 1) {
-						// Use that array
-						resultArray = apiResponse.data[Object.keys(apiResponse.data)[0]];
-					} else {
-						resultArray = apiResponse.data;
-					}
+                    if(Array.isArray(apiResponse.data[Object.keys(apiResponse.data)[0]]) && Object.keys(apiResponse.data).length == 1) {
+                        // Use that array
+                        resultArray = apiResponse.data[Object.keys(apiResponse.data)[0]];
+                    } else {
+                        resultArray = apiResponse.data;
+                    }
 
                     widget.data = [];
                     widget.labels = [];
@@ -55,25 +53,19 @@ function ChartService ($q, widgetService) {
                         }
 
                     }
+                } catch(err) {
+                    throw err;
+                }
 
-                    return widget;
+                return widget;
 
-                }, function(errorMessage) {
-                    
-                   return errorMessage;
-
-                });
-
-                self.promises.push(promise);
+            }, function(errorMessage) {
+                
+                return errorMessage;
 
             });
 
-            $q.all(self.promises).then(function(widgets) {
-
-                deferred.resolve(widgets);
-            });
-
-            return deferred.promise
+            return promise;
         }
 
     };
