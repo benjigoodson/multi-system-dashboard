@@ -11,8 +11,8 @@ module.exports = function (app) {
   app.use('/api/user', require('./user'))
   app.use('/api/system', require('./system'))
   app.use('/api/endpoint', require('./endpoint'))
-  //app.use('/api/dashboard', require('./dashboard')
   app.use('/api/widget', require('./widget'))
+  app.use('/api/dashboard', require('./dashboard'))
 
   // Test api call
   app.get('/api', function(req, res) {

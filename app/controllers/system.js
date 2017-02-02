@@ -38,26 +38,22 @@ controller.getAll = function getAllSystems (callback) {
 
 controller.getAllBasic = function getAllSystemsBasic (callback) {
 
-    var countPromises = []
+    System.find().lean().exec().then(function systemFind (systems) {
 
-    System.find().lean().exec()
-        .then(function systemFind (systems) {
+        var basicSystems = [];
+        
+        for(var system in systems)
+        {	
+            // Just get basic fields
+            basicSystems.push({ id : system._id, name : system.name, url : system.url});
+        }
 
-            var basicSystems = [];
+        callback(undefined, basicSystems);
 
-            for(var i = 0; i < systems.length; i++) {
-
-                // Just get basic fields
-                basicSystems.push({ id : systems[i]._id, name : systems[i].name, url : systems[i].url});                
-
-            }
-
-            callback(undefined, basicSystems);
-
-        })
-        .catch(function errorHandler (error) {
-            callback(error);
-        })
+    })
+    .catch(function errorHandler (error) {
+        callback(error);
+    })
 
 }
 

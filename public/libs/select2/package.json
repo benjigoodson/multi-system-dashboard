@@ -62,5 +62,35 @@
   "dependencies": {
     "almond": "~0.3.1",
     "jquery-mousewheel": "~3.1.13"
-  }
+  },
+  "gitHead": "566c7846fbf8c3b7674346f26d0ee872c0a77629",
+  "_id": "select2@4.0.3",
+  "scripts": {},
+  "_shasum": "207733fe91eacb9cb1a13f12463401f472449e0f",
+  "_from": "select2@latest",
+  "_npmVersion": "1.4.28",
+  "_npmUser": {
+    "name": "kevin-brown",
+    "email": "kevin+npm@kevin-brown.com"
+  },
+  "maintainers": [
+    {
+      "name": "chrisjbaik",
+      "email": "chrisjbaik@gmail.com"
+    },
+    {
+      "name": "kevin-brown",
+      "email": "kevin+npm@kevin-brown.com"
+    }
+  ],
+  "dist": {
+    "shasum": "207733fe91eacb9cb1a13f12463401f472449e0f",
+    "tarball": "https://registry.npmjs.org/select2/-/select2-4.0.3.tgz"
+  },
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/select2-4.0.3.tgz_1464312014558_0.3680991888977587"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/select2/-/select2-4.0.3.tgz"
 }

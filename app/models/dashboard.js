@@ -1,18 +1,37 @@
 // dashboard model file
+'use strict'
 
 // require the mongoose module
 var mongoose= require('mongoose');
 var Schema = mongoose.Schema;
+var ObjectId = mongoose.Types.ObjectId;
 
-// define our user model
+// define our system model
 var DashboardSchema = new Schema({
-    id : { type : String , default : '' },
-    name : { type : String , default : '' },
-    createdDate : { type : String , default : '' },
-    status : { type : String , default : '' },
-    contact : { type : String , default : '' }
-}, { collection : "dashboard" } );
-
+    name : { 
+        type : String , 
+        required: true, 
+        unique: true
+    },
+    description : { 
+        type : String , 
+        default : '' 
+    },
+    widgets : { 
+        type : Array , 
+        "default" : [] 
+    },
+    createdDate : { 
+        type : String
+    },
+    createdBy : { 
+        type : String ,
+        default : '' 
+    }
+}, 
+{ 
+    collection : "dashboard" 
+});
 
 // use module exports so it can be used my other files
 module.exports = mongoose.model("Dashboard", DashboardSchema);

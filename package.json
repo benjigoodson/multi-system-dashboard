@@ -16,6 +16,8 @@
     "angular-file-upload": "^2.3.4",
     "angular-pnotify": "^0.1.2",
     "angular-route": "^1.5.8",
+    "angular-sanitize": "^1.6.1",
+    "angular-ui-select": "^0.12.100",
     "body-parser": "^1.4.2",
     "bootstrap-switch": "^3.3.2",
     "chart.js": "^2.3.0",
@@ -27,6 +29,7 @@
     "mongoose": "^4.6.3",
     "node-weka": "0.0.8",
     "pnotify": "^3.0.0",
+    "select2": "^4.0.3",
     "sharp": "^0.16.2",
     "underscore": "^1.8.3"
   },

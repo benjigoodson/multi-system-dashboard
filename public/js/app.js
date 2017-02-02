@@ -2,12 +2,12 @@
 
 // Create modules
 var MainModule = angular.module('MainModule', ['chart.js', 'underscore', 'frapontillo.bootstrap-switch', 'angularFileUpload',
-    'jlareau.pnotify']);
+    'jlareau.pnotify', 'ui.select', 'ngSanitize']);
 
 angular.module('UserModule', ['MainModule', 'angularFileUpload']);
 angular.module('SystemModule', ['MainModule', 'frapontillo.bootstrap-switch']);
 angular.module('EndpointModule', ['MainModule']);
-angular.module('DashboardModule', ['MainModule']);
+angular.module('DashboardModule', ['MainModule', 'ui.select']);
 angular.module('WidgetModule', ['MainModule']);
 
 var app = angular.module('app', ['ngRoute', 'ngCookies',

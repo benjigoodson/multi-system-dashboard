@@ -2,8 +2,10 @@ var MainModule = angular.module('MainModule');
 
 MainModule.controller('MainController', MainController);
 
-MainController.$inject = ['$location', '$window', 'AuthorizationService'];
-function MainController($scope, $location, AuthorizationService) { 
+MainController.$inject = ['$location', '$window', 'AuthorizationService', 'DashboardService'];
+function MainController($scope, $location, AuthorizationService, DashboardService) { 
+
+    var self = this;
 
     this.logout = function() {
 
@@ -30,5 +32,25 @@ function MainController($scope, $location, AuthorizationService) {
         var e = $(this).closest(".x_panel");
         e.remove()
     })
+
+    this.init = function() {
+
+        // Load menu list dashboards
+        DashboardService.getAllBasic().then(function(response) {
+
+            if(response.success == true) {
+                self.menuDashboards = response.data;
+            } else {
+                self.errorHandler(response.message);
+            }
+
+        }, function(error) {
+            self.errorHandler(error);    
+        });
+    }
+
+    this.errorHandler = function(error) {
+        notificationService.error(error);
+    }
 
 };

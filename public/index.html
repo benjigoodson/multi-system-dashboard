@@ -18,13 +18,15 @@
     <link href="libs/nprogress/nprogress.css" rel="stylesheet">
     <!-- PNotify -->
     <link href="libs/pnotify/dist/pnotify.css" rel="stylesheet">
+    <!-- Select2 -->
+    <link href="libs/angular-ui-select/select.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
     <link href="css/custom.css" rel="stylesheet">
 
   </head>
 
-  <body class="nav-md footer_fixed" ng-class = "{'login' : fullPage }" ng-app="app" ng-controller="MainController as MainCtrl">
+  <body class="nav-md footer_fixed" ng-class = "{'login' : fullPage }" ng-app="app" ng-controller="MainController as mainCtrl" ng-init="mainCtrl.init()">
     <div class="container body" ng-controller="UserController as user">
       <div class="main_container">
         <div class="col-md-3 left_col menu_fixed" ng-show="!fullPage">
@@ -84,10 +86,11 @@
                       <ul class="nav child_menu">
                           <li><a href="#dashboard/create">Create a new dashboard</a></li>
                           <li><a href="#dashboards">View all dashboards</a></li>
+                          <li ng-repeat="dashboard in mainCtrl.menuDashboards"><a href="#dashboard/{{dashboard.id}}">{{dashboard.name}}</a></li>
                       </ul>
                   </li>
                 </ul>
-              </div>  
+              </div>
             </div>
           <!-- /sidebar menu -->
           </div>
@@ -150,6 +153,8 @@
     <script src="libs/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- Chart.js -->
     <script src="libs/chart.js/dist/Chart.js"></script>
+    <!-- Select2 -->
+    <script src="libs/select2/dist/js/select2.min.js"></script>
     <!-- Moment -->
     <script src="libs/moment/moment.js"></script>
     <!-- PNotify -->
@@ -161,6 +166,10 @@
     <script src="libs/angular-route/angular-route.min.js"></script>
     <!-- Angular Cookies -->
     <script src="libs/angular-cookies/angular-cookies.min.js"></script>
+    <!-- Angular Sanitize -->
+    <script src="libs/angular-sanitize/angular-sanitize.min.js"></script>
+    <!-- Angular Select -->
+    <script src="libs/angular-ui-select/select.min.js"></script>
     <!-- Angular Charts -->
     <script src="libs/angular-chart.js/angular-chart.js"></script>
     <!-- Angular Bootstrap Switch -->
@@ -169,7 +178,7 @@
     <script src="libs/angular-file-upload/dist/angular-file-upload.min.js"></script>
     <!-- Angular PNotify -->
     <script src="libs/angular-pnotify/src/angular-pnotify.js"></script>
-
+s
     <!-- Custom Theme Scripts -->
     <script src="js/custom.min.js"></script>
 

@@ -59,7 +59,7 @@ router.route('/').post(function(req, res) {
                     res.status(500).send(err);
                 }
 
-                res.json({ success : true, user : newSystem});
+                res.json({ success : true, data : newSystem});
 
             });
 

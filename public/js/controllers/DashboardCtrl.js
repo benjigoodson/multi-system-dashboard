@@ -7,33 +7,20 @@ DashboardModule.constant("moment", moment);
 
 DashboardModule.controller('DashboardController', DashboardController);
 
-DashboardController.$inject = ['$scope', '$location', 'UserService', 'SystemService'];
-function DashboardController($scope, $location, UserService, DashboardService) { 
+DashboardController.$inject = ['$scope', '$location', 'UserService', 'DashboardService', 'WidgetService', 'notificationService'];
+function DashboardController($scope, $location, UserService, DashboardService, WidgetService, notificationService) {
 
 	this.createDashboard = function() {
 
 		DashboardService.create($scope.dashboard).then(function(response) {
-			$location.path("/dashboards");
-		}, function(error) {
-
-		});
-	};
-
-	this.getSystems = function() {
-		SystemService.getAll().then(function(data) {
-			$scope.systems = data;
-		});
-	};
-
-	this.deleteSystem = function(systemId) {
-
-		var self = this;
-
-		SystemService.delete(systemId).then(function(response) {
-			if(response.success) {
-				// Refresh table
-				self.getSystems();
+			if(response.success == true) {
+				notificationService.success(response.message);
+				$location.path("/");
+			} else {
+				self.errorHandler("Unable to create widget:" + response.message);	
 			}
+		}, function(error) {
+			self.errorHandler("Unable to create widget:" + response.message);
 		});
 	};
 
@@ -42,6 +29,12 @@ function DashboardController($scope, $location, UserService, DashboardService) {
 
 		$scope.dashboard.createdDate = moment().format('DD/MM/YYYY');
 		$scope.dashboard.createdBy = UserService.getCurrentUser().forename;
+
+		$scope.widgets=[];
+
+		WidgetService.getAll().then(function(widgets) {
+			$scope.widgets = widgets;
+		});
 	};
 
 };
