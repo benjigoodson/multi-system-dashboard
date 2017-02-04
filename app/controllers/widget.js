@@ -42,28 +42,28 @@ controller.create = function create (newWidget, callback) {
 
 controller.update = function update (updatedWidget, callback) {
         
-        var query = { "_id" : updatedWidget._id };
+    var query = { "_id" : updatedWidget._id };
 
-        // Strip fields
-        for(var property in updatedWidget)
-        {	
-            if(controller.fieldBlacklist.indexOf(property) > -1) {
-                updatedWidget[property] = null;
-                delete updatedWidget[property];
-            }
+    // Strip fields
+    for(var property in updatedWidget)
+    {	
+        if(controller.fieldBlacklist.indexOf(property) > -1) {
+            updatedWidget[property] = null;
+            delete updatedWidget[property];
+        }
+    }
+
+    Widget.findOneAndUpdate(query, updatedWidget, function(err, widget) {
+
+        if(err) {
+            console.log("Error: " + err);
+            callback(err);
         }
 
-        Widget.findOneAndUpdate(query, updatedWidget, function(err, widget) {
+        // return the message
+        callback(undefined, {success : true, message : "Widget Updated.", data : widget});
 
-            if(err) {
-                console.log("Error: " + err);
-                callback(err);
-            }
-
-            // return the message
-            callback(undefined, {success : true, message : "Widget updated."});
-
-        });
+    });
 }
 
 controller.delete = function (widgetId, callback) {

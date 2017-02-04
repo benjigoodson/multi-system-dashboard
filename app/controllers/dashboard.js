@@ -3,7 +3,6 @@
 
 // Import models
 var Dashboard = require('../models/dashboard');
-var Endpoint = require('../models/endpoint');
 
 var controller = {};
     
@@ -26,15 +25,56 @@ controller.getAllBasic = function getAllBasicDashboards (callback) {
     })
 }
 
+controller.get = function getDashboard (dashboardId, callback) {
+
+    var query = {_id : dashboardId};
+
+    Dashboard.find(query).lean().exec().then(function dashboardFindOne (dashboards) {
+
+        callback(undefined, dashboards);
+    })
+    .catch(function errorHandler (error) {
+        callback(error);
+    })
+}
+
 controller.create = function create (newDashboard, callback) {
 
-    var dashboard = Dashboard(newDashboard);
-
-    dashboard.save(function(err, createdDashboard) {
+     Dashboard(newDashboard).save(function(err, createdDashboard) {
         if(err) {
             callback(err);
+            return;
         }
         callback(undefined, createdDashboard);
+    });
+}
+
+controller.update = function update (updatedDashboard, callback) {
+        
+    var query = { "_id" : updatedDashboard._id };
+
+    Dashboard.findOneAndUpdate(query, updatedDashboard, function(err, dashboard) {
+
+        if(err) {
+            console.log("Error: " + err);
+            callback(err);
+        }
+
+        // return the message
+        callback(undefined, {success : true, message : "Dashboard Updated.", data : dashboard});
+
+    });
+}
+
+controller.delete = function (dashboardId, callback) {
+
+    Dashboard.find({"_id" : dashboardId}).remove().then(function () {
+            callback();
+    })
+    .catch(function errorHandler (error) {
+        console.log("Error: " + error);
+
+        callback(error);
     });
 }
 

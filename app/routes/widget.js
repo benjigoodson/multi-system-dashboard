@@ -10,22 +10,21 @@ var Widget = require('../models/widget');
 var router = express.Router();;
 
 // Widgets api routes
-router.route('/')
-    .get(function(req, res) {
-        console.log("Requested: GET - /api/widget");
+router.route('/').get(function(req, res) {
+    console.log("Requested: GET - /api/widget");
 
-        controller.getAll(function(err, widgets) {
+    controller.getAll(function(err, widgets) {
 
-            if(err) {
-                Console.log("Error: " + err);
-                res.status(500).send(err);
-            }
+        if(err) {
+            Console.log("Error: " + err);
+            res.status(500).send(err);
+        }
 
-            res.send(widgets);
+        res.send(widgets);
 
-        });
+    });
 
-    })
+})
 
 // Create a new widget
 router.route('/').post(function(req, res) {

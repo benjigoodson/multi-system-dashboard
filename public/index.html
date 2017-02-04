@@ -16,6 +16,8 @@
     <link href="libs/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
     <link href="libs/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Malihu -->
+    <link href="libs/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet">    
     <!-- PNotify -->
     <link href="libs/pnotify/dist/pnotify.css" rel="stylesheet">
     <!-- Select2 -->
@@ -85,7 +87,6 @@
                       <a><i class="fa fa-edit"></i> Dashboards <span class="fa fa-chevron-down"></span></a>
                       <ul class="nav child_menu">
                           <li><a href="#dashboard/create">Create a new dashboard</a></li>
-                          <li><a href="#dashboards">View all dashboards</a></li>
                           <li ng-repeat="dashboard in mainCtrl.menuDashboards"><a href="#dashboard/{{dashboard.id}}">{{dashboard.name}}</a></li>
                       </ul>
                   </li>
@@ -112,7 +113,7 @@
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
                     <li><a href="#user"><i class="fa fa-user-circle-o pull-right"></i> Profile</a></li>	
-                    <li><a href="#login" ng-click="MainCtrl.logout()"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                    <li><a href="#login" ng-click="mainCtrl.logout()"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                   </ul>
                 </li>
               </ul>
@@ -145,6 +146,8 @@
     <script src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Bootstrap Switch-->
     <script src="libs/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+    <!-- Malihu -->
+    <script src="libs/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
     <!-- NProgress -->
     <script src="libs/nprogress/nprogress.js"></script>
     <!-- Underscore -->

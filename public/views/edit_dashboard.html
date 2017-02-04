@@ -1,0 +1,42 @@
+<div class="row" ng-controller="DashboardController as dashboardCtrl">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_content" ng-init="dashboardCtrl.initEdit()">
+        <div class="col-md-5 col-sm-5 col-xs-12 details_left">
+            <div class="dashboard_left_icon">
+              <i class="fa fa-edit fa-5x"></i>
+            </div>
+        </div>
+        <div class="col-md-7 col-sm-7 col-xs-12">
+          <h3>Dashboard: {{dashboardCtrl.dashboard.name}}</h3>
+            <div>
+              Description: 
+              <br>
+              <textarea rows="2" style="width: 65%" ng-model="dashboardCtrl.dashboard.description">{{dashboardCtrl.dashboard.description}}</textarea>
+            </div>
+            <ul class="list-unstyled user_data">
+              <li>
+                <i class="fa fa-user-circle"></i> Created By: {{dashboardCtrl.dashboard.createdBy}}
+              </li>
+              <li>
+                <i class="fa fa-calendar-check-o"></i> Created Date: {{dashboardCtrl.dashboard.createdDate}}
+              </li>
+              <li>
+                <i class="fa fa-tasks"></i> Widgets:
+                <ui-select multiple title="Choose widgets" theme="bootstrap" ng-model="dashboardCtrl.savedWidgets" style="width: 65%">
+                    <ui-select-match class="ui-select-match" placeholder="Select widgets...">{{$item.name}}</ui-select-match>
+                    <ui-select-choices class="ui-select-choices" repeat="widget in widgets | filter:$select.search track by widget.name">
+                      <div ng-bind-html="widget.name | highlight: $select.search"></div>
+                      <div ng-bind-html="widget.apiURL | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+              </li>
+            </ul>
+            <br>
+            <a class="btn btn-success" ng-click="dashboardCtrl.saveDashboard()"><i class="fa fa-floppy-o m-right-xs"></i> Save Dashboard</a>
+            <a class="btn btn-danger" ng-click="dashboardCtrl.deleteDashboard(dashboardCtrl.dashboard._id)"><i class="fa fa-trash m-right-xs"></i> Delete Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

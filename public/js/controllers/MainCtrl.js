@@ -34,18 +34,8 @@ function MainController($scope, $location, AuthorizationService, DashboardServic
     })
 
     this.init = function() {
-
-        // Load menu list dashboards
-        DashboardService.getAllBasic().then(function(response) {
-
-            if(response.success == true) {
-                self.menuDashboards = response.data;
-            } else {
-                self.errorHandler(response.message);
-            }
-
-        }, function(error) {
-            self.errorHandler(error);    
+        DashboardService.updateMenu().then(function(dashboards) {
+            self.menuDashboards = dashboards;
         });
     }
 

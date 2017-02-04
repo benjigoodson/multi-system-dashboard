@@ -47,7 +47,8 @@
               <ui-select multiple title="Choose widgets" theme="bootstrap" ng-model="dashboard.widgets">
                   <ui-select-match class="ui-select-match" placeholder="Select widgets...">{{$item.name}}</ui-select-match>
                   <ui-select-choices class="ui-select-choices" repeat="widget in widgets | filter:$select.search">
-                    <div ng-bind-html="widget.name | highlight: $select.search"></div>
+                    <div ng-bind-html="widget.name | highlight: $select.search"></div>                    
+                    <div ng-bind-html="widget.apiURL | highlight: $select.search"></div>
                   </ui-select-choices>
               </ui-select>
             </div>

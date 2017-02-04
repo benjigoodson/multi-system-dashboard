@@ -13,7 +13,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			var promise = $http.get(url) .then(function(response) {
 				return response.data;
 			}, function(error) {
-
+				return error;
 			})
 			return promise;			
 		},
@@ -23,17 +23,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			var promise = $http.get(url + widgetId) .then(function(response) {
 				return response.data;
 			}, function(error) {
-
-			})
-			return promise;			
-		},
-
-		get : function(dashboardId) {
-			
-			var promise = $http.get(url + "dashboard/" + dashboardId) .then(function(response) {
-				return response.data;
-			}, function(error) {
-
+				return error;
 			})
 			return promise;			
 		},
@@ -42,7 +32,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			var promise = $http.post(url, widgetData) .then(function(response) {
 				return response.data;
 			}, function(error) {
-
+				return error;
 			})
 			return promise;	
 		},
@@ -51,13 +41,19 @@ WidgetModule.factory('WidgetService', function ($http) {
 			var promise = $http.put(url + widgetData._id, widgetData) .then(function(response) {
 				return response.data;
 			}, function(error) {
-
+				return error;
 			})
 			return promise;	
 		},
 		
 		delete : function(widgetId) {
-			return $http.delete('/api/widget/' + widgetId);
+			
+			var promise = $http.delete('/api/widget/' + widgetId).then(function(response) {
+				return response.data;
+			}, function(error) {
+				return error;
+			})
+			return promise;	
 		},
 
 		getSystems : function() {
@@ -65,7 +61,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			var promise = $http.get("/api/system/basic").then(function(response) {
 				return response.data;
 			}, function(error) {
-
+				return error;
 			})
 			return promise;			
 		},
@@ -75,7 +71,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			var promise = $http.get("/api/endpoint/basic/" + systemId) .then(function(response) {
 				return response.data;
 			}, function(error) {
-
+				return error;
 			})
 			return promise;			
 		},

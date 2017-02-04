@@ -92,6 +92,11 @@ function config($routeProvider, $locationProvider) {
             templateUrl : 'views/dashboard.html',
             controller : 'DashboardController'
         })
+        // Edit dashboard Page
+        .when('/dashboard/:dashboard_id/edit', {	
+            templateUrl : 'views/edit_dashboard.html',
+            controller : 'DashboardController'
+        })
 
         .otherwise({
             redirectTo : '/error_pages/page_404.html'
