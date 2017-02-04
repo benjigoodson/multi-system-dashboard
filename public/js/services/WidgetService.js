@@ -17,6 +17,16 @@ WidgetModule.factory('WidgetService', function ($http) {
 			})
 			return promise;			
 		},
+
+		getForHome : function() {
+			
+			var promise = $http.get(url + "/home") .then(function(response) {
+				return response.data;
+			}, function(error) {
+				return error;
+			})
+			return promise;			
+		},
 		
 		getWidget : function(widgetId) {
 			

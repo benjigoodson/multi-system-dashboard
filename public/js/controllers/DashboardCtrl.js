@@ -71,6 +71,8 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 			} else {
 				self.errorHandler("Unable to create dashboard:" + response.message);	
 			}
+
+			DashboardService.updateMenu();
 		}, function(error) {
 			self.errorHandler("Unable to create dashboard:" + error.message);
 		});
@@ -192,6 +194,8 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 			} else {
 				self.errorHandler("Unable to delete dashboard:" + response.data.message);
 			}
+
+			DashboardService.updateMenu();
 
 		}, function(error) {
 			self.errorHandler("Unable to delete dashboard: " + error);

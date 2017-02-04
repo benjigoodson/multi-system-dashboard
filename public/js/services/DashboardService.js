@@ -4,7 +4,11 @@ DashboardModule.factory('DashboardService', function ($http) {
 	
 	var url = '/api/dashboard/';
 
-	return {
+	var self = {
+
+		dashboardMenu : {
+			items : []
+		},
 
 		getAllBasic : function() {
 			
@@ -21,17 +25,7 @@ DashboardModule.factory('DashboardService', function ($http) {
 			var promise = $http.get(url + dashboardId) .then(function(response) {
 				return response.data;
 			}, function(error) {
-
-			})
-			return promise;			
-		},
-
-		getWidgets : function(dashboardId) {
-			
-			var promise = $http.get(url + "dashboard/" + dashboardId) .then(function(response) {
-				return response.data;
-			}, function(error) {
-
+				return error;
 			})
 			return promise;			
 		},
@@ -80,15 +74,13 @@ DashboardModule.factory('DashboardService', function ($http) {
 			return this.getAllBasic().then(function(response) {
 
 				if(response.success == true) {
-					return response.data;
-				} else {
-					return response.message;
+					self.dashboardMenu.items = response.data;
 				}
 
-			}, function(error) {
-				return error;    
 			});
 		}
 	}
+
+	return self;
 	
 });

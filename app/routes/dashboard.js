@@ -53,10 +53,12 @@ router.route('/:dashboard_id')
 
     // Get a unique dashboard
     .get(function(req, res) {
-        console.log("Requested: GET - /api/dashboard/" + req.params.dashboard_id);
+
+        var id = req.params.dashboard_id;
+        console.log("Requested: GET - /api/dashboard/" + id);
 
         // Get dashboard by the id passed
-        Dashboard.findById(req.params.dashboard_id, function(err, dashboard) {
+        controller.get(id, function(err, dashboard) {
             if(err) {
                 res.status(500).send({success:false, message: err});
             }

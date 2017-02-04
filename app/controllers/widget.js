@@ -17,13 +17,22 @@ controller.fieldBlacklist = [
 ];
 
 controller.getAll = function getAll (callback) {
-    var widgetPromise = Widget.find().lean().exec()
-        .then(function widgetFind (widgets) {
-            callback(undefined, widgets);
-        })
-        .catch(function errorHandler (error) {
-            callback(error);
-        })
+    Widget.find().lean().exec().then(function widgetFind (widgets) {
+        callback(undefined, widgets);
+    }).catch(function errorHandler (error) {
+        callback(error);
+    });
+}
+
+controller.getForHome = function getAll (callback) {
+
+    var query = {displayHome : "TRUE"};
+
+    Widget.find(query).lean().exec().then(function widgetFindForHome (widgets) {
+        callback(undefined, widgets);
+    }).catch(function errorHandler (error) {
+        callback(error);
+    });
 }
 
 controller.create = function create (newWidget, callback) {

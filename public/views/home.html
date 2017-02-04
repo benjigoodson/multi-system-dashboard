@@ -1,7 +1,11 @@
 <div class="row" id="homeController" ng-controller="HomeController as homeCtrl" ng-init="homeCtrl.init()">
-
+  <div class="col-md-12 col-sm-12 col-xs-12" ng-show="!widgets || widgets.length == 0">
+    <div class="dashboard_no_widgets">
+      <i class="fa fa-exclamation-circle fa-5x fa-fw"></i>
+      <h3>No Widgets!</h3>
+    </div>
+  </div>
   <div ng-repeat="widget in widgets">
-
     <div class="col-md-4 col-sm-6 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
@@ -33,29 +37,6 @@
               chart-data="widget.data" chart-labels="widget.labels">
           </canvas>
         </div>
-      </div>
-    </div>
-
-    </div>
-
-  <div class="col-md-4 col-sm-6 col-xs-12">
-    <div class="x_panel">
-      <div class="x_title">
-        <h2>Line Graph</h2>
-        <ul class="nav navbar-right panel_toolbox">
-          <li><a class="collapse-link" ng-click="mainCtrl.collapse($event)"><i class="fa fa-chevron-up"></i></a>
-          </li>
-          <li>
-            <a href="#"><i class="fa fa-wrench"></i></a>
-          </li>
-          <li>
-            <a class="close-link"><i class="fa fa-close"></i></a>
-          </li>
-        </ul>
-        <div class="clearfix"></div>
-      </div>
-      <div class="x_content">
-        <canvas class="chart chart-line" chart-data="homeCtrl.data" chart-labels="homeCtrl.labels" chart-series="homeCtrl.series"></canvas> 
       </div>
     </div>
   </div>

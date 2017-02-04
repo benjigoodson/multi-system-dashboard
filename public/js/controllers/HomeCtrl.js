@@ -5,7 +5,7 @@ var MainModule = angular.module('MainModule');
 MainModule.controller('HomeController', HomeController);
 
 HomeController.$inject = ['$scope', 'WidgetService', 'ChartService', 'notificationService'];
-function HomeController ($scope, widgetService, chartService, notificationService) { 
+function HomeController ($scope, WidgetService, ChartService, notificationService) { 
 
     var self = this;
 
@@ -20,7 +20,12 @@ function HomeController ($scope, widgetService, chartService, notificationServic
 
     this.getWidgets = function() {
 
-		widgetService.getAll().then(function(widgets) {
+        WidgetService.getForHome().then(function(widgets) {
+
+            if(!widgets || widgets.length == 0) {
+                // No widgets set for home screen
+                return;
+            }
 
             widgets.forEach(function (widget, i) {
                 
@@ -33,7 +38,7 @@ function HomeController ($scope, widgetService, chartService, notificationServic
                 try {
 
                     // Generate chart for widget
-                    chartService.generateChartData(widget)
+                    ChartService.generateChartData(widget)
                         .then(function(widget) {
                             if(widget.graphType == "bar") {
 

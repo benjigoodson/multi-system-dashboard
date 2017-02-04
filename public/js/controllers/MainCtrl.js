@@ -7,6 +7,8 @@ function MainController($scope, $location, AuthorizationService, DashboardServic
 
     var self = this;
 
+    self.menuDashboards = DashboardService.dashboardMenu;
+
     this.logout = function() {
 
         // Clear credentials
@@ -31,12 +33,14 @@ function MainController($scope, $location, AuthorizationService, DashboardServic
     $(".close-link").click(function() {
         var e = $(this).closest(".x_panel");
         e.remove()
-    })
+    });
+
+    $scope.update = function() {
+        DashboardService.updateMenu();
+    }
 
     this.init = function() {
-        DashboardService.updateMenu().then(function(dashboards) {
-            self.menuDashboards = dashboards;
-        });
+        DashboardService.updateMenu();
     }
 
     this.errorHandler = function(error) {

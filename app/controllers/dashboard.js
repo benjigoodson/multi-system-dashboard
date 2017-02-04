@@ -29,7 +29,7 @@ controller.get = function getDashboard (dashboardId, callback) {
 
     var query = {_id : dashboardId};
 
-    Dashboard.find(query).lean().exec().then(function dashboardFindOne (dashboards) {
+    Dashboard.findOne(query).lean().exec().then(function dashboardFindOne (dashboards) {
 
         callback(undefined, dashboards);
     })

@@ -87,7 +87,7 @@
                       <a><i class="fa fa-edit"></i> Dashboards <span class="fa fa-chevron-down"></span></a>
                       <ul class="nav child_menu">
                           <li><a href="#dashboard/create">Create a new dashboard</a></li>
-                          <li ng-repeat="dashboard in mainCtrl.menuDashboards"><a href="#dashboard/{{dashboard.id}}">{{dashboard.name}}</a></li>
+                          <li ng-repeat="dashboard in mainCtrl.menuDashboards.items"><a href="#dashboard/{{dashboard.id}}">{{dashboard.name}}</a></li>
                       </ul>
                   </li>
                 </ul>

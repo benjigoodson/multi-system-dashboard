@@ -10,6 +10,7 @@ var Widget = require('../models/widget');
 var router = express.Router();;
 
 // Widgets api routes
+// Get all widgets
 router.route('/').get(function(req, res) {
     console.log("Requested: GET - /api/widget");
 
@@ -26,28 +27,45 @@ router.route('/').get(function(req, res) {
 
 })
 
-// Create a new widget
-router.route('/').post(function(req, res) {
-        console.log("Requested: POST - /api/widget");
+// Get all widgets for the home screen
+router.route('/home').get(function(req, res) {
+    console.log("Requested: GET - /api/widget/home");
 
-        if(req._body) {
+    controller.getForHome(function(err, widgets) {
 
-            var widget = req.body;
-
-            controller.create(widget, function(err, newWidget) {
-
-                if(err) {
-                    console.log("Error: " + err);
-                    res.status(500).send(err);
-                }
-
-                res.send({success:true, message: "Widget created.", data : newWidget});
-
-            });
-
+        if(err) {
+            console.log("Error: " + err);
+            res.status(500).send({success:false, message: err});
         }
 
+        res.send(widgets);
+
     });
+
+})
+
+// Create a new widget
+router.route('/').post(function(req, res) {
+    console.log("Requested: POST - /api/widget");
+
+    if(req._body) {
+
+        var widget = req.body;
+
+        controller.create(widget, function(err, newWidget) {
+
+            if(err) {
+                console.log("Error: " + err);
+                res.status(500).send({success:false, message: err});
+            }
+
+            res.send({success:true, message: "Widget created.", data : newWidget});
+
+        });
+
+    }
+
+});
 
 router.route('/:widget_id')
 
@@ -58,7 +76,8 @@ router.route('/:widget_id')
         // Get widget by the id passed
         Widget.findById(req.params.widget_id, function(err, widget) {
             if(err) {
-                res.send(err);
+                console.log("Error: " + err);
+                res.status(500).send({success:false, message: err});
             }
 
             // return the widget
@@ -75,7 +94,8 @@ router.route('/:widget_id')
         controller.update(updatedWidget, function(err, response) {
 
             if(err) {
-                res.send(500, { success : false, error: err });
+                console.log("Error: " + err);
+                res.status(500).send({success:false, message: err});
             }
 
             // return the message
@@ -94,7 +114,8 @@ router.route('/:widget_id')
         controller.delete(widgetId, function(err) {
 
             if(err) {
-                res.send(500, { success : false, error: err });
+                console.log("Error: " + err);
+                res.status(500).send({success:false, message: err});
             }
 
             // return the message
