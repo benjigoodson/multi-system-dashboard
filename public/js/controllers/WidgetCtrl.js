@@ -23,7 +23,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		WidgetService.create(widgetData).then(function(response) {
 			if(response.success == true) {
 				notificationService.success(response.message);
-				$location.path("/");
+				$location.path("/widget/" + response.data._id);
 			} else {
 				self.errorHandler("Unable to create widget:" + response.message);	
 			}
@@ -149,11 +149,11 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	this.deleteWidget = function(widgetId) {
 		WidgetService.delete(widgetId).then(function(response) {
 
-			if(response.data.success == true) {
-				notificationService.success(response.data.message);
+			if(response.success == true) {
+				notificationService.success(response.message);
 				$location.path("/");
 			} else {
-				self.errorHandler("Unable to delete widget:" + response.data.message);
+				self.errorHandler("Unable to delete widget:" + response.message);
 			}
 
 		}, function(error) {

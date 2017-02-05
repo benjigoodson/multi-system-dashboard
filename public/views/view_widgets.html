@@ -1,13 +1,17 @@
-<div class="row" id="homeController" ng-controller="HomeController as homeCtrl" ng-init="homeCtrl.init()">
-
-  <div ng-repeat="widget in widgets">
-
+<div class="row" id="widgetController" ng-controller="DashboardController as dashboardCtrl" ng-init="dashboardCtrl.viewAllWidgets()">
+  <div class="col-md-12 col-sm-12 col-xs-12" ng-show="!widgets || widgets.length == 0">
+    <div class="dashboard_no_widgets">
+      <i class="fa fa-exclamation-circle fa-5x fa-fw"></i>
+      <h3>No Widgets!</h3>
+    </div>
+  </div>
+  <div ng-show"widgets" ng-repeat="widget in widgets">
     <div class="col-md-4 col-sm-6 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
           <a href="#widget/{{widget._id}}"><h2>{{ widget.name }}</h2></a>
           <ul class="nav navbar-right panel_toolbox">
-            <li><a class="collapse-link" ng-click="MainCtrl.collapse($event)"><i class="fa fa-chevron-up"></i></a>
+            <li><a class="collapse-link" ng-click="mainCtrl.collapse($event)"><i class="fa fa-chevron-up"></i></a>
             </li>
             <li>
               <a href="#widget/{{widget._id}}"><i class="fa fa-wrench"></i></a>
@@ -28,12 +32,12 @@
               <br>
             </div>
             <br>
+          </div>
+          <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" chart-type="widget.graphType" 
+              chart-data="widget.data" chart-labels="widget.labels">
+          </canvas>
         </div>
-        <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" chart-type="widget.graphType" 
-            chart-data="widget.data" chart-labels="widget.labels">
-        </canvas>
       </div>
     </div>
   </div>
-</div>
 </div>

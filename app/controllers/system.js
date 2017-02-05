@@ -41,12 +41,16 @@ controller.getAllBasic = function getAllSystemsBasic (callback) {
     System.find().lean().exec().then(function systemFind (systems) {
 
         var basicSystems = [];
-        
-        for(var system in systems)
-        {	
+
+        if(!systems || systems.length == 0) {
+            callback(undefined, basicSystems);
+            return;
+        }
+
+        systems.forEach(function (system, i) {
             // Just get basic fields
             basicSystems.push({ id : system._id, name : system.name, url : system.url});
-        }
+        });
 
         callback(undefined, basicSystems);
 

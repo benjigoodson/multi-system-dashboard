@@ -61,6 +61,25 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 
 	};
 
+	this.viewAllWidgets = function() {
+
+		$scope.widgets = [];
+
+		WidgetService.getAll().then(function(widgets) {
+
+            if(!widgets || widgets.length == 0) {
+                // No widgets
+                return;
+            }
+
+			widgets.forEach(function (widget, i) {
+				self.displayWidget(widget);
+			});
+
+		});
+
+	};
+
 	this.createDashboard = function() {
 
 		DashboardService.create($scope.dashboard).then(function(response) {
@@ -82,7 +101,7 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 
 		this.dashboard.widgets = this.getWidgetsIds(self.savedWidgets);
 
-		DashboardService.update(this.dashboard).then(function(response) {
+		this.updateDashboard().then(function(response) {
 
 			if(response.success == true) {
 				notificationService.info(response.message);
@@ -94,6 +113,11 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 		}, function(error) {
 			self.errorHandler("Unable to update dashboard:" + error.message);
 		});
+
+	};
+
+	this.updateDashboard = function() {
+		return DashboardService.update(this.dashboard)
 	};
 
 	this.getWidgetsIds = function(fullWidgets) {
@@ -213,6 +237,36 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 		WidgetService.getAll().then(function(widgets) {
 			$scope.widgets = widgets;
 		});
+	};
+
+	this.removeWidget = function(widgetId) {
+
+		var index = _.indexOf(this.dashboard.widgets, widgetId);
+
+		// Should always be, but error checking
+		if(index > -1) {
+			this.dashboard.widgets.splice(index, 1);
+		}
+
+		// Update dashboard
+		this.updateDashboard().then(function(response) {
+			if(response.success == true) {
+				notificationService.info(response.message);
+			} else {
+				self.errorHandler("Unable to update dashboard:" + response.message);
+			}
+
+		}, function(error) {
+			self.errorHandler("Unable to update dashboard:" + error.message);
+		});
+
+		// Remove from $scope
+		var scopeIndex = _.chain($scope.widgets).pluck("_id").indexOf(widgetId).value();
+
+		if(scopeIndex > -1) {
+			$scope.widgets.splice(scopeIndex, 1);
+		}
+
 	};
 
 	this.updateWidgetInScope = function(widget) {
