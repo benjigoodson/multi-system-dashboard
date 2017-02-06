@@ -7,8 +7,8 @@ SystemModule.constant("moment", moment);
 
 SystemModule.controller('SystemController', SystemController);
 
-SystemController.$inject = ['$scope', '$location', 'UserService', 'SystemService', 'notificationService'];
-function SystemController($scope, $location, UserService, SystemService, notificationService) { 
+SystemController.$inject = ['$scope', '$location', '$routeParams', 'UserService', 'SystemService', 'notificationService'];
+function SystemController($scope, $location, $routeParams, UserService, SystemService, notificationService) { 
 
 	var self = this;
 
@@ -29,6 +29,24 @@ function SystemController($scope, $location, UserService, SystemService, notific
 	this.getSystems = function() {
 		SystemService.getAll().then(function(data) {
 			$scope.systems = data;
+		});
+	};
+
+	this.initEdit = function() {
+
+		// Set the id
+		this.id = $routeParams.system_id;
+
+		SystemService.get(this.id).then(function(data) {
+			self.system = data;
+
+			if(self.system.numEndpoints > 0) {
+				// Get all endpoints that are saved for this system
+				//EndpointService.getWidget(widgetId).then(function(endpoints) {
+				//	self.endpoints = endpoints;
+				//});
+			}
+
 		});
 	};
 

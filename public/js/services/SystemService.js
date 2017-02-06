@@ -6,42 +6,36 @@ SystemModule.factory('SystemService', function ($http) {
 
 	return {
 
-		getAll : function() {
-			
-			var promise = $http.get(url) .then(function(response) {
+		getAll : function() {			
+			return $http.get(url) .then(function(response) {
 				return response.data;
 			}, function(error) {
 
-			})
-			return promise;			
+			})		
 		},
 		
-		get : function(systemId) {
-			
-			var promise = $http.get(url + systemId) .then(function(response) {
+		get : function(systemId) {			
+			return $http.get(url + systemId) .then(function(response) {
 				return response.data;
 			}, function(error) {
 
-			})
-			return promise;			
+			})		
 		},
 		
 		create : function(systemData) {
-			var promise = $http.post(url, systemData) .then(function(response) {
+			return $http.post(url, systemData) .then(function(response) {
 				return response.data;
 			}, function(error) {
 
 			})
-			return promise;	
 		},
 		
 		delete : function(systemId) {
-			var promise = $http.delete(url + systemId) .then(function(response) {
+			return $http.delete(url + systemId) .then(function(response) {
 				return response.data;
 			}, function(error) {
 
 			})
-			return promise;	
 			
 		}
 	}

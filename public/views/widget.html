@@ -69,7 +69,7 @@
             </ul>
             <br>
             <a class="btn btn-success" ng-show="!edit" ng-click="widgetCtrl.setEdit()"><i class="fa fa-edit m-right-xs"></i> Edit Widget</a>
-            <a class="btn btn-success" ng-show="edit" ng-click="widgetCtrl.saveWidget()"><i class="fa fa-floppy-o m-right-xs"></i> Save Widget</a>
+            <a class="btn btn-success" ng-show="edit" ng-click="widgetCtrl.saveWidget(widget)"><i class="fa fa-floppy-o m-right-xs"></i> Save Widget</a>
             
             <a class="btn btn-danger" ng-show="!edit" ng-click="widgetCtrl.deleteWidget(widget._id)"><i class="fa fa-trash m-right-xs"></i> Delete Widget</a>
             <a class="btn btn-danger" ng-show="edit" ng-click="widgetCtrl.setEdit()"><i class="fa fa-minus-circle m-right-xs"></i> Cancel Edit</a>

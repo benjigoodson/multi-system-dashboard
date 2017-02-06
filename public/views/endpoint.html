@@ -1,68 +1,31 @@
-<div id="DashboardController" ng-controller="DashboardController as dashboardCtrl" ng-init="dashboardCtrl.init()">
-
-  <div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12">
-      <div class="dashboard_details">
-        <div class="row x_title">
-          <div class="col-md-6">
-            <h3>{{dashboardCtrl.dashboard.name}}</h3>
-          </div>
-        </div>
-        <div class="col-md-9 col-sm-9 col-xs-12">
-          <small>Created Date: {{dashboardCtrl.dashboard.createdDate}} Created by: {{dashboardCtrl.dashboard.createdBy}}</small>
-          <p>Description: {{dashboardCtrl.dashboard.description}}</p> 
-        </div>      
-        <div class="col-md-3 col-sm-3 col-xs-12 bg-white text-right">
-            <a href="#dashboard/{{dashboardCtrl.dashboard._id}}/edit" class="btn btn-success" style="padding-left : 10%"><i class="fa fa-edit m-right-xs"></i> Edit Dashboard</a>
-            <a ng-click="dashboardCtrl.deleteDashboard(dashboardCtrl.dashboard._id)" class="btn btn-danger"><i class="fa fa-trash m-right-xs"></i> Delete Dashboard</a>
-        </div>
-        <div class="clearfix"></div>
-      </div>
-    </div>
-  </div>
-
-  <br />
-
-  <div class="row">
-    <div class="col-md-12 col-sm-12 col-xs-12" ng-show="!dashboardCtrl.dashboard.widgets || dashboardCtrl.dashboard.widgets.length == 0">
-      <div class="dashboard_no_widgets">
-        <i class="fa fa-exclamation-circle fa-5x fa-fw"></i>
-        <h3>No Widgets!</h3>
-      </div>
-    </div>
-    <div ng-show"widgets" ng-repeat="widget in widgets">
-      <div class="col-md-4 col-sm-6 col-xs-12">
-        <div class="x_panel">
-          <div class="x_title">
-            <a href="#widget/{{widget._id}}"><h2>{{ widget.name }}</h2></a>
-            <ul class="nav navbar-right panel_toolbox">
-              <li>
-                <a class="collapse-link" ng-click="mainCtrl.collapse($event)"><i class="fa fa-chevron-up"></i></a>
-              </li>
-              <li>
-                <a href="#widget/{{widget._id}}"><i class="fa fa-wrench"></i></a>
-              </li>
-              <li>
-                <a class="close-link" ng-click="dashboardCtrl.removeWidget(widget._id)"><i class="fa fa-close"></i></a>
-              </li>
-            </ul>
-            <div class="clearfix"></div>
-          </div>
-          <div class="x_content">
-            <div ng-show="widget.loading || widget.error" style="text-align: center; width: 306px; height: 168px;">
-              <br>
-              <i ng-show="widget.loading" class="fa fa-refresh fa-spin fa-5x fa-fw"></i>
-              <i ng-show="widget.error" class="fa fa-exclamation-circle fa-5x fa-fw"></i>
-              <div ng-show"widget.error">
-                {{widget.error}}
-                <br>
-              </div>
-              <br>
+<div class="row" ng-controller="EndpointController as endpointCtrl">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_content" ng-init="endpointCtrl.initEdit()">
+        <div class="col-md-5 col-sm-5 col-xs-12 details_left">
+            <div class="dashboard_left_icon">
+              <i class="fa fa-sitemap fa-5x"></i>
+              Endpoint
             </div>
-            <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" chart-type="widget.graphType" 
-                chart-data="widget.data" chart-labels="widget.labels">
-            </canvas>
+        </div>
+        <div class="col-md-7 col-sm-7 col-xs-12">
+          <h3>Endpoint: {{endpointCtrl.endpoint.name}}</h3>
+          <div>
+            Description: 
+            <br>
+            <textarea rows="2" style="width: 65%" ng-model="endpointCtrl.endpoint.description">{{endpointCtrl.endpoint.description}}</textarea>
           </div>
+          <ul class="list-unstyled user_data">
+            <li>
+              <i class="fa fa-user-circle"></i> Created By: {{endpointCtrl.endpoint.createdBy}}
+            </li>
+            <li>
+              <i class="fa fa-calendar-check-o"></i> Created Date: {{endpointCtrl.endpoint.createdDate}}
+            </li>
+          </ul>
+          <br>
+          <a class="btn btn-success" ng-click="endpointCtrl.saveEndpoint()"><i class="fa fa-floppy-o m-right-xs"></i> Save Endpoint</a>
+          <a class="btn btn-danger" ng-click="endpointCtrl.deleteEndpoint(endpointCtrl.endpoint._id)"><i class="fa fa-trash m-right-xs"></i> Delete Endpoint</a>
         </div>
       </div>
     </div>

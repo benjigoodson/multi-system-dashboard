@@ -93,9 +93,9 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 	};
 
-	this.saveWidget = function() {
+	this.saveWidget = function(widget) {
 
-		WidgetService.update($scope.widget).then(function(response) {
+		WidgetService.update(widget).then(function(response) {
 
 			if(response.success == true) {
 				notificationService.info(response.message);
@@ -104,7 +104,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 				try {
 
 					// Generate chart for widget
-					ChartService.generateChartData($scope.widget)
+					ChartService.generateChartData(widget)
 						.then(function(widget) {
 							if(widget.graphType == "bar") {
 

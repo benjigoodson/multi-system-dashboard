@@ -18,6 +18,33 @@ function HomeController ($scope, WidgetService, ChartService, notificationServic
 
     }
 
+    this.removeWidget = function(widgetId) {
+
+		var index = _.chain($scope.widgets).pluck("_id").indexOf(widgetId).value();
+
+        var widget = $scope.widgets[index];
+
+        widget.displayHome = "FALSE";
+
+		// Update dashboard
+		WidgetService.update(widget).then(function(response) {
+			if(response.success == true) {
+				notificationService.info(response.message);
+			} else {
+				self.errorHandler("Unable to update widget:" + response.message);
+			}
+
+		}, function(error) {
+			self.errorHandler("Unable to update widget:" + error.message);
+		});
+
+		// Remove from $scope
+		if(index > -1) {
+			$scope.widgets.splice(index, 1);
+		}
+
+	};
+
     this.getWidgets = function() {
 
         WidgetService.getForHome().then(function(widgets) {
