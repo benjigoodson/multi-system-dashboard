@@ -2,8 +2,8 @@ var UserModule = angular.module('UserModule');
 
 UserModule.controller('RegisterController', RegisterController);
 
-RegisterController.$inject = ['$location', 'FileUploader', 'UserService'];
-function RegisterController($location, FileUploader, UserService) { 
+RegisterController.$inject = ['$location', 'FileUploader', 'UserService', 'notificationService'];
+function RegisterController($location, FileUploader, UserService, notificationService) { 
     
     this.uploader = new FileUploader();
  
@@ -24,20 +24,20 @@ function RegisterController($location, FileUploader, UserService) {
                     self.uploader.queue.forEach(function(item, index) {
                         
                         item.method = "PUT";
-                        item.url = "/api/user/" + self.result.user._id;
+                        item.url = "/api/user/image" + self.result.user._id;
 
                         item.upload();
 
-                        //FlashService.Success('Registration successful', true);
+                        notificationService.success('Registration successful');
                         $location.path('/login');
                     
                     });
 
                 } else {
-                    // FlashService.Error(response.message);
+                    notificationService.error(response.message);
                 }
             }, function errorHandler (error) {
-                // FlashService.Error(response.message);
+                notificationService.error(response.message);
             });
     }
 };

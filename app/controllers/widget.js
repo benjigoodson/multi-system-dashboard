@@ -62,7 +62,7 @@ controller.update = function update (updatedWidget, callback) {
         }
     }
 
-    Widget.findOneAndUpdate(query, updatedWidget, function(err, widget) {
+    Widget.findOneAndUpdate(query, updatedWidget, {new: true}, function(err, widget) {
 
         if(err) {
             console.log("Error: " + err);

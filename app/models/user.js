@@ -28,6 +28,18 @@ var UserSchema = new Schema({
     image : { 
         type : String ,
          default : 'default'
+    },
+    location : { 
+        type : String ,
+        default : '' 
+    },
+    company : { 
+        type : String ,
+        default : '' 
+    },
+    website : { 
+        type : String ,
+        default : '' 
     }
 }, 
 { 

@@ -53,7 +53,7 @@ controller.update = function update (updatedDashboard, callback) {
         
     var query = { "_id" : updatedDashboard._id };
 
-    Dashboard.findOneAndUpdate(query, updatedDashboard, function(err, dashboard) {
+    Dashboard.findOneAndUpdate(query, updatedDashboard, {new: true}, function(err, dashboard) {
 
         if(err) {
             console.log("Error: " + err);

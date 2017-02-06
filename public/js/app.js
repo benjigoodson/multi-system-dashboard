@@ -52,6 +52,11 @@ function config($routeProvider, $locationProvider) {
             templateUrl : 'views/create_system.html',
             controller : 'SystemController'
         })
+        // View System Page
+        .when('/system/:system_id', {	
+            templateUrl : 'views/system.html',
+            controller : 'SystemController'
+        })
 
 
         // View All Endpoints Page
@@ -62,6 +67,11 @@ function config($routeProvider, $locationProvider) {
         // Create Endpoint Page
         .when('/endpoint/create', {	
             templateUrl : 'views/create_endpoint.html',
+            controller : 'EndpointController'
+        })
+        // View Endpoint Page
+        .when('/endpoint/:endpoint_id', {	
+            templateUrl : 'views/endpoint.html',
             controller : 'EndpointController'
         })
 

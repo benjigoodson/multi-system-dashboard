@@ -13,7 +13,7 @@
               <th>Contact Email</th>
               <th>Number of Endpoints</th>
               <th>Status</th>
-              <th>Edit</th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -27,7 +27,7 @@
               <td>{{system.numEndpoints}}</td>
               <td><button type="button" class="btn btn-xs" ng-class="{ 'btn-success' : system.status == 'online', 'btn-danger' : system.status == 'offline'}" >{{system.status}}</button></td>
               <td>
-                <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                <a href="#system/{{system._id}}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
                 <a ng-click="systemCtrl.deleteSystem(system._id)" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
               </td>
             </tr>        

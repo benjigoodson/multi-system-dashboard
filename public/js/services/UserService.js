@@ -2,62 +2,68 @@ var UserModule = angular.module('UserModule');
 
 UserModule.factory('UserService', UserService);
 
-UserService.$inject = ['$http', '$cookieStore'];
-function UserService($http, $cookieStore) {
+UserService.$inject = ['$http', '$q', '$cookieStore'];
+function UserService($http, $q, $cookieStore) {
 
 	var currentUser;
 
 	function getCurrentUser() {
 
-		if(!currentUser) {
+		return $q(function(resolve, reject) {
 
-			if($cookieStore.get('globals')) {
+			if(!currentUser) {
 
-				var username = $cookieStore.get('globals').currentUser.username;
+				if($cookieStore.get('globals')) {
 
-				var promise = getByUsername(username).then(function(user){
-					
-					currentUser = user;
-					return currentUser;
+					var username = $cookieStore.get('globals').currentUser.username;
 
-				});
+					getByUsername(username).then(function(user){
+						
+						currentUser = user;
+						resolve(currentUser);
 
-				return promise;
+					});
+				}
+			} else {
+				resolve(currentUser);
 			}
-		} else {
-			return currentUser;
-		}
+
+		});
 
 	};
 
 	function setCurrentUser(user) {
+		currentUser = user;		
+	};
+	
+	function getStats(userId) {
 
-		currentUser = user;
-		
+		return $http.get('/api/user/stats/' + userId).then(function(response) {
+			return response.data;
+		}, function(error) {
+ 			handleError(error);
+		});	
+
 	};
 
 	function getByUsername(username) {
-		var promise = $http.get('/api/user/' + username) .then(function(response) {
+		return $http.get('/api/user/' + username).then(function(response) {
 			return response.data[0];
 		}, function(error) {
  			handleError(error);
-		})
-
-		return promise;
+		});
 	};
 
 	function create(user) {
-		var promise = $http.post('/api/user', user) .then(function(response) {
+		return $http.post('/api/user', user).then(function(response) {
 			return response;
 		}, function(error) {
  			handleError(error);
-		})
-
-		return promise;
+		});
 	};
 
 	function uploadImage(id, image) {
-		var promise = $http.put('/api/user/' + id, image) .then(function(response) {
+		var promise = $http.put('/api/user/' + id, image).then(function(response) {
 			return response;
 		}, function(error) {
  			handleError(error);
@@ -68,9 +74,9 @@ function UserService($http, $cookieStore) {
 
 	function update(id, user) {
 		var promise = $http.put('/api/user/' + id, user) .then(function(response) {
-			return response;
+			return response.data;
 		}, function(error) {
- 			handleError(error);
+ 			self.handleError(error);
 		})
 
 		return promise;
@@ -86,6 +92,7 @@ function UserService($http, $cookieStore) {
 
 	return {
 		getByUsername : getByUsername,
+		getStats : getStats,
 		create : create,
 		uploadImage : uploadImage,
 		update : update,

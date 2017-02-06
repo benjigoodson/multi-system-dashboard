@@ -12,7 +12,7 @@
               <th>Endpoint Name</th>
               <th>Description</th>
               <th>Parent System</th>
-              <th>Edit</th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -25,7 +25,7 @@
               <td>{{endpoint.description}}</td>
               <td><a href="/system/{{endpoint.parentSystem}}">{{endpoint.systemName}}</a></td>
               <td>
-                <a class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
+                <a href="#endpoint/{{endpoint._id}}" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
                 <a ng-click="endpointCtrl.deleteEndpoint(endpoint._id)" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
               </td>
             </tr>        

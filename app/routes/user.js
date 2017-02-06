@@ -36,8 +36,49 @@ router.route('/').post(function(req, res) {
 
 });
 
-// Upload Image
+// User stats
+router.route('/stats/:user_id').get(function(req, res) {
+
+    var userId = req.params.user_id;
+
+    console.log("Requested: GET - /api/user/stats/" + userId);
+
+    controller.getStats(userId, function(err, stats) {
+        if(err) {
+            console.log("Error: " + err);
+            res.status(500).send(err);
+            return;
+        }
+
+        res.json({ success : true, stats : stats});
+    });
+    
+});
+
+// Update User
 router.route('/:userId').put(function(req, res) {
+
+    var userId = req.params.user_id;
+
+    console.log("Requested: GET - /api/user/" + userId);
+
+    var user = req.body;
+
+    controller.update(user, function(err, response) {
+
+        if(err) {
+            console.log("Error: " + err);
+            res.status(500).send({success:false, message: err});
+        }
+
+        // return the message
+        res.json(response);
+    });         
+
+});
+
+// Upload Image
+router.route('/image/:userId').put(function(req, res) {
 
     var userId = req.params.userId;
 
@@ -93,7 +134,7 @@ router.route('/:username').get(function(req, res) {
     }
 });
 
-// Get a user iamge
+// Get a user image
 router.route('/image/:userId').get(function(req, res) {
 
     var userId = req.params.userId;

@@ -18,16 +18,12 @@ controller.getAll = function getAllSystems (callback) {
 
                 countPromises.push(controller.countEndpoints(system)
                     .then(function updateSystemCount (count) {
-
                         system.numEndpoints = count;
-
                     }))
             });
 
             Promise.all(countPromises).then(function completedPromises () {
-
-                callback(undefined, systems);           
-
+                callback(undefined, systems);   
             })
         })
         .catch(function errorHandler (error) {
