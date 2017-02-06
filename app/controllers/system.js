@@ -82,16 +82,7 @@ controller.delete = function create (systemId, callback) {
 
     System.remove({ _id : systemId }, function(err) {
 
-        var result = {};
-
-        if(err) {
-            result.success = false;
-            result.message = err;
-        } else {
-            result.success = true;
-        }
-
-        callback(err, result);
+        callback(err);
 
     });
 }

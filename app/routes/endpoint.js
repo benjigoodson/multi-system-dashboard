@@ -117,18 +117,18 @@ router.route('/:endpoints_id')
     // Delete a unique endpoint
     .delete(function(req, res) {
 
-        var endpointId = req.params.endpointId;
+        var endpointId = req.params.endpoints_id;
 
         console.log("Requested: DELETE - /api/endpoint/" + endpointId);
 
-        controller.delete(endpointId, function(err, result) {
+        controller.delete(endpointId, function(err) {
 
             if(err) {
                 console.log("Error: " + err);
                 res.status(500).send(err);
             }
 
-            res.send(result);
+            res.json({success : true, message : "Endpoint removed."});
 
         });
     });

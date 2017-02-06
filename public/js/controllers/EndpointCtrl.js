@@ -5,7 +5,12 @@ var EndpointModule = angular.module('EndpointModule');
 // Imports
 EndpointModule.constant("moment", moment);
 
-EndpointModule.controller('EndpointController', function($scope, $location, UserService, EndpointService) { 
+EndpointModule.controller('EndpointController', EndpointController);
+
+EndpointController.$inject = ['$scope', '$location', 'UserService', 'EndpointService', 'notificationService'];
+function EndpointController ($scope, $location, UserService, EndpointService, notificationService) { 
+
+	var self = this;
 
 	this.createEndpoint = function() {
 
@@ -51,10 +56,10 @@ EndpointModule.controller('EndpointController', function($scope, $location, User
 
 	this.deleteEndpoint = function(endpointId) {
 
-		var self = this;
-
 		EndpointService.delete(endpointId).then(function(response) {
 			if(response.success) {
+				notificationService.success(response.message);
+
 				// Refresh table
 				self.getEndpoints();
 			}
@@ -73,4 +78,4 @@ EndpointModule.controller('EndpointController', function($scope, $location, User
 		this.systemURL = "";
 	};
 
-});
+};

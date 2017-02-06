@@ -115,14 +115,14 @@ router.route('/:system_id')
 
         console.log("Requested: DELETE - /api/system/" + systemId);
 
-        controller.delete(systemId, function(err, result) {
+        controller.delete(systemId, function(err) {
 
             if(err) {
                 console.log("Error: " + err);
                 res.status(500).send(err);
             }
 
-            res.send(result);
+            res.json({success : true, message : "System removed."});
 
         });
     });

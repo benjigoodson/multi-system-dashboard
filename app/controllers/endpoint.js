@@ -91,16 +91,7 @@ controller.delete = function create (endpointId, callback) {
 
     Endpoint.remove({ _id : endpointId }, function(err) {
 
-        var result = {};
-
-        if(err) {
-            result.success = false;
-            result.message = err;
-        } else {
-            result.success = true;
-        }
-
-        callback(err, result);
+        callback(err);
 
     });
 }

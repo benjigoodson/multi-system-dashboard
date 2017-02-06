@@ -69,7 +69,7 @@ controller.update = function update (updatedDashboard, callback) {
 controller.delete = function (dashboardId, callback) {
 
     Dashboard.find({"_id" : dashboardId}).remove().then(function () {
-            callback();
+        callback();
     })
     .catch(function errorHandler (error) {
         console.log("Error: " + error);

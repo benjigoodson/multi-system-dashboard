@@ -7,12 +7,14 @@ SystemModule.constant("moment", moment);
 
 SystemModule.controller('SystemController', SystemController);
 
-SystemController.$inject = ['$scope', '$location', 'UserService', 'SystemService'];
-function SystemController($scope, $location, UserService, SystemService) { 
+SystemController.$inject = ['$scope', '$location', 'UserService', 'SystemService', 'notificationService'];
+function SystemController($scope, $location, UserService, SystemService, notificationService) { 
+
+	var self = this;
 
 	this.createSystem = function() {
 
-		// Add a trailing '/'
+		// Add a trailing '/' to url
 		if ($scope.system.url.charAt($scope.system.url.length - 1) != '/') {
 			$scope.system.url = $scope.system.url + '/';
 		}
@@ -32,10 +34,10 @@ function SystemController($scope, $location, UserService, SystemService) {
 
 	this.deleteSystem = function(systemId) {
 
-		var self = this;
-
 		SystemService.delete(systemId).then(function(response) {
 			if(response.success) {
+				notificationService.success(response.message);
+
 				// Refresh table
 				self.getSystems();
 			}
