@@ -24,6 +24,17 @@ controller.getAll = function getAll (callback) {
     });
 }
 
+controller.get = function getUniqueWidget (widgetId, callback) {
+
+    var query = { _id : widgetId };
+
+    Widget.findById(query).lean().exec().then(function widgetFindForHome (widget) {
+        callback(undefined, widget);
+    }).catch(function errorHandler (error) {
+        callback(error);
+    });
+}
+
 controller.getForHome = function getAll (callback) {
 
     var query = {displayHome : "TRUE"};
@@ -85,10 +96,6 @@ controller.delete = function (widgetId, callback) {
 
             callback(error);
         });
-}
-
-controller.getByDashboard = function getOne (callback) {
-
 }
 
 module.exports = controller;

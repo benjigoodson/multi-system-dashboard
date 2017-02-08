@@ -72,7 +72,10 @@ function EndpointController ($scope, $location, UserService, EndpointService, no
 		$scope.endpoint = {};
 
 		$scope.endpoint.createdDate = moment().format('DD/MM/YYYY');
-		$scope.endpoint.createdBy = UserService.getCurrentUser().forename;
+		
+		UserService.getCurrentUser().then(function(user) {
+			$scope.endpoint.createdBy = user.forename;
+		})
 
 
 		this.systemURL = "";

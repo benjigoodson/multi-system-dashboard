@@ -150,8 +150,10 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 		if(self.dashboard.widgets && self.dashboard.widgets.length > 0) {
 			
 			self.dashboard.widgets.forEach(function (widgetId, i) {
-				WidgetService.getWidget(widgetId).then(function(widget) {
-					self.displayWidget(widget);
+				WidgetService.getWidget(widgetId).then(function(response) {
+					if(response.success == true) {
+						self.displayWidget(response.data);
+					}
 				});
 			});
 		}
@@ -230,7 +232,10 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 		$scope.dashboard = {};
 
 		$scope.dashboard.createdDate = moment().format('DD/MM/YYYY');
-		$scope.dashboard.createdBy = UserService.getCurrentUser().forename;
+
+		UserService.getCurrentUser().then(function(user) {
+			$scope.dashboard.createdBy = user.forename;
+		})
 
 		$scope.widgets=[];
 

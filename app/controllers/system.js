@@ -57,6 +57,26 @@ controller.getAllBasic = function getAllSystemsBasic (callback) {
 
 }
 
+controller.get = function getUniqueSystem (systemId, callback) {
+
+    var query = {_id : systemId};
+
+    System.findOne(query).lean().exec().then(function systemFindOne (system) {
+
+        controller.countEndpoints(system).then( function(numEndpoints) {
+
+            system.numEndpoints = numEndpoints;
+
+            callback(undefined, system);
+        });
+
+    })
+    .catch(function errorHandler (error) {
+        callback(error);
+    })
+
+}
+
 controller.countEndpoints = function getSystemEndpointCount (system) {
 
     // Count the endpoints
@@ -78,13 +98,36 @@ controller.create = function create (newSystem, callback) {
     });
 }
 
-controller.delete = function create (systemId, callback) {
+controller.update = function create (updatedSystem, callback) {
 
-    System.remove({ _id : systemId }, function(err) {
+    var query = { _id : updatedSystem._id };
 
-        callback(err);
+    System.findOneAndUpdate(query, updatedSystem, {new: true}, function(err, system) {
+
+        if(err) {
+            console.log("Error: " + err);
+            callback(err);
+        }
+
+        // return the message
+        callback(undefined, {success : true, message : "System Updated.", data : system});
 
     });
+}
+
+controller.delete = function create (systemId, callback) {
+
+    // Remove all endpoints
+    Endpoint.remove({ parentSystem : systemId }, function(err) {
+
+        // Remove the system
+        System.remove({ _id : systemId }, function(err) {
+
+            callback(err);
+
+        });
+    });
+
 }
 
 

@@ -4,7 +4,6 @@
 // Imports
 var express = require('express');
 var controller = require('../controllers/widget');
-var Widget = require('../models/widget');
 
 // instance of an express router
 var router = express.Router();;
@@ -71,17 +70,20 @@ router.route('/:widget_id')
 
     // Get a unique widget
     .get(function(req, res) {
-        console.log("Requested: GET - /api/widget/" + req.params.widget_id);
+
+        var id = req.params.widget_id;
+
+        console.log("Requested: GET - /api/widget/" + id);
 
         // Get widget by the id passed
-        Widget.findById(req.params.widget_id, function(err, widget) {
+        controller.get(id, function(err, widget) {
             if(err) {
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
             }
 
-            // return the widget
-            res.json(widget);
+            // return the widget            
+            res.json({success:true, message: "Widget loaded.", data : widget});
         });
     })
 

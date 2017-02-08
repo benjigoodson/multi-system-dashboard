@@ -5,7 +5,7 @@ var WidgetModule = angular.module('WidgetModule');
 // Imports
 WidgetModule.constant("moment", moment);
 
-WidgetModule.controller('WidgetController', function($scope, $http, $routeParams, $location, WidgetService, 
+WidgetModule.controller('WidgetController', function($scope, $http, $routeParams, $location, WidgetService, SystemService, EndpointService, 
 	ChartService, UserService, notificationService) { 
 
 	this.id = $routeParams.widget_id;
@@ -33,9 +33,9 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	};
 
 	this.getWidget = function() {
-		WidgetService.getWidget(this.id).then(function(data) {
+		WidgetService.getWidget(this.id).then(function(response) {
 
-			var widget = data;
+			var widget = response.data;
 			widget.loading = true;
 
 			$scope.widget = widget;
@@ -168,7 +168,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	};
 
 	this.getSystems = function() {
-		WidgetService.getSystems().then(function(data) {
+		SystemService.getBasicSystems().then(function(data) {
 			$scope.systems = data;
 		});
 	};
@@ -183,7 +183,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	};
 
 	this.getEndpoints = function(systemId) {
-		WidgetService.getEndpoints(systemId).then(function(data) {
+		EndpointService.getBasicEndpoints(systemId).then(function(data) {
 			$scope.endpoints = data;
 		});
 	};
@@ -314,7 +314,9 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 		$scope.widget.createdDate = moment().format('DD/MM/YYYY');
 
-		$scope.widget.createdBy = UserService.getCurrentUser().forename;
+		UserService.getCurrentUser().then(function(user) {
+			$scope.widget.createdBy = user.forename;
+		})
 
 	};
 

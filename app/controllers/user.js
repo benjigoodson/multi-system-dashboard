@@ -2,8 +2,8 @@
 'use strict'
 
 // Import models
-var User = require('../models/user');
 var sharp = require('sharp');
+var User = require('../models/user');
 
 var controller = {};
     

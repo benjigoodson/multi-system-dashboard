@@ -4,7 +4,6 @@
 // Imports
 var express = require('express');
 var controller = require('../controllers/dashboard');
-var Dashboard = require('../models/dashboard');
 
 // instance of an express router
 var router = express.Router();

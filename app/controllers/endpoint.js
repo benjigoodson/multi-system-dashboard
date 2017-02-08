@@ -49,7 +49,9 @@ controller.getAllBasic = function getAllEndpointsBasic (systemId, callback) {
                 // Just get basic fields
                 basicEndpoints.push({ 
                     id : endpoints[i]._id,
-                    name : endpoints[i].name, 
+                    name : endpoints[i].name,
+                    createdBy : endpoints[i].createdBy,
+                    createdDate : endpoints[i].createdDate,
                     url : endpoints[i].url,
                     requiresBody : endpoints[i].requiresBody,
                     requestType : endpoints[i].requestType

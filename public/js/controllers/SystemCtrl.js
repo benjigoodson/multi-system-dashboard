@@ -7,8 +7,8 @@ SystemModule.constant("moment", moment);
 
 SystemModule.controller('SystemController', SystemController);
 
-SystemController.$inject = ['$scope', '$location', '$routeParams', 'UserService', 'SystemService', 'notificationService'];
-function SystemController($scope, $location, $routeParams, UserService, SystemService, notificationService) { 
+SystemController.$inject = ['$scope', '$location', '$routeParams', 'UserService', 'SystemService', 'EndpointService', 'notificationService'];
+function SystemController($scope, $location, $routeParams, UserService, SystemService, EndpointService, notificationService) { 
 
 	var self = this;
 
@@ -20,9 +20,14 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 		}
 
 		SystemService.create($scope.system).then(function(response) {
-			$location.path("/systems");
+			if(response.success) {
+				notificationService.success(response.message);
+				$location.path("/system/" + response.data._id);
+			} else {
+				self.errorHandler("Unable to create system:" + response.message);
+			}
 		}, function(error) {
-
+			self.errorHandler("Unable to create system:" + response.message);
 		});
 	};
 
@@ -42,23 +47,54 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 
 			if(self.system.numEndpoints > 0) {
 				// Get all endpoints that are saved for this system
-				//EndpointService.getWidget(widgetId).then(function(endpoints) {
-				//	self.endpoints = endpoints;
-				//});
+				EndpointService.getBasicEndpoints(self.system._id).then(function(endpoints) {
+					self.endpoints = endpoints;
+				});
 			}
 
 		});
 	};
 
-	this.deleteSystem = function(systemId) {
-
-		SystemService.delete(systemId).then(function(response) {
+	this.deleteSystemFromEdit = function(systemId) {
+		this.deleteSystem(systemId).then(function(response) {
 			if(response.success) {
 				notificationService.success(response.message);
-
-				// Refresh table
-				self.getSystems();
+				$location.path("/systems");
+			} else {
+				self.errorHandler("Unable to delete system:" + response.message);
 			}
+		});
+	};
+
+	this.deleteSystemFromViewAll = function(systemId) {
+		this.deleteSystem(systemId).then(function(response) {
+			if(response.success) {
+				notificationService.success(response.message);
+				
+				self.getSystems();
+			} else {
+				self.errorHandler("Unable to delete system:" + response.message);
+			}
+		});
+	}
+
+	this.deleteSystem = function(systemId) {
+
+		return SystemService.delete(systemId);
+	};
+
+	this.saveSystem = function(system) {
+
+		SystemService.update(system).then(function(response) {
+			if(response.success) {
+				notificationService.success(response.message);
+				self.setEdit();
+			} else {
+				self.errorHandler("Unable to update system:" + response.message);
+			}
+
+		}, function(error) {
+			self.errorHandler("Unable to update system:" + error.message);
 		});
 	};
 
@@ -69,7 +105,18 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 		$scope.system.status = "online";
 
 		$scope.system.createdDate = moment().format('DD/MM/YYYY');
-		$scope.system.createdBy = UserService.getCurrentUser().forename;
+
+		UserService.getCurrentUser().then(function(user) {
+			$scope.system.createdBy = user.forename;
+		})
 	};
+
+	this.setEdit = function() {
+		if($scope.edit == true) {
+			$scope.edit = false;
+		} else {
+			$scope.edit = true;
+		}
+	}
 
 };

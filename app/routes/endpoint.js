@@ -44,14 +44,13 @@ router.route('/basic/:systemId')
                 }
 
                 res.send(endpoints);
-
             });
         }
-
     })
 
 // Create a new endpoint
-router.route('/').post(function(req, res) {
+router.route('/')
+    .post(function(req, res) {
         console.log("Requested: POST - /api/endpoint");
 
         if(req._body) {
@@ -66,21 +65,21 @@ router.route('/').post(function(req, res) {
                 }
 
                 res.send(newEndpoint);
-
             });
-
         }
-
     });
 
 router.route('/:endpoints_id')
 
     // Get a unique endpoint
     .get(function(req, res) {
-        console.log("Requested: GET - /api/endpoints/:endpoints_id");
+
+        var id = req.params.endpoint_id;
+
+        console.log("Requested: GET - /api/endpoints/" + id);
 
         // Get endpoint by the id passed
-        Endpoint.findById(req.params.endpoint_id, function(err, endpoint) {
+        Endpoint.findById(id, function(err, endpoint) {
             if(err) {
                 res.send(err);
             }
@@ -92,10 +91,13 @@ router.route('/:endpoints_id')
 
     // Update a endpoint
     .put(function(req, res) {
-        console.log("Requested: GET - /api/endpoint/:endpoint_id");
+
+        var id = req.params.endpoint_id;
+
+        console.log("Requested: PUT - /api/endpoint/" + id);
 
         // Get endpoint by the id passed
-        Endpoint.findById(req.params.endpoint_id, function(err, endpoint) {
+        Endpoint.findById(id, function(err, endpoint) {
             if(err) {
                 res.send(err);
             }

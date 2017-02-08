@@ -4,7 +4,6 @@
 // Imports
 var express = require('express');
 var controller = require('../controllers/system');
-var System = require('../models/system');
 
 // instance of an express router
 var router = express.Router();
@@ -18,7 +17,7 @@ router.route('/')
 
             if(err) {
                 console.log("Error: " + err);
-                res.status(500).send(err);
+                res.status(500).send({success:false, message: err});
             }
 
             res.send(systems);
@@ -35,7 +34,7 @@ router.route('/basic')
 
             if(err) {
                 console.log("Error: " + err);
-                res.status(500).send(err);
+                res.status(500).send({success:false, message: err});
             }
 
             res.send(systems);
@@ -56,10 +55,10 @@ router.route('/').post(function(req, res) {
 
                 if(err) {
                     console.log("Error: " + err);
-                    res.status(500).send(err);
+                    res.status(500).send({success:false, message: err});
                 }
 
-                res.json({ success : true, data : newSystem});
+                res.json({success:true, message: "System created.", data : newSystem});
 
             });
 
@@ -74,9 +73,9 @@ router.route('/:system_id')
         console.log("Requested: GET - /api/system/" + req.params.system_id);
 
         // Get system by the id passed
-        System.findById(req.params.system_id, function(err, system) {
+        controller.get(req.params.system_id, function(err, system) {
             if(err) {
-                res.send(err);
+                res.status(500).send({success:false, message: err});
             }
 
             // return the system
@@ -86,25 +85,21 @@ router.route('/:system_id')
 
     // Update a system
     .put(function(req, res) {
-        console.log("Requested: PUT - /api/system/:system_id");
+
+        var id = req.params.system_id;
+
+        console.log("Requested: PUT - /api/system/" + id);
+
+        var updatedSystem = req.body;
 
         // Get system by the id passed
-        System.findById(req.params.system_id, function(err, system) {
+        controller.update(updatedSystem, function(err, response) {
             if(err) {
-                res.send(err);
+                res.send(500, { success : false, error: err });
             }
 
-            // Map fields
-
-            system.save(function(err) {
-                if(err) {
-                    res.send(err);
-                }
-
-                // return the message
-                res.json({message : "System updated."});
-            });
-
+            // return the message
+            res.json(response);
         });
     })
 

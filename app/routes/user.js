@@ -6,7 +6,6 @@ var express = require('express');
 var fileupload = require('express-fileupload');
 var fs = require('fs');
 var controller = require('../controllers/user');
-var User = require('../models/user');
 
 // instance of an express router
 var router = express.Router();

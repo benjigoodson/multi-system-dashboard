@@ -5,7 +5,7 @@ var UserModule = angular.module('UserModule');
 UserModule.controller('UserController', UserController);
 
 UserController.$inject = ['$scope', 'UserService', 'notificationService'];
-function UserController($scope,UserService, notificationService) {
+function UserController($scope, UserService, notificationService) {
 
     var self = this;
 

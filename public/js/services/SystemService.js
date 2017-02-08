@@ -29,14 +29,30 @@ SystemModule.factory('SystemService', function ($http) {
 
 			})
 		},
+
+		getBasicSystems : function() {
+			
+			return $http.get(url + "basic/").then(function(response) {
+				return response.data;
+			}, function(error) {
+				return error;
+			})		
+		},
+
+		update : function(systemData) {
+			return $http.put(url + systemData._id, systemData) .then(function(response) {
+				return response.data;
+			}, function(error) {
+				return error;
+			})
+		},
 		
 		delete : function(systemId) {
 			return $http.delete(url + systemId) .then(function(response) {
 				return response.data;
 			}, function(error) {
 
-			})
-			
+			})			
 		}
 	}
 	
