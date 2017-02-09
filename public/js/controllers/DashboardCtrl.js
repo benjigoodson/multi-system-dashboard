@@ -45,8 +45,8 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 			if(self.dashboard.widgets && self.dashboard.widgets.length > 0) {
 				// Get all widgets that are saved
 				self.dashboard.widgets.forEach(function (widgetId, i) {
-					WidgetService.getWidget(widgetId).then(function(widget) {
-						self.savedWidgets.push(widget);
+					WidgetService.getWidget(widgetId).then(function(response) {
+						self.savedWidgets.push(response.data);
 					});
 				});
 			}

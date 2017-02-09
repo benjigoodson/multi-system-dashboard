@@ -6,7 +6,7 @@
         <div class="clearfix"></div>
       </div>
       <div class="x_content" ng-init="endpointCtrl.getEndpoints()">
-        <div class="dashboard_no_widgets" ng-show"!endpoints && endpoints.length == 0">
+        <div class="dashboard_no_widgets" ng-hide="endpoints && endpoints.length > 0">
           <i class="fa fa-exclamation-circle fa-5x fa-fw"></i>
           <h3>No Endpoints!</h3>
         </div>

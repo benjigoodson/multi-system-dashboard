@@ -17,7 +17,8 @@ router.route('/basic').get(function(req, res) {
 
         if(err) {
             console.log("Error: " + err);
-            res.status(500).send({success:false, message: err});
+            res.status(500).json({success:false, message: err});
+            return;
         }
 
         res.send({success:true, message: "Dashboards loaded.", data : basicDashboards});
@@ -38,7 +39,7 @@ router.route('/').post(function(req, res) {
 
             if(err) {
                 console.log("Error: " + err);
-                res.status(500).send({success:false, message: err});
+                res.status(500).json({success:false, message: err});
                 return;
             }
 
@@ -59,7 +60,9 @@ router.route('/:dashboard_id')
         // Get dashboard by the id passed
         controller.get(id, function(err, dashboard) {
             if(err) {
-                res.status(500).send({success:false, message: err});
+                console.log("Error: " + err);
+                res.status(500).json({success:false, message: err});
+                return;
             }
 
             // return the dashboard
@@ -77,7 +80,9 @@ router.route('/:dashboard_id')
         controller.update(updatedDashboard, function(err, response) {
 
             if(err) {
-                res.send(500, { success : false, error: err });
+                console.log("Error: " + err);
+                res.status(500).json({success:false, message: err});
+                return;
             }
 
             // return the message
@@ -96,7 +101,9 @@ router.route('/:dashboard_id')
         controller.delete(dashboardId, function(err) {
 
             if(err) {
-                res.send(500, { success : false, error: err });
+                console.log("Error: " + err);
+                res.status(500).json({success:false, message: err});
+                return;
             }
 
             // return the message

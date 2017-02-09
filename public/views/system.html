@@ -16,7 +16,7 @@
           <div ng-show="edit">
             Description: 
             <br>
-            <textarea rows="2" style="width: 65%" ng-model="systemCtrl.system.description">{{systemCtrl.system.description}}</textarea>
+            <textarea rows="2" class="form-control" style="width: 70%;" ng-model="systemCtrl.system.description">{{systemCtrl.system.description}}</textarea>
           </div>          
           <ul class="list-unstyled user_data">
             <li>
@@ -25,15 +25,39 @@
             <li>
               <i class="fa fa-calendar-check-o"></i> Created Date: {{systemCtrl.system.createdDate}}
             </li>
-            <li>
+
+            <li ng-show="!edit">
               <i class="fa fa-envelope-o"></i> Contact Email: {{systemCtrl.system.contact}}
             </li>
-            <li>
+            <li ng-show="!edit">
               <i class="fa fa-globe"></i> URL: {{systemCtrl.system.url}}
             </li>
-            <li>
+            <li ng-show="!edit">
               <i class="fa fa-cogs"></i> Status:
               <button type="button" class="btn btn-xs" ng-class="{ 'btn-success' : systemCtrl.system.status == 'online', 'btn-danger' : systemCtrl.system.status == 'offline'}" >{{systemCtrl.system.status}}</button></td>
+            </li>
+
+            <li ng-show="edit">
+              <i class="fa fa-envelope-o"></i> Contact Email: <input type="email" ng-model="systemCtrl.system.contact" required="required" class="form-control">
+            </li>
+            <li ng-show="edit">
+              <i class="fa fa-globe"></i> URL: <input ng-model="systemCtrl.system.url" class="form-control" type="text">
+            </li>
+            <li ng-show="edit">
+              <input
+                bs-switch
+                ng-model="systemCtrl.system.status"
+                type="checkbox"
+                value="online"
+                ng-value="offline"
+                switch-active="true"
+                switch-on-text="Online"
+                switch-off-text="Offline"
+                switch-on-color="primary"
+                switch-off-color="danger"
+                ng-true-value="'online'"
+                ng-false-value="'offline'"
+              />
             </li>
           </ul>
           <br>

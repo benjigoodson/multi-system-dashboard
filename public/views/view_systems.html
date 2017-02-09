@@ -6,7 +6,7 @@
         <div class="clearfix"></div>
       </div>
       <div class="x_content" ng-init="systemCtrl.getSystems()">
-        <div class="dashboard_no_widgets" ng-show"!systems && systems.length == 0">
+        <div ng-hide="systems && systems.length > 0" class="dashboard_no_widgets">
           <i class="fa fa-exclamation-circle fa-5x fa-fw"></i>
           <h3>No Systems!</h3>
         </div>

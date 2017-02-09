@@ -13,7 +13,7 @@
           <div>
             Description: 
             <br>
-            <textarea rows="2" style="width: 65%" ng-model="dashboardCtrl.dashboard.description">{{dashboardCtrl.dashboard.description}}</textarea>
+            <textarea rows="2" style="width: 70%" ng-model="dashboardCtrl.dashboard.description">{{dashboardCtrl.dashboard.description}}</textarea>
           </div>
           <ul class="list-unstyled user_data">
             <li>
@@ -24,7 +24,7 @@
             </li>
             <li>
               <i class="fa fa-tasks"></i> Widgets:
-              <ui-select multiple title="Choose widgets" theme="bootstrap" ng-model="dashboardCtrl.savedWidgets" style="width: 65%">
+              <ui-select multiple title="Choose widgets" theme="bootstrap" ng-model="dashboardCtrl.savedWidgets" style="width: 70%">
                   <ui-select-match class="ui-select-match" placeholder="Select widgets...">{{$item.name}}</ui-select-match>
                   <ui-select-choices class="ui-select-choices" repeat="widget in widgets | filter:$select.search track by widget.name">
                     <div ng-bind-html="widget.name | highlight: $select.search"></div>

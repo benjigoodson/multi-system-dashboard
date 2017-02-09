@@ -1494,6 +1494,10 @@ span.right {
   background: #fff;
   padding: 7px 10px; }
 
+.details_left {
+  background: #fff;
+  padding: 7px 10px; }
+
 .dashboard_details .col-md-9, .dashboard_details .col-md-3 {
   padding: 0; }
 
@@ -2682,15 +2686,14 @@ ul.user_data li {
 ul.user_data li p {
   margin-bottom: 0; }
 
-ul.user_data li .progress {
-  width: 90%; }
+ul.user_data input {
+  width: 70%; }
 
-.project_progress .progress {
-  margin-bottom: 3px !important;
-  margin-top: 5px; }
+ul.user_data input[type=checkbox] {
+  width: 10%; }
 
-.projects .list-inline {
-  margin: 0; }
+ul.user_data select {
+  width: 70%; }
 
 .profile_title {
   background: #F5F7FA;
@@ -2726,19 +2729,6 @@ ul.stats-overview li .value {
 ul.stats-overview li:first-child {
   padding-left: 0; }
 
-ul.project_files li {
-  margin-bottom: 5px; }
-
-ul.project_files li a i {
-  width: 20px; }
-
-.project_detail p {
-  margin-bottom: 10px; }
-
-.project_detail p.title {
-  font-weight: bold;
-  margin-bottom: 0; }
-
 .avatar img {
   border-radius: 50%;
   max-width: 45px; }
@@ -2749,9 +2739,6 @@ ul.project_files li a i {
 
 .login .fa-paw {
   font-size: 26px; }
-
-a.hiddenanchor {
-  display: none; }
 
 .login_wrapper {
   right: 0px;

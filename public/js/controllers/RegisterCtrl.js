@@ -6,9 +6,6 @@ RegisterController.$inject = ['$location', 'FileUploader', 'UserService', 'notif
 function RegisterController($location, FileUploader, UserService, notificationService) { 
     
     this.uploader = new FileUploader();
- 
-    this.user = {};
-    this.image;
 
     this.submit = function () {
 
@@ -17,20 +14,34 @@ function RegisterController($location, FileUploader, UserService, notificationSe
         UserService.create(this.user)
             .then(function (response) {
 
-                self.result = response.data; 
+                if (response.success) {
 
-                if (self.result.success) {
+                    self.response = response;
+
+                    self.uploader.onCompleteAll = function() {
+                        if(self.response.success == true) {
+                            notificationService.success(self.response.message);
+                            $location.path("/");
+                        } else {
+                            notificationService.error(self.response.message);
+                        }
+                    };
+
+                    self.uploader.onCompleteItem = function(fileItem, response, status, headers) {
+                        self.response.success = response.success;
+                        if(response.success == true) {
+                            console.info(response.message);                            
+                        } else {
+                            self.response.message = response.message;
+                        }
+                    };
 
                     self.uploader.queue.forEach(function(item, index) {
                         
                         item.method = "PUT";
-                        item.url = "/api/user/image" + self.result.user._id;
+                        item.url = "/api/user/image/" + response.data._id;
 
-                        item.upload();
-
-                        notificationService.success('Registration successful');
-                        $location.path('/login');
-                    
+                        item.upload();                    
                     });
 
                 } else {

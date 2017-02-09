@@ -3,6 +3,7 @@
 
 // Import models
 var sharp = require('sharp');
+var format = require('date-format');
 var User = require('../models/user');
 
 var self = this;
@@ -22,17 +23,18 @@ controller.getByUsername = function getByUsername (username, callback) {
 
 controller.create = function create (newUser, callback) {
 
-    var user = User(newUser);
-
     // Make first letter of names capital
-    user.forename = user.forename.charAt(0).toUpperCase() + user.forename.slice(1);
-    user.surname = user.surname.charAt(0).toUpperCase() + user.surname.slice(1);
+    newUser.forename = newUser.forename.charAt(0).toUpperCase() + newUser.forename.slice(1);
+    newUser.surname = newUser.surname.charAt(0).toUpperCase() + newUser.surname.slice(1);
 
-    user.createdDate = new Date();
+    newUser.createdDate = format('dd/MM/yyyy', new Date());
+
+    var user = User(newUser);
 
     user.save(function(err, createdUser) {
         if(err) {
-            callback(err);
+            callback(err.message);
+            return;
         }
 
         callback(undefined, createdUser);
@@ -48,8 +50,8 @@ controller.update = function update (userData, callback) {
     User.findOneAndUpdate(query, userData, {new: true}, function(err, user) {
 
         if(err) {
-            console.log("Error: " + err);
             callback(err);
+            return;
         }
 
         // return the message
@@ -116,10 +118,11 @@ controller.saveImage = function saveImage (userId, userImage, callback) {
     });
 
     // Update user with new image name
-    User.findByIdAndUpdate(userId, { $set : { image : imageName } }, function(err, user) {
+    User.findByIdAndUpdate(userId, { $set : { image : imageName } }, {new: true}, function(err, user) {
 
         if(err) {
             callback(err);
+            return;
         }
 
         callback(undefined, user);

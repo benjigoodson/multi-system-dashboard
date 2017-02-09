@@ -27,7 +27,7 @@
             <div ng-show="edit">
               Description: 
               <br>
-              <textarea rows="2" ng-model="widget.description" style="width: 65%">{{widget.description}}</textarea>
+              <textarea rows="2" style="width: 70%;" ng-model="widget.description" class="form-control">{{widget.description}}</textarea>
             </div>
             <ul class="list-unstyled user_data">
               <li>
@@ -51,7 +51,7 @@
               </li>
               <li ng-show="edit">
                 <i class="fa fa-{{widget.graphType}}-chart"></i> Graph type:
-                <select class="select2_single form-control editWidget" style="width: 65%" id="graph-type" name="graph-type" ng-model="widget.graphType">
+                <select class="select2_single form-control editWidget" id="graph-type" name="graph-type" ng-model="widget.graphType">
                   <option value="bar">Bar</option>
                   <option value="pie">Pie</option>
                   <option value="line">Line</option>
@@ -62,7 +62,7 @@
               </li>
               <li ng-show="edit">
                 <i class="fa fa-bullseye"></i> Field:
-                <select class="select2_single form-control editWidget" style="width: 65%" ng-model="widget.field">
+                <select class="select2_single form-control editWidget" style="width: 70%" ng-model="widget.field">
                   <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
                 </select>
               </li>

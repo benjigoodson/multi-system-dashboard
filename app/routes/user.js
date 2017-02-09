@@ -23,11 +23,11 @@ router.route('/').post(function(req, res) {
 
             if(err) {
                 console.log("Error: " + err);
-                res.status(500).send(err);
+                res.status(500).json({success:false, message: err});
                 return;
             }
 
-            res.json({ success : true, user : newUser});
+            res.json({ success : true, message : "User created.", data : newUser});
 
         });
 
@@ -45,7 +45,7 @@ router.route('/stats/:user_id').get(function(req, res) {
     controller.getStats(userId, function(err, stats) {
         if(err) {
             console.log("Error: " + err);
-            res.status(500).send(err);
+            res.status(500).json({success:false, message: err});
             return;
         }
 
@@ -67,7 +67,8 @@ router.route('/:userId').put(function(req, res) {
 
         if(err) {
             console.log("Error: " + err);
-            res.status(500).send({success:false, message: err});
+            res.status(500).json({success:false, message: err});
+            return;
         }
 
         // return the message
@@ -84,7 +85,8 @@ router.route('/image/:userId').put(function(req, res) {
     console.log("Requested: PUT - /api/user/" + userId);
 
     if (!req.files) {
-        res.send('No files were uploaded.');
+        console.log("Error: No files were uploaded.");
+        res.send({success:false, message : 'No files were uploaded.'});
         return;
     }
  
@@ -92,20 +94,14 @@ router.route('/image/:userId').put(function(req, res) {
 
     controller.saveImage(userId, image, function(err, user) {
 
-        var result = {};
-
         if(err) {
             console.log("Error: " + err);
-            result.success = false;
-            result.error = err;
-            res.status(500).send(result);
+            res.status(500).json({success:false, message: err});
             return;
         }
-
-        result.success = true;
         
         // return the message
-        res.send(result);
+        res.json({success:true, message:"Image uploaded.", data:user});
     });
     
 });
@@ -123,7 +119,7 @@ router.route('/:username').get(function(req, res) {
         controller.getByUsername(username, function(err, user) {
             if(err) { 
                 console.log("Error: " + err);
-                res.status(500).send(err);
+                res.status(500).json({success:false, message: err});
                 return;
             }
 
@@ -148,7 +144,7 @@ router.route('/image/:userId').get(function(req, res) {
              // Fail if the file can't be read.
             if (err) {
                 console.log("Error: " + err);
-                res.status(500).send(err);
+                res.status(500).json({success:false, message: err});
                 return;
             }
 
@@ -176,7 +172,7 @@ router.route('/image/small/:userId').get(function(req, res) {
              // Fail if the file can't be read.
             if (err) {
                 console.log("Error: " + err);
-                res.status(404).send(err);
+                res.status(404).json({success:false, message : err});
                 return;
             }
 
