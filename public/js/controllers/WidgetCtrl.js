@@ -168,8 +168,10 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	};
 
 	this.getSystems = function() {
-		SystemService.getBasicSystems().then(function(data) {
-			$scope.systems = data;
+		SystemService.getBasicSystems().then(function(response) {
+			if(response.success == true) {
+				$scope.systems = response.data;
+			}
 		});
 	};
 
@@ -183,8 +185,10 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	};
 
 	this.getEndpoints = function(systemId) {
-		EndpointService.getBasicEndpoints(systemId).then(function(data) {
-			$scope.endpoints = data;
+		EndpointService.getBasicEndpoints(systemId).then(function(response) {
+			if(response.success == true) {
+				$scope.endpoints = response.data;
+			}
 		});
 	};
 

@@ -37,7 +37,7 @@ router.route('/basic')
                 res.status(500).send({success:false, message: err});
             }
 
-            res.send(systems);
+            res.send({success:true, data : systems});
 
         });
 
