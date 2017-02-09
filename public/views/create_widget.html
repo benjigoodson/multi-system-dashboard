@@ -166,8 +166,9 @@
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="field">Field <span class="required">*</span>
                 </label>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <select class="select2_single form-control" id="field" name="field" ng-model="widget.field" ng-change="widgetCtrl.fieldChanged()">
+                <div class="col-md-6 col-sm-6 col-xs-12 input-group input-group-sm">
+                <label ng-show="fieldPathDisplay" class="input-group-addon" for="widget-field">{{fieldPathDisplay}}</label>
+                  <select class="select2_single form-control" id="field" name="field" ng-model="field" ng-change="widgetCtrl.fieldChanged()">
                     <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
                   </select>
                 </div>
@@ -180,10 +181,21 @@
             <h2 class="StepTitle">Created Widget:</h2>
 
             <div class="sampleChart">
-              <canvas class="chart-base" chart-type="chart.graphType" chart-data="chart.data" chart-labels="chart.labels" 
-                  width="450px" height="204px"></canvas>
+              <div ng-show="chart.loading || chart.error" style="text-align: center; width: 306px; height: 168px;">
+                <br>
+                <i ng-show="chart.loading" class="fa fa-refresh fa-spin fa-5x fa-fw"></i>
+                <i ng-show="chart.error" class="fa fa-exclamation-circle fa-5x fa-fw"></i>
+                <div ng-show"chart.error">
+                  {{chart.error}}
+                  <br>
+                </div>
+                <br>
+              </div>
+              <div ng-show="!chart.loading && !chart.error">
+                <canvas class="chart-base" chart-type="chart.graphType" chart-data="chart.data" chart-labels="chart.labels" 
+                    width="450px" height="204px"></canvas>
+              </div>
             </div>
-
           </div>
         </div>
       </div>

@@ -12,6 +12,8 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 	var self = this;
 
+	$scope.chart = {};
+
 	self.fieldBlacklist = [
 		"_id",
 		"__v"
@@ -233,17 +235,23 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 				// Reset fields
 				var fields = [];
 
-				var searchableObject;
+				self.searchableObject;
 				
 				// If an object is returned containing a single array
 				if(Array.isArray(result.data[Object.keys(result.data)[0]]) && Object.keys(result.data).length == 1) {
 					// Use first object in that array
-					searchableObject = result.data[Object.keys(result.data)[0]][0];
+					self.searchableObject = result.data[Object.keys(result.data)[0]][0];
+				// If result is an array then get first object
+				} else if(Array.isArray(result.data)) {
+					self.searchableObject = result.data[0];
 				} else {
-					searchableObject = result.data[0];
+					// If result is just an object - maybe they want stats of an array inside
+					self.searchableObject = result.data;
 				}
 
-				for(var field in searchableObject)
+				self.searchableObject = {name : "ben", age : 22, friend : {name : "lauren", age : 19}};
+
+				for(var field in self.searchableObject)
 				{	
 					if(!_.contains(self.fieldBlacklist, field)) {
 						fields.push(field);
@@ -254,9 +262,59 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 			} else {
 				// display error with REST call
+				this.errorHandler("Problem making REST call.");
 			}
 
 		});
+	};
+
+	this.fieldChanged = function() {
+
+		if($scope.field) {
+
+			// Reset fields
+			$scope.fields = [];
+
+			// Update field selection
+			self.searchableObject = self.searchableObject[$scope.field];
+
+			if(self.searchableObject instanceof Object && !Array.isArray(self.searchableObject)) {
+
+				for(var field in self.searchableObject)
+				{	
+					if(!_.contains(self.fieldBlacklist, field)) {
+						$scope.fields.push(field);
+					}
+				}
+			}
+
+			$scope.widget.fieldPath.push($scope.field);
+			$scope.fieldPathDisplay = $scope.widget.fieldPath.join('.');
+
+			$scope.chart.loading = true;
+
+			try {
+				// Display sample graph
+				ChartService.generateChartData($scope.widget).then(function(widgetData) {	
+
+					$scope.chart.graphType = widgetData.graphType;
+					$scope.chart.data = widgetData.data;
+					$scope.chart.labels = widgetData.labels;
+					$scope.chart.loading = false;
+
+				}, function(errorMessage) {
+
+					$scope.chart.loading = false;
+					$scope.chart.error = errorMessage;
+					console.log("Unable to contact sever for widget: " + widget._id);
+
+				});
+			} catch(err) {
+				widget.loading = false;
+				widget.error = err;
+				self.errorHandler(err);
+			}
+		}
 	};
 
 	this.graphChanged = function() {
@@ -294,25 +352,12 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		}
 	};
 
-	this.fieldChanged = function() {
-		if($scope.widget.field) {
-
-			// Display sample graph
-			ChartService.generateChartData($scope.widget).then(function(widgetData) {
-				$scope.chart = {};
-				
-				$scope.chart.graphType = widgetData.graphType;
-				$scope.chart.data = widgetData.data;
-				$scope.chart.labels = widgetData.labels;
-			});
-		}
-	};
-
 	this.setupCreatePage = function() {
 		
 		this.getSystems();
 
 		$scope.widget = {};
+		$scope.widget.fieldPath = [];
 		$scope.requiresBody = false;
 		$scope.fields = [];
 

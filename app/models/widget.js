@@ -45,8 +45,9 @@ var WidgetSchema = new Schema({
         type : String,
         required : true
     },
-    field : { 
-        type : String
+    fieldPath : { 
+        type : Array , 
+        default : [] 
     },
     createdDate : {
         type : String
