@@ -22,7 +22,7 @@ function AuthorizationService($http, $cookieStore, $rootScope, $timeout, UserSer
 
     }
 
-    function SetCredentials(username, password, token) {
+    function SetCredentials(username, token) {
 
         $rootScope.globals = {
             currentUser: {

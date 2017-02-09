@@ -4,6 +4,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var fileUpload = require('express-fileupload');
+var fs = require('fs');
 
 //////////////// Database setup ////////////////
 
@@ -37,9 +38,38 @@ app.use(express.static('public'));
 // register routes
 require('./app/routes')(app);
 
+// Ensure folder structure is correct
+var dir = __dirname + "/public/userImages";
+
+if(!fs.existsSync(dir)) {
+  fs.mkdirSync(dir, 0744, function(err) {
+    if (err) {
+          // something went wrong
+          console.log("Problem creating folder:" + dir); 
+    } else {
+      // successfully created folder
+      console.log("Created folder: " + dir);
+    }
+  });
+}
+
+dir = dir + "/resized";
+
+if(!fs.existsSync(dir)) {  
+  fs.mkdirSync(dir, 0744, function(err) {
+    if (err) {
+        // something went wrong
+        console.log("Problem creating folder:" + dir); 
+    } else {
+      // successfully created folder
+      console.log("Created folder: " + dir);
+    }
+  });
+}
+
 // Start listening on the server port 
 app.listen(server_port, function () {
-  console.log( "Listening on " + server_ip + ", port " + server_port )
+  console.log("Listening on " + server_ip + ", port " + server_port )
 });
 
 // expose app

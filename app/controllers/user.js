@@ -27,6 +27,8 @@ controller.create = function create (newUser, callback) {
     newUser.forename = newUser.forename.charAt(0).toUpperCase() + newUser.forename.slice(1);
     newUser.surname = newUser.surname.charAt(0).toUpperCase() + newUser.surname.slice(1);
 
+    newUser.email = newUser.email.toLowerCase();
+
     newUser.createdDate = format('dd/MM/yyyy', new Date());
 
     var user = User(newUser);

@@ -18,7 +18,7 @@ function LoginController($location, $window, AuthorizationService, UserService) 
 		AuthorizationService.Login(self.username, self.password, function (response) {
 			if (response.success) {
 
-				AuthorizationService.SetCredentials(self.username, self.password, response.token);
+				AuthorizationService.SetCredentials(self.username, response.token);
 				UserService.setCurrentUser(response.user);
 				$location.path('/');
 				$window.location.reload();
