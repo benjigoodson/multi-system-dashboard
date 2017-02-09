@@ -12,22 +12,20 @@ DashboardModule.factory('DashboardService', function ($http) {
 
 		getAllBasic : function() {
 			
-			var promise = $http.get(url + 'basic') .then(function(response) {
+			return $http.get(url + 'basic') .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return error;
-			})
-			return promise;			
+				return error.data;
+			})		
 		},
 		
 		get : function(dashboardId) {
 			
-			var promise = $http.get(url + dashboardId) .then(function(response) {
+			return $http.get(url + dashboardId) .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return error;
-			})
-			return promise;			
+				return error.data;
+			})		
 		},
 		
 		create : function(dashboardData) {
@@ -43,30 +41,27 @@ DashboardModule.factory('DashboardService', function ($http) {
 
 			dashboardData.widgets = widgetIds;
 
-			var promise = $http.post(url, dashboardData) .then(function(response) {
+			return $http.post(url, dashboardData) .then(function(response) {
 				return response.data;
 			}, function(error) {
 				return error.data;
 			})
-			return promise;	
 		},
 
 		update : function(dashboardData) {
-			var promise = $http.put(url + dashboardData._id, dashboardData) .then(function(response) {
+			return $http.put(url + dashboardData._id, dashboardData) .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return error;
+				return error.data;
 			})
-			return promise;	
 		},
 
 		delete : function(dashboardId) {
-			var promise = $http.delete('/api/dashboard/' + dashboardId).then(function(response) {
+			return $http.delete('/api/dashboard/' + dashboardId).then(function(response) {
 				return response;
 			}, function(error) {
-				return error;
+				return error.data;
 			})
-			return promise;
 		},
 
 		updateMenu : function() {

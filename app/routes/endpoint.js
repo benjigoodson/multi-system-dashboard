@@ -4,7 +4,6 @@
 // Imports
 var express = require('express');
 var controller = require('../controllers/endpoint');
-var Endpoint = require('../models/endpoint');
 
 // instance of an express router
 var router = express.Router();;
@@ -18,10 +17,11 @@ router.route('/')
 
             if(err) {
                 console.log("Error: " + err);
-                res.status(500).send(err);
+                res.status(500).json({success:false, message: err});
+                return;
             }
 
-            res.send(endpoints);
+            res.json({ success : true, data : endpoints});
 
         });
 
@@ -40,10 +40,11 @@ router.route('/basic/:systemId')
 
                 if(err) {
                     console.log("Error: " + err);
-                    res.status(500).send(err);
+                    res.status(500).json({success:false, message: err});
+                    return;
                 }
 
-                res.send(endpoints);
+                res.json({ success : true, data : endpoints});
             });
         }
     })
@@ -61,31 +62,34 @@ router.route('/')
 
                 if(err) {
                     console.log("Error: " + err);
-                    res.status(500).send(err);
+                    res.status(500).json({success:false, message: err});
+                    return;
                 }
 
-                res.send(newEndpoint);
+                res.json({ success : true, message : "Endpoint created.", data : newEndpoint});
             });
         }
     });
 
-router.route('/:endpoints_id')
+router.route('/:endpoint_id')
 
     // Get a unique endpoint
     .get(function(req, res) {
 
         var id = req.params.endpoint_id;
 
-        console.log("Requested: GET - /api/endpoints/" + id);
+        console.log("Requested: GET - /api/endpoint/" + id);
 
         // Get endpoint by the id passed
-        Endpoint.findById(id, function(err, endpoint) {
+        controller.get(id, function(err, endpoint) {
             if(err) {
-                res.send(err);
+                console.log("Error: " + err);
+                res.status(500).json({success:false, message: err});
+                return;
             }
 
             // return the endpoint
-            res.json(endpoint);
+            res.json({ success : true, data : endpoint});
         });
     })
 
@@ -96,30 +100,26 @@ router.route('/:endpoints_id')
 
         console.log("Requested: PUT - /api/endpoint/" + id);
 
+        var endpoint = req.body;
+
         // Get endpoint by the id passed
-        Endpoint.findById(id, function(err, endpoint) {
+        controller.update(endpoint, function(err, updatedEndpoint) {
             if(err) {
-                res.send(err);
+                console.log("Error: " + err);
+                res.status(500).json({success:false, message: err});
+                return;
             }
 
-            // Map fields
-
-            endpoint.save(function(err) {
-                if(err) {
-                    res.send(err);
-                }
-
-                // return the message
-                res.json({message : "Endpoint updated."});
-            });
-
+            // return the message
+            res.json({ success : true, message : "Endpoint updated.", data : updatedEndpoint});
         });
+
     })
 
     // Delete a unique endpoint
     .delete(function(req, res) {
 
-        var endpointId = req.params.endpoints_id;
+        var endpointId = req.params.endpoint_id;
 
         console.log("Requested: DELETE - /api/endpoint/" + endpointId);
 
@@ -127,7 +127,8 @@ router.route('/:endpoints_id')
 
             if(err) {
                 console.log("Error: " + err);
-                res.status(500).send(err);
+                res.status(500).json({success:false, message: err});
+                return;
             }
 
             res.json({success : true, message : "Endpoint removed."});

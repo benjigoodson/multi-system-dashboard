@@ -56,24 +56,22 @@ controller.update = function update (updatedDashboard, callback) {
     Dashboard.findOneAndUpdate(query, updatedDashboard, {new: true}, function(err, dashboard) {
 
         if(err) {
-            console.log("Error: " + err);
             callback(err);
+            return;
         }
 
-        // return the message
-        callback(undefined, {success : true, message : "Dashboard Updated.", data : dashboard});
+        // return the dashboard
+        callback(undefined, dashboard);
 
     });
 }
 
 controller.delete = function (dashboardId, callback) {
 
-    Dashboard.find({"_id" : dashboardId}).remove().then(function () {
+    Dashboard.remove({"_id" : dashboardId}).then(function () {
         callback();
     })
     .catch(function errorHandler (error) {
-        console.log("Error: " + error);
-
         callback(error);
     });
 }

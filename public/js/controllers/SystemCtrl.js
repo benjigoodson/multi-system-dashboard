@@ -87,7 +87,7 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 
 		SystemService.update(system).then(function(response) {
 			if(response.success) {
-				notificationService.success(response.message);
+				notificationService.info(response.message);
 				self.setEdit();
 			} else {
 				self.errorHandler("Unable to update system:" + response.message);

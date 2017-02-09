@@ -73,11 +73,14 @@ router.route('/:dashboard_id')
 
     // Update a dashboard
     .put(function(req, res) {
-        console.log("Requested: PUT - /api/dashboard/" + req.params.dashboard_id);
 
-        var updatedDashboard = req.body;
+        var id = req.params.dashboard_id;
 
-        controller.update(updatedDashboard, function(err, response) {
+        console.log("Requested: PUT - /api/dashboard/" + id);
+
+        var dashboard = req.body;
+
+        controller.update(dashboard, function(err, updatedDashboard) {
 
             if(err) {
                 console.log("Error: " + err);
@@ -86,7 +89,7 @@ router.route('/:dashboard_id')
             }
 
             // return the message
-            res.json(response);
+            res.json({success : true, message : "Dashboard Updated.", data : updatedDashboard});
 
         });
     })

@@ -10,22 +10,52 @@
         </div>
         <div class="col-md-7 col-sm-7 col-xs-12">
           <h3>Endpoint: {{endpointCtrl.endpoint.name}}</h3>
-          <div>
+          <div ng-show="!edit">
+              Description: {{endpointCtrl.endpoint.description}}
+          </div>
+          <div ng-show="edit">
             Description: 
             <br>
-            <textarea rows="2" style="width: 65%" ng-model="endpointCtrl.endpoint.description">{{endpointCtrl.endpoint.description}}</textarea>
-          </div>
+            <textarea rows="2" class="form-control" style="width: 70%;" ng-model="endpointCtrl.endpoint.description">{{endpointCtrl.endpoint.description}}</textarea>
+          </div>  
           <ul class="list-unstyled user_data">
             <li>
-              <i class="fa fa-user-circle"></i> Created By: {{endpointCtrl.endpoint.createdBy}}
+              <i class="fa fa-user-circle"></i> Created By: {{endpointCtrl.endpoint.createdBy.forename}}
             </li>
             <li>
               <i class="fa fa-calendar-check-o"></i> Created Date: {{endpointCtrl.endpoint.createdDate}}
             </li>
+            <li>
+              <i class="fa fa-desktop"></i> Parent System: {{endpointCtrl.system.name}}
+            </li>
+            <li>
+              <i class="fa fa-exchange"></i> Request Type: {{endpointCtrl.endpoint.requestType}}
+            </li>
+            <li ng-show="!edit">
+              <i class="fa fa-globe"></i> URL: {{endpointCtrl.endpoint.url}}
+            </li>
+             <li ng-show="edit">
+              <i class="fa fa-globe"></i> URL: <input ng-model="endpointCtrl.endpoint.url" class="form-control" type="text">
+            </li>
+            <li>
+              <i class="fa fa-check-square-o"></i> Requires Body: <input type="checkbox" class="form-control" ng-disabled="!edit" ng-model="endpointCtrl.endpoint.requiresBody" ng-false-value="'false'" ng-true-value="'true'">
+            </li>
+            <li ng-show="!edit && endpointCtrl.endpoint.requiresBody == 'true'">
+              <i class="fa fa-check-square-o"></i> Body: {{endpointCtrl.endpoint.body}}
+            </li>
+            <li ng-show="edit && endpointCtrl.endpoint.requiresBody == 'true'">
+              <i class="fa fa-plus"></i> Body: <br>
+              <textarea rows="2" class="form-control" style="width: 70%" ng-model="endpointCtrl.endpoint.body">{{endpointCtrl.endpoint.body}}</textarea>
+            </li>
           </ul>
           <br>
-          <a class="btn btn-success" ng-click="endpointCtrl.saveEndpoint()"><i class="fa fa-floppy-o m-right-xs"></i> Save Endpoint</a>
-          <a class="btn btn-danger" ng-click="endpointCtrl.deleteEndpoint(endpointCtrl.endpoint._id)"><i class="fa fa-trash m-right-xs"></i> Delete Endpoint</a>
+          <a class="btn btn-success" ng-show="!edit" ng-click="endpointCtrl.setEdit()"><i class="fa fa-edit m-right-xs"></i> Edit Endpoint</a>
+          <a class="btn btn-success" ng-show="edit" ng-click="endpointCtrl.saveEndpoint(endpointCtrl.endpoint)"><i class="fa fa-floppy-o m-right-xs"></i> Save Endpoint</a>
+
+          <a class="btn btn-danger" ng-show="!edit" ng-click="endpointCtrl.deleteEndpointFromEdit(endpointCtrl.endpoint._id)"><i class="fa fa-trash m-right-xs"></i> Delete Endpoint</a>
+          <a class="btn btn-danger" ng-show="edit" ng-click="endpointCtrl.setEdit()"><i class="fa fa-minus-circle m-right-xs"></i> Cancel Edit</a>          
+        </div>
+        
         </div>
       </div>
     </div>

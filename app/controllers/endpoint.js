@@ -10,29 +10,38 @@ var controller = {};
 controller.getAll = function getAll (callback) {
     var countPromises = []
 
-    var endpointPromise = Endpoint.find().lean().exec()
+    Endpoint.find().lean().exec()
         .then(function endpointFind (endpoints) {
 
             endpoints.forEach(function (endpoint , i) {
 
                 countPromises.push(controller.getSystemNames(endpoint)
                     .then(function updateSystemName (systems) {
-
                         endpoint.systemName = systems[0].name;
-
                     }))
             });
 
             Promise.all(countPromises).then(function completedPromises () {
-
-                callback(undefined, endpoints);           
-
+                callback(undefined, endpoints);      
             })
         })
         .catch(function errorHandler (error) {
             callback(error);
         })
 
+}
+
+controller.get = function get (endpointId, callback) {
+
+    var query = {_id : endpointId};
+
+    Endpoint.findOne(query).lean().exec().then(function endpointFindOne (endpoint) {
+
+        callback(undefined, endpoint);
+    })
+    .catch(function errorHandler (error) {
+        callback(error);
+    })
 }
 
 controller.getAllBasic = function getAllEndpointsBasic (systemId, callback) {
@@ -89,11 +98,29 @@ controller.create = function create (newEndpoint, callback) {
     });
 }
 
+controller.update = function update (endpoint, callback) {
+        
+    var query = { "_id" : endpoint._id };
+
+    Endpoint.findOneAndUpdate(query, endpoint, {new: true}, function(err, updatedEndpoint) {
+
+        if(err) {
+            callback(err);
+            return;
+        }
+
+        // return the endpoint
+        callback(undefined, updatedEndpoint);
+
+    });
+}
+
 controller.delete = function create (endpointId, callback) {
 
     Endpoint.remove({ _id : endpointId }, function(err) {
 
         callback(err);
+        return;
 
     });
 }
