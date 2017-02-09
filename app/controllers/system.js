@@ -91,6 +91,7 @@ controller.create = function create (newSystem, callback) {
     system.save(function(err, createdSystem) {
         if(err) {
             callback(err);
+            return;
         }
 
         callback(undefined, createdSystem);

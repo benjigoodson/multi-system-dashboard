@@ -20,7 +20,7 @@
           </div>          
           <ul class="list-unstyled user_data">
             <li>
-              <i class="fa fa-user-circle"></i> Created By: {{systemCtrl.system.createdBy}}
+              <i class="fa fa-user-circle"></i> Created By: {{systemCtrl.system.createdBy.forename}}
             </li>
             <li>
               <i class="fa fa-calendar-check-o"></i> Created Date: {{systemCtrl.system.createdDate}}
@@ -67,7 +67,7 @@
                     {{endpoint.name}}
                     <br />
                     <small>Created Date: {{endpoint.createdDate}}</small><br>
-                    <small>Created By: {{endpoint.createdBy}}</small>
+                    <small>Created By: {{endpoint.createdBy.forename}}</small>
                   </td>
                   <td>{{endpoint.requestType}}</td>
                   <td>{{endpoint.url}}</td>

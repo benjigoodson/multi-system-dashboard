@@ -74,7 +74,7 @@ function EndpointController ($scope, $location, UserService, EndpointService, no
 		$scope.endpoint.createdDate = moment().format('DD/MM/YYYY');
 		
 		UserService.getCurrentUser().then(function(user) {
-			$scope.endpoint.createdBy = user.forename;
+			$scope.endpoint.createdBy = {id : user._id, forename : user.forename};
 		})
 
 

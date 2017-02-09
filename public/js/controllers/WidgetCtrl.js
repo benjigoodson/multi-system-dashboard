@@ -315,7 +315,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		$scope.widget.createdDate = moment().format('DD/MM/YYYY');
 
 		UserService.getCurrentUser().then(function(user) {
-			$scope.widget.createdBy = user.forename;
+			$scope.widget.createdBy = {id : user._id, forename : user.forename};
 		})
 
 	};

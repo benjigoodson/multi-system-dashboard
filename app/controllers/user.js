@@ -5,6 +5,8 @@
 var sharp = require('sharp');
 var User = require('../models/user');
 
+var self = this;
+
 var controller = {};
     
 controller.getByUsername = function getByUsername (username, callback) {
@@ -58,28 +60,36 @@ controller.update = function update (userData, callback) {
 
 controller.getStats = function getStats (userId, callback) {
 
+    var ObjectId= require('mongoose').Types.ObjectId;
+
     var System = require('../models/system');
     var Endpoint = require('../models/endpoint');
     var Widget = require('../models/widget');
 
-    var systemStats = 0;
-    var endpointStats = 0;
-    var widgetStats = 0;
+    self.systemStats;
+    self.endpointStats;
+    self.widgetStats;
 
-    System.count({createdBy : userId}, function(err, systemCount) {
-        systemStats = systemCount;
+    var query = { "createdBy.id" : new ObjectId(userId)};
+
+    var countPromises = [];
+
+    countPromises.push(System.count(query, function(err, systemCount) {
+        self.systemStats = systemCount;
+    }));
+
+    countPromises.push(Endpoint.count(query, function(err, endpointCount) {
+        self.endpointStats = endpointCount;
+    }));
+
+    countPromises.push(Widget.count(query, function(err, widgetCount) {
+        self.widgetStats = widgetCount;
+    }));
+
+    Promise.all(countPromises).then(function completedPromises () {
+        callback(undefined, {system : self.systemStats, endpoint : self.endpointStats, widget : self.widgetStats });
     });
-
-    Endpoint.count({createdBy : userId}, function(err, endpointCount) {
-        endpointStats = endpointCount;
-    });
-
-    Widget.count({createdBy : userId}, function(err, widgetCount) {
-        widgetStats = widgetCount;
-    });
-
-    callback(undefined, {system : systemStats, endpoint : endpointStats, widget : widgetStats });
-
+    
 }
 
 controller.saveImage = function saveImage (userId, userImage, callback) {

@@ -234,7 +234,7 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 		$scope.dashboard.createdDate = moment().format('DD/MM/YYYY');
 
 		UserService.getCurrentUser().then(function(user) {
-			$scope.dashboard.createdBy = user.forename;
+			$scope.dashboard.createdBy = {id : user._id, forename : user.forename};
 		})
 
 		$scope.widgets=[];

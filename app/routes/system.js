@@ -55,10 +55,11 @@ router.route('/').post(function(req, res) {
 
                 if(err) {
                     console.log("Error: " + err);
-                    res.status(500).send({success:false, message: err});
-                }
+                    res.status(500).json({success:false, message: err.message});
 
-                res.json({success:true, message: "System created.", data : newSystem});
+                } else {
+                    res.json({success:true, message: "System created.", data : newSystem});
+                }
 
             });
 

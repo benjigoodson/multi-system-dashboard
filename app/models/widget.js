@@ -51,8 +51,15 @@ var WidgetSchema = new Schema({
     createdDate : {
         type : String
     },
-    createdBy : {
-        type : String
+    createdBy : { 
+        id : {
+            type : Schema.ObjectId,
+            required: true
+        },
+        forename : {
+            type : String,
+            required: true 
+        }
     }
 },
 { 

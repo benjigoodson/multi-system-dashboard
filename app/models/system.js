@@ -14,8 +14,12 @@ var SystemSchema = new Schema({
         unique: true
     },
     status : { 
-        type : String , 
-        default : '' 
+        type : String ,
+        enum : [
+            "offline",
+            "online"
+        ],
+        default : 'online' 
     },
     contact : { 
         type : String , 
@@ -30,11 +34,18 @@ var SystemSchema = new Schema({
         default : ''
     },
     createdDate : { 
-        type : String
+        type : String,
+        required: true
     },
     createdBy : { 
-        type : String ,
-        default : '' 
+        id : {
+            type : Schema.ObjectId,
+            required: true
+        },
+        forename : {
+            type : String,
+            required: true 
+        }
     }
 }, 
 { 

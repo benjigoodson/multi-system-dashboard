@@ -25,8 +25,14 @@ var DashboardSchema = new Schema({
         type : String
     },
     createdBy : { 
-        type : String ,
-        default : '' 
+        id : {
+            type : Schema.ObjectId,
+            required: true
+        },
+        forename : {
+            type : String,
+            required: true 
+        }
     }
 }, 
 { 

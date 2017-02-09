@@ -107,7 +107,7 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 		$scope.system.createdDate = moment().format('DD/MM/YYYY');
 
 		UserService.getCurrentUser().then(function(user) {
-			$scope.system.createdBy = user.forename;
+			$scope.system.createdBy = {id : user._id, forename : user.forename};
 		})
 	};
 
@@ -118,5 +118,9 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 			$scope.edit = true;
 		}
 	}
+
+	this.errorHandler = function(error) {
+		notificationService.error(error);
+	};
 
 };
