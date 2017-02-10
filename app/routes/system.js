@@ -20,7 +20,38 @@ router.route('/')
                 res.status(500).send({success:false, message: err});
             }
 
-            res.send(systems);
+            var testing = [
+                {
+                    name : "ben", 
+                    age : 20, 
+                    friend : { 
+                        name : "lauren"
+                    }
+                },
+                {
+                    name : "tom", 
+                    age : 20, 
+                    friend : { 
+                        name : "lauren"
+                    }
+                },
+                {
+                    name : "lauren", 
+                    age : 20, 
+                    friend : { 
+                        name : "izzy"
+                    }
+                },
+                {
+                    name : "chris", 
+                    age : 20, 
+                    friend : { 
+                        name : "paul"
+                    }
+                }
+            ]
+
+            res.send({success:true, data : testing});
 
         });
 

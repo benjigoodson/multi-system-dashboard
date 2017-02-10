@@ -22,13 +22,8 @@ function ChartService (widgetService) {
                         throw "No response from server.";
                     }
 
-                    // If an object is returned containing a single array
-                    if(Array.isArray(apiResponse.data[Object.keys(apiResponse.data)[0]]) && Object.keys(apiResponse.data).length == 1) {
-                        // Use that array
-                        resultArray = apiResponse.data[Object.keys(apiResponse.data)[0]];
-                    } else {
-                        resultArray = apiResponse.data;
-                    }
+                    // Get the dataset
+                    resultArray = self.traverseObject(widget.datasetPath, apiResponse.data);
 
                     widget.data = [];
                     widget.labels = [];
@@ -36,7 +31,8 @@ function ChartService (widgetService) {
                     // Loop through returned results
                     for(var resultCount = 0; resultCount < resultArray.length; resultCount++) {
 
-                        self.fieldContent = resultArray[resultCount][widget.field]
+                        // Drill down to the field we want
+                        self.fieldContent = self.traverseObject(widget.fieldPath, resultArray[resultCount]);
 
                         // If the value of the field is an array
                         if(Array.isArray(self.fieldContent)) {
@@ -44,9 +40,11 @@ function ChartService (widgetService) {
                             for(var index in self.fieldContent) {
                                 var arrayValue = self.fieldContent[index];
 
+                                // Calculate the stats for the value and set them on the widget
                                 widget = self.calculateStats(widget, arrayValue);
                             }
                         } else {
+                            // Calculate the stats for the value and set them on the widget
                             widget = self.calculateStats(widget, self.fieldContent);
                         }
 
@@ -81,6 +79,20 @@ function ChartService (widgetService) {
             }
 
             return widget;
+        },
+
+        traverseObject : function(fieldPath, object) {
+
+            // Loop through all of the keys in the array
+            for(var pathCount = 0; pathCount < fieldPath.length; pathCount++) {
+
+                // Select each value for the key and continuing drilling down
+                object = object[fieldPath[pathCount]];
+
+            }
+
+            // Return the object we want stats on
+            return object;
         }
 
     };

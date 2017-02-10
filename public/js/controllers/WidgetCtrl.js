@@ -14,7 +14,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 	$scope.chart = {};
 
-	self.fieldBlacklist = [
+	self.blacklist = [
 		"_id",
 		"__v"
 	];
@@ -180,6 +180,13 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	this.systemChanged = function() {
 		if($scope.widget.system) {
 			var systemId = $scope.widget.system;
+
+			$scope.fields = [];
+			$scope.field = "";
+			$scope.fieldPathDisplay = "";
+
+			$scope.widget.fieldPath = [];
+
 			this.getEndpoints(systemId);
 		} else {
 			$scope.endpoints = [];
@@ -197,7 +204,16 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	this.endpointChanged = function() {
 		if($scope.widget.endpoint) {
 
-			var self = this;
+			$scope.fields = [];
+
+			$scope.dataset = "";
+			$scope.datasetPathDisplay = "";
+
+			$scope.field = "";			
+			$scope.fieldPathDisplay = "";
+
+			$scope.widget.datasetPath = [];
+			$scope.widget.fieldPath = [];
 
 			var apiURL;
 			var method;
@@ -215,50 +231,50 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			$scope.widget.method = method;
 			$scope.widget.apiURL = apiURL;
 
-
-			this.getFields(method, apiURL).then(function(fields) {
-				$scope.fields = fields
-			});
-			
-		} else {
-			$scope.requiresBody = false;
+			this.getOptions(method, apiURL);			
 		}
 	};
 
-	this.getFields = function(method, apiURL) {
+	this.getOptions = function(method, apiURL) {
 
 		// Test endpoint and get data back
-		return WidgetService.makeRESTCall(method, apiURL).then(function(result) {
+		WidgetService.makeRESTCall(method, apiURL).then(function(response) {
 
-			if(result && result.status == 200) {
+			// Check result is ok
+			if(response && response.status == 200) {
 
-				// Reset fields
-				var fields = [];
+				// Reset options
+				var datasets = [];
 
-				self.searchableObject;
-				
-				// If an object is returned containing a single array
-				if(Array.isArray(result.data[Object.keys(result.data)[0]]) && Object.keys(result.data).length == 1) {
-					// Use first object in that array
-					self.searchableObject = result.data[Object.keys(result.data)[0]][0];
-				// If result is an array then get first object
-				} else if(Array.isArray(result.data)) {
-					self.searchableObject = result.data[0];
-				} else {
-					// If result is just an object - maybe they want stats of an array inside
-					self.searchableObject = result.data;
+				// Always starts with data due to headers
+				var responseObject = response.data;
+
+				// If an object is returned containing just a single array
+				if(Array.isArray(responseObject[Object.keys(responseObject)[0]]) && Object.keys(responseObject).length == 1) {
+					// Use that array as there are no other options currently
+					responseObject = responseObject[Object.keys(responseObject)[0]];
 				}
 
-				self.searchableObject = {name : "ben", age : 22, friend : {name : "lauren", age : 19}};
-
-				for(var field in self.searchableObject)
+				// List every options as dataset array
+				for(var dataset in responseObject)
 				{	
-					if(!_.contains(self.fieldBlacklist, field)) {
-						fields.push(field);
+					if(!_.contains(self.blacklist, dataset)) {
+						datasets.push(dataset);
 					}
 				}
 
-				return fields;
+				$scope.datasets = datasets;
+
+				// Reset fields
+				$scope.fields = [];
+
+				// If response object is an array
+				if(Array.isArray(responseObject)) {
+					// Populate fields from the first object
+					self.populateFields(responseObject[0]);
+				}
+
+				self.searchableArray = responseObject;
 
 			} else {
 				// display error with REST call
@@ -268,24 +284,85 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		});
 	};
 
-	this.fieldChanged = function() {
+	this.populateFields = function(searchableObject) {
 
-		if($scope.field) {
+		var fields = [];
+
+		for(var field in searchableObject)
+		{	
+			if(!_.contains(self.blacklist, field)) {
+				fields.push(field);
+			}
+		}
+
+		$scope.fields = fields;
+
+	};
+
+	this.populateDatasets = function(searchableArray) {
+
+		var datasets = [];
+
+		for(var dataset in searchableArray)
+		{	
+			if(!_.contains(self.blacklist, dataset)) {
+				datasets.push(dataset);
+			}
+		}
+
+		$scope.datasets = datasets;
+
+	};
+
+	this.datasetChanged = function() { 
+
+		if($scope.dataset) {
+
+			$scope.widget.datasetPath.push($scope.dataset);
+			$scope.datasetPathDisplay = $scope.widget.datasetPath.join('.');
+
+			$scope.widget.fieldPath = [];
+			$scope.fieldPathDisplay = "";
 
 			// Reset fields
 			$scope.fields = [];
 
+			self.searchableObject = {};
+
+			// Update searchable array
+			self.searchableArray = self.searchableArray[$scope.dataset];
+
+			this.populateDatasets(self.searchableArray);
+
+			// If selected dataset is an array
+			if(Array.isArray(self.searchableArray)) {
+				self.searchableObject = self.searchableArray[0];
+				
+				// Populate fields
+				self.populateFields(self.searchableObject);
+			}
+		}
+
+	}
+
+	this.fieldChanged = function() {
+
+		if($scope.field) {
+
 			// Update field selection
 			self.searchableObject = self.searchableObject[$scope.field];
 
-			if(self.searchableObject instanceof Object && !Array.isArray(self.searchableObject)) {
+			if(self.searchableObject instanceof Object) {
 
-				for(var field in self.searchableObject)
-				{	
-					if(!_.contains(self.fieldBlacklist, field)) {
-						$scope.fields.push(field);
-					}
+				if(Array.isArray(self.searchableObject)) {
+					// Take first object
+					self.searchableObject = self.searchableObject[0];
 				}
+
+				this.populateFields(self.searchableObject);
+			} else {
+				// No sub documents or arrays remaining
+				$scope.fields = [];
 			}
 
 			$scope.widget.fieldPath.push($scope.field);
@@ -310,8 +387,8 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 				});
 			} catch(err) {
-				widget.loading = false;
-				widget.error = err;
+				$scope.chart.loading = false;
+				$scope.chart.error = err;
 				self.errorHandler(err);
 			}
 		}
@@ -357,10 +434,17 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		this.getSystems();
 
 		$scope.widget = {};
-		$scope.widget.fieldPath = [];
-		$scope.requiresBody = false;
-		$scope.fields = [];
 
+		$scope.widget.graphType = "pie";
+
+		$scope.widget.datasetPath = [];
+		$scope.widget.fieldPath = [];
+
+		$scope.requiresBody = false;
+
+		$scope.datasets = [];
+		$scope.fields = [];
+		
 		$scope.widget.createdDate = moment().format('DD/MM/YYYY');
 
 		UserService.getCurrentUser().then(function(user) {
@@ -378,7 +462,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 	this.errorHandler = function(error) {
         notificationService.error(error);
-    }
+    };
 
 	$scope.type = "pie";
 
