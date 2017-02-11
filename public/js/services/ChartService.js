@@ -22,6 +22,12 @@ function ChartService (widgetService) {
                         throw "No response from server.";
                     }
 
+                    // If an object is returned containing just a single array
+                    if(Array.isArray(apiResponse.data[Object.keys(apiResponse.data)[0]]) && Object.keys(apiResponse.data).length == 1) {
+                        // Use that array as there are no other options currently
+                        apiResponse.data = apiResponse.data[Object.keys(apiResponse.data)[0]];
+                    }
+
                     // Get the dataset
                     resultArray = self.traverseObject(widget.datasetPath, apiResponse.data);
 
@@ -81,18 +87,25 @@ function ChartService (widgetService) {
             return widget;
         },
 
-        traverseObject : function(fieldPath, object) {
+        traverseObject : function(path, object) {
 
-            // Loop through all of the keys in the array
-            for(var pathCount = 0; pathCount < fieldPath.length; pathCount++) {
+            if(path && path.length) {
 
-                // Select each value for the key and continuing drilling down
-                object = object[fieldPath[pathCount]];
+                // Loop through all of the keys in the array
+                for(var pathCount = 0; pathCount < path.length; pathCount++) {
 
+                    // Select each value for the key and continuing drilling down
+                    object = object[path[pathCount]];
+
+                }
+
+                // Return the object we want stats on
+                return object;
+
+            } else {
+                // No path so return object
+                return object;
             }
-
-            // Return the object we want stats on
-            return object;
         }
 
     };

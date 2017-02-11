@@ -1619,6 +1619,13 @@ table.tile_info span.right {
   padding-left: 10px !important;
   padding-right: 10px !important; }
 
+.details-input-group {
+  margin-bottom: 10px;
+  padding-left: 0px !important;
+  padding-right: 10px !important;
+  width : 72%;
+}
+
 .ln_solid {
   border-top: 1px solid #e5e5e5;
   color: #ffffff;

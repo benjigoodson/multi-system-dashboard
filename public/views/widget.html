@@ -38,13 +38,29 @@
               </li>
               <li>
                 <i class="fa fa-home"></i> Home Screen:
-                <input type="checkbox" class="form-control" ng-disabled="!edit" ng-model="widget.displayHome" ng-false-value="'FALSE'" ng-true-value="'TRUE'">
+                <input type="checkbox" class="form-control" title="Check to display widget on the home screen" ng-disabled="!edit" ng-model="widget.displayHome" ng-false-value="'FALSE'" ng-true-value="'TRUE'">
               </li>
               <li>
                 <i class="fa fa-globe"></i> API URL: {{widget.apiURL}}
               </li>
               <li>
                 <i class="fa fa-exchange"></i> Method: {{widget.method}}
+              </li>
+              <li>
+                <i class="fa fa-tasks"></i> Dataset Path: {{widget.datasetPath.join('.')}}
+              </li>
+              <li ng-show="!edit">
+                <i class="fa fa-clone"></i> Field Path: {{widget.fieldPath.join('.')}}
+              </li>
+              <li ng-show="edit">
+                <i class="fa fa-clone"></i> Field Path:
+                <div class="details-input-group input-group input-group-sm">
+                  <label ng-show="widget.fieldPath && widget.fieldPath.length > 0" class="input-group-addon" for="fieldPath">{{widget.fieldPath.join('.')}}</label>
+                  <select class="select2_single form-control editWidget" ng-model="field" ng-change="widgetCtrl.fieldChanged()">
+                    <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
+                  </select>
+                  <a class="btn btn-default input-group-addon" title="Click to clear the fields path." ng-click="widgetCtrl.clearFieldPath()"><i class="fa fa-ban m-right-xs"></i></a>
+                </div>
               </li>
               <li ng-show="!edit">
                 <i class="fa fa-{{widget.graphType}}-chart"></i> Graph type: {{widget.graphType}}
@@ -55,15 +71,6 @@
                   <option value="bar">Bar</option>
                   <option value="pie">Pie</option>
                   <option value="line">Line</option>
-                </select>
-              </li>
-              <li ng-show="!edit">
-                <i class="fa fa-clone"></i> Field: {{widget.field}}
-              </li>
-              <li ng-show="edit">
-                <i class="fa fa-bullseye"></i> Field:
-                <select class="select2_single form-control editWidget" style="width: 70%" ng-model="widget.field">
-                  <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
                 </select>
               </li>
             </ul>

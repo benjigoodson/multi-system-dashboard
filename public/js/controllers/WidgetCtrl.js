@@ -85,12 +85,15 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 		if($scope.edit == true) {
 			$scope.edit = false;
+
+			this.getWidget();
 		} else {
 			$scope.edit = true;
 
-			this.getFields($scope.widget.method, $scope.widget.apiURL).then(function(fields) {
-				$scope.fields = fields;
-			});
+			$scope.datasets = [];
+			$scope.fields = [];
+
+			this.getOptions($scope.widget.method, $scope.widget.apiURL);
 		}
 
 	};
@@ -272,9 +275,31 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 				if(Array.isArray(responseObject)) {
 					// Populate fields from the first object
 					self.populateFields(responseObject[0]);
+
+					// Set searchableObject
+					self.searchableObject = responseObject[0];
 				}
 
 				self.searchableArray = responseObject;
+
+				// If editing a widget
+				if($scope.edit && $scope.widget.datasetPath) {
+
+					// Simulate selecting a dataset
+					self.searchableArray = self.traverseObject($scope.widget.datasetPath, self.searchableArray);
+
+					// If selected dataset is an array
+					if(Array.isArray(self.searchableArray)) {
+
+						self.searchableObject = self.searchableArray[0];
+
+						self.searchableObject = self.traverseObject($scope.widget.fieldPath, self.searchableObject);
+						
+						// Populate fields
+						self.populateFields(self.searchableObject);
+					}
+
+				}
 
 			} else {
 				// display error with REST call
@@ -288,10 +313,13 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 		var fields = [];
 
-		for(var field in searchableObject)
-		{	
-			if(!_.contains(self.blacklist, field)) {
-				fields.push(field);
+		if(searchableObject instanceof Object) {
+
+			for(var field in searchableObject)
+			{	
+				if(!_.contains(self.blacklist, field)) {
+					fields.push(field);
+				}
 			}
 		}
 
@@ -453,6 +481,14 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 	};
 
+	this.clearFieldPath = function() {
+		$scope.widget.fieldPath = [];
+
+		self.searchableObject = self.searchableArray[0];
+
+		self.populateFields(self.searchableArray[0]);
+	};
+
 	this.onFinish = function() {
 
 		// Create new widget
@@ -463,6 +499,27 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	this.errorHandler = function(error) {
         notificationService.error(error);
     };
+
+	this.traverseObject = function(path, object) {
+
+		if(path && path.length) {
+
+			// Loop through all of the keys in the array
+			for(var pathCount = 0; pathCount < path.length; pathCount++) {
+
+				// Select each value for the key and continuing drilling down
+				object = object[path[pathCount]];
+
+			}
+
+			// Return the object we want stats on
+			return object;
+
+		} else {
+			// No path so return object
+			return object;
+		}
+	}
 
 	$scope.type = "pie";
 
