@@ -33,9 +33,18 @@
             </div>
             <br>
           </div>
-          <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" chart-type="widget.graphType" 
-              chart-data="widget.data" chart-labels="widget.labels">
-          </canvas>
+          <div ng-show="widget.graphType == 'count'" class="tile_count">
+            <div class="tile_stats_count">
+              <span class="count-top">Field Path: {{widget.fieldPath.join(".")}}</span>
+              <div class="count">{{widget.data}}</div>
+              <h3 class="count-bottom">Value: <span class="value">{{widget.value}}</span></h3>
+            </div>
+          </div>
+          <div ng-show="widget.graphType != 'count'">
+            <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" chart-type="widget.graphType" 
+                chart-data="widget.data" chart-labels="widget.labels">
+            </canvas>
+          </div>
         </div>
       </div>
     </div>

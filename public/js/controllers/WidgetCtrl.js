@@ -186,7 +186,6 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 			$scope.fields = [];
 			$scope.field = "";
-			$scope.fieldPathDisplay = "";
 
 			$scope.widget.fieldPath = [];
 
@@ -210,10 +209,8 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			$scope.fields = [];
 
 			$scope.dataset = "";
-			$scope.datasetPathDisplay = "";
 
-			$scope.field = "";			
-			$scope.fieldPathDisplay = "";
+			$scope.field = "";
 
 			$scope.widget.datasetPath = [];
 			$scope.widget.fieldPath = [];
@@ -258,7 +255,10 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 					responseObject = responseObject[Object.keys(responseObject)[0]];
 				}
 
-				// List every options as dataset array
+				// Store response
+				self.responseObject = responseObject;
+
+				// List every option as dataset array
 				for(var dataset in responseObject)
 				{	
 					if(!_.contains(self.blacklist, dataset)) {
@@ -347,10 +347,8 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		if($scope.dataset) {
 
 			$scope.widget.datasetPath.push($scope.dataset);
-			$scope.datasetPathDisplay = $scope.widget.datasetPath.join('.');
 
 			$scope.widget.fieldPath = [];
-			$scope.fieldPathDisplay = "";
 
 			// Reset fields
 			$scope.fields = [];
@@ -394,33 +392,43 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			}
 
 			$scope.widget.fieldPath.push($scope.field);
-			$scope.fieldPathDisplay = $scope.widget.fieldPath.join('.');
 
-			$scope.chart.loading = true;
-
-			try {
-				// Display sample graph
-				ChartService.generateChartData($scope.widget).then(function(widgetData) {	
-
-					$scope.chart.graphType = widgetData.graphType;
-					$scope.chart.data = widgetData.data;
-					$scope.chart.labels = widgetData.labels;
-					$scope.chart.loading = false;
-
-				}, function(errorMessage) {
-
-					$scope.chart.loading = false;
-					$scope.chart.error = errorMessage;
-					console.log("Unable to contact sever for widget: " + widget._id);
-
-				});
-			} catch(err) {
-				$scope.chart.loading = false;
-				$scope.chart.error = err;
-				self.errorHandler(err);
+			// If graph type is not count generate chart
+			if($scope.widget.graphType != "count") {
+				this.createChart();
 			}
 		}
 	};
+
+	this.valueChanged = function() {
+		this.createChart();
+	};
+
+	this.createChart = function() {
+		$scope.chart.loading = true;
+
+		try {
+			// Display sample graph
+			ChartService.generateChartData($scope.widget).then(function(widgetData) {	
+
+				$scope.chart.graphType = widgetData.graphType;
+				$scope.chart.data = widgetData.data;
+				$scope.chart.labels = widgetData.labels;
+				$scope.chart.loading = false;
+
+			}, function(errorMessage) {
+
+				$scope.chart.loading = false;
+				$scope.chart.error = errorMessage;
+				console.log("Unable to contact sever for widget: " + widget._id);
+
+			});
+		} catch(err) {
+			$scope.chart.loading = false;
+			$scope.chart.error = err;
+			self.errorHandler(err);
+		}
+	}
 
 	this.graphChanged = function() {
 		if($scope.widget.graphType) {
@@ -481,12 +489,30 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 	};
 
+	this.removeOneDatasetPath = function() {
+		$scope.widget.datasetPath.splice($scope.widget.datasetPath.length - 1, 1);
+
+		self.searchableArray = this.traverseObject($scope.widget.datasetPath, self.responseObject);
+
+		self.populateDatasets(self.searchableArray);
+
+	};
+
+	this.removeOneFieldPath = function() {
+		$scope.widget.fieldPath.splice($scope.widget.fieldPath.length - 1, 1);
+
+		self.searchableObject = this.traverseObject($scope.widget.fieldPath, self.searchableArray[0]);
+
+		self.populateFields(self.searchableObject);
+
+	};
+
 	this.clearFieldPath = function() {
 		$scope.widget.fieldPath = [];
 
 		self.searchableObject = self.searchableArray[0];
 
-		self.populateFields(self.searchableArray[0]);
+		self.populateFields(self.searchableObject);
 	};
 
 	this.onFinish = function() {
@@ -506,10 +532,8 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 			// Loop through all of the keys in the array
 			for(var pathCount = 0; pathCount < path.length; pathCount++) {
-
 				// Select each value for the key and continuing drilling down
 				object = object[path[pathCount]];
-
 			}
 
 			// Return the object we want stats on
@@ -530,6 +554,10 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		"Green Color",
 		"Blue Color"
 	];
+
+	$scope.exampleCountField = "Colour";
+	$scope.exampleCount = "180";
+	$scope.exampleCountValue = "Green Color";
 
 	$scope.series = [];
 

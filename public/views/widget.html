@@ -15,9 +15,18 @@
             </div>
             <br>
           </div>
-          <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" chart-type="widget.graphType" 
-            chart-data="widget.data" chart-labels="widget.labels">
-          </canvas>
+          <div ng-show="widget.graphType == 'count'" class="tile_count">
+            <div class="tile_stats_count">
+              <span class="count-top">Field Path: {{widget.fieldPath.join(".")}}</span>
+              <div class="count">{{widget.data}}</div>
+              <h3 class="count-bottom">Value: <span class="value">{{widget.value}}</span></h3>
+            </div>
+          </div>
+          <div ng-show="widget.graphType != 'count'">
+            <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" chart-type="widget.graphType" 
+              chart-data="widget.data" chart-labels="widget.labels">
+            </canvas>
+          </div>
         </div>
         <div class="col-md-7 col-sm-7 col-xs-12">
           <h3>Widget: {{widget.name}}</h3>
@@ -59,11 +68,11 @@
                   <select class="select2_single form-control editWidget" ng-model="field" ng-change="widgetCtrl.fieldChanged()">
                     <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
                   </select>
-                  <a class="btn btn-default input-group-addon" title="Click to clear the fields path." ng-click="widgetCtrl.clearFieldPath()"><i class="fa fa-ban m-right-xs"></i></a>
+                  <a class="btn btn-default input-group-addon" title="Click to clear the fields path." ng-click="widgetCtrl.clearFieldPath()"><i class="fa fa-ban"></i></a>
                 </div>
               </li>
               <li ng-show="!edit">
-                <i class="fa fa-{{widget.graphType}}-chart"></i> Graph type: {{widget.graphType}}
+                <i ng-show="widget.graphType == 'count'" class="fa fa-arrow-circle-o-up"></i><i class="fa fa-{{widget.graphType}}-chart"></i> Graph type: {{widget.graphType}}
               </li>
               <li ng-show="edit">
                 <i class="fa fa-{{widget.graphType}}-chart"></i> Graph type:

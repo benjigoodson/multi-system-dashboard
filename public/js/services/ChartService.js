@@ -31,7 +31,12 @@ function ChartService (widgetService) {
                     // Get the dataset
                     resultArray = self.traverseObject(widget.datasetPath, apiResponse.data);
 
-                    widget.data = [];
+                    if(widget.graphType == "count") {
+                        widget.data = 0;
+                    } else {
+                        widget.data = [];
+                    }
+
                     widget.labels = [];
 
                     // Loop through returned results
@@ -69,19 +74,26 @@ function ChartService (widgetService) {
         },
 
         calculateStats : function(widget, value) {
-            // Get position of that value if we have already counted it
-            var index = _.indexOf(widget.labels, value);
 
-            // If it's in the list
-            if(index !== -1) {
-                // Store each new value in an array, this will be our labels
-                widget.data[index] = widget.data[index] + 1;
+            if(widget.graphType == "count") {
+                if(widget.value == value) {
+                    widget.data++;
+                }
             } else {
-                // We already have that value stored increase it's data by 1                        
-                widget.labels.push(value);
+                // Get position of that value if we have already counted it
+                var index = _.indexOf(widget.labels, value);
 
-                // Count will be set as 1
-                widget.data.push(1);
+                // If it's in the list
+                if(index !== -1) {
+                    // Store each new value in an array, this will be our labels
+                    widget.data[index] = widget.data[index] + 1;
+                } else {
+                    // We already have that value stored increase it's data by 1                        
+                    widget.labels.push(value);
+
+                    // Count will be set as 1
+                    widget.data.push(1);
+                }
             }
 
             return widget;
@@ -93,10 +105,8 @@ function ChartService (widgetService) {
 
                 // Loop through all of the keys in the array
                 for(var pathCount = 0; pathCount < path.length; pathCount++) {
-
                     // Select each value for the key and continuing drilling down
                     object = object[path[pathCount]];
-
                 }
 
                 // Return the object we want stats on

@@ -154,6 +154,7 @@
                     <option value="bar">Bar</option>
                     <option value="pie">Pie</option>
                     <option value="line">Line</option>
+                    <option value="count">Count</option>
                   </select>
                 </div>
               </div>
@@ -162,10 +163,11 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="dataset">Dataset
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12 input-group input-group-sm">
-                  <label ng-show="datasetPathDisplay" class="input-group-addon" for="dataset">{{datasetPathDisplay}}</label>
+                  <label ng-show="widget.datasetPath && widget.datasetPath.length > 0" class="input-group-addon" for="dataset">{{widget.datasetPath.join('.')}}</label>
                   <select class="select2_single form-control" id="field" name="dataset" ng-model="dataset" ng-change="widgetCtrl.datasetChanged()">
                     <option ng-repeat="dataset in datasets" value="{{dataset}}">{{dataset}}</option>
                   </select>
+                  <a class="btn btn-default input-group-addon" ng-disabled="!widget.datasetPath || widget.datasetPath.length == 0" title="Click to remove the last the dataset path value." ng-click="widgetCtrl.removeOneDatasetPath()"><i class="fa fa-arrow-left"></i></a>
                 </div>
               </div>
 
@@ -173,16 +175,33 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="field">Field <span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12 input-group input-group-sm">
-                  <label ng-show="fieldPathDisplay" class="input-group-addon" for="field">{{fieldPathDisplay}}</label>
+                  <label ng-show="widget.fieldPath && widget.fieldPath.length > 0" class="input-group-addon" for="field">{{widget.fieldPath.join('.')}}</label>
                   <select class="select2_single form-control" id="field" name="field" ng-model="field" ng-change="widgetCtrl.fieldChanged()">
                     <option ng-hide="dataset || widgetCtrl.searchableObject" value="" disabled selected>Select an array as your dataset</option>
                     <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
                   </select>
+                  <a class="btn btn-default input-group-addon" ng-disabled="!widget.fieldPath || widget.fieldPath.length == 0" title="Click to remove the last the field path value." ng-click="widgetCtrl.removeOneFieldPath()"><i class="fa fa-arrow-left"></i></a>
+                </div>
+              </div>
+
+              <div ng-show="widget.graphType == 'count'" class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="value">Value <span class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" ng-model="widget.value" ng-change="widgetCtrl.valueChanged()" id="widget-value" name="widget-value" required="required" class="form-control col-md-7 col-xs-12">
                 </div>
               </div>
 
               <div class="chartCreate">
-                <canvas class="chart-base" chart-type="type" chart-data="data" chart-labels="labels" 
+                <div ng-show="widget.graphType == 'count'" class="tile_count">
+                  <div class="tile_stats_count">
+                    <span class="count-top">Field: {{exampleCountField}}</span>
+                    <div class="count">{{exampleCount}}</div>
+                    <h3 class="count-bottom">{{exampleCountValue}}</h3>
+                  </div>
+                </div>
+
+                <canvas ng-show="widget.graphType != 'count'" class="chart-base" chart-type="type" chart-data="data" chart-labels="labels" 
                   chart-series="series" width="205px" height="115px"></canvas>
               </div>
 
@@ -203,8 +222,17 @@
                 <br>
               </div>
               <div ng-show="chart.loading == false && !chart.error">
-                <canvas class="chart-base" chart-type="chart.graphType" chart-data="chart.data" chart-labels="chart.labels" 
+                 <div ng-show="widget.graphType == 'count'" class="tile_count">
+                  <div class="tile_stats_count">
+                    <span class="count-top">Field Path: {{widget.fieldPath.join(".")}}</span>
+                    <div class="count">{{chart.data}}</div>
+                    <h3 class="count-bottom">Value: <span class="value">{{widget.value}}</span></h3>
+                  </div>
+                </div>
+                <div ng-show="widget.graphType != 'count'">
+                  <canvas class="chart-base" chart-type="chart.graphType" chart-data="chart.data" chart-labels="chart.labels" 
                     width="450px" height="204px"></canvas>
+                </div>
               </div>
             </div>
           </div>
