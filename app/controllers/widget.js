@@ -73,6 +73,11 @@ controller.update = function update (updatedWidget, callback) {
         }
     }
 
+    // If not count then remove value field
+    if(updatedWidget.value != undefined && updatedWidget.graphType != "count") {
+        delete updatedWidget.value;
+    }
+
     Widget.findOneAndUpdate(query, updatedWidget, {new: true}, function(err, widget) {
 
         if(err) {

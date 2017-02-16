@@ -59,10 +59,10 @@
                 <i class="fa fa-tasks"></i> Dataset Path: {{widget.datasetPath.join('.')}}
               </li>
               <li ng-show="!edit">
-                <i class="fa fa-clone"></i> Field Path: {{widget.fieldPath.join('.')}}
+                <i class="fa fa-code-fork"></i> Field Path: {{widget.fieldPath.join('.')}}
               </li>
               <li ng-show="edit">
-                <i class="fa fa-clone"></i> Field Path:
+                <i class="fa fa-code-fork"></i> Field Path:
                 <div class="details-input-group input-group input-group-sm">
                   <label ng-show="widget.fieldPath && widget.fieldPath.length > 0" class="input-group-addon" for="fieldPath">{{widget.fieldPath.join('.')}}</label>
                   <select class="select2_single form-control editWidget" ng-model="field" ng-change="widgetCtrl.fieldChanged()">
@@ -75,12 +75,20 @@
                 <i ng-show="widget.graphType == 'count'" class="fa fa-arrow-circle-o-up"></i><i class="fa fa-{{widget.graphType}}-chart"></i> Graph type: {{widget.graphType}}
               </li>
               <li ng-show="edit">
-                <i class="fa fa-{{widget.graphType}}-chart"></i> Graph type:
+                <i ng-show="widget.graphType == 'count'" class="fa fa-arrow-circle-o-up"></i><i class="fa fa-{{widget.graphType}}-chart"></i> Graph type:
                 <select class="select2_single form-control editWidget" id="graph-type" name="graph-type" ng-model="widget.graphType">
                   <option value="bar">Bar</option>
                   <option value="pie">Pie</option>
                   <option value="line">Line</option>
+                  <option value="count">Count</option>
                 </select>
+              </li>
+              <li ng-show="!edit && widget.graphType == 'count'">
+                <i class="fa fa-commenting-o"></i> Value: {{widget.value}}
+              </li>
+              <li ng-show="edit && widget.graphType == 'count'">
+                <i class="fa fa-commenting-o"></i> Value:
+                <input ng-model="widget.value" class="form-control" type="text">
               </li>
             </ul>
             <br>
