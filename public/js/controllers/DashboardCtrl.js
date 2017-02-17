@@ -8,9 +8,9 @@ DashboardModule.constant("moment", moment);
 DashboardModule.controller('DashboardController', DashboardController);
 
 DashboardController.$inject = ['$scope', '$location', '$routeParams', 'UserService', 'DashboardService', 
-	'WidgetService', 'ChartService', 'notificationService'];
+	'WidgetService', 'ChartService', 'notificationService', 'ModalService'];
 function DashboardController($scope, $location, $routeParams, UserService, DashboardService, WidgetService, 
-	ChartService, notificationService) {
+	ChartService, notificationService, ModalService) {
 
 	var self = this;
 
@@ -151,7 +151,7 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 			
 			self.dashboard.widgets.forEach(function (widgetId, i) {
 				WidgetService.getWidget(widgetId).then(function(response) {
-					if(response.success == true) {
+					if(response.success == true && response.data) {
 						self.displayWidget(response.data);
 					}
 				});
@@ -214,19 +214,27 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 	};
 
 	this.deleteDashboard = function(dashboardId) {
-		DashboardService.delete(dashboardId).then(function(response) {
 
-			if(response.data.success == true) {
-				notificationService.success(response.data.message);
-				$location.path("/");
-			} else {
-				self.errorHandler("Unable to delete dashboard:" + response.data.message);
+		ModalService.displayModal().result.then(function (response) {
+			if(response) {
+				DashboardService.delete(dashboardId).then(function(response) {
+
+					if(response.data.success == true) {
+						notificationService.success(response.data.message);
+						$location.path("/");
+					} else {
+						self.errorHandler("Unable to delete dashboard:" + response.data.message);
+					}
+
+					DashboardService.updateMenu();
+
+				}, function(error) {
+					self.errorHandler("Unable to delete dashboard: " + error);
+				});
 			}
-
-			DashboardService.updateMenu();
-
-		}, function(error) {
-			self.errorHandler("Unable to delete dashboard: " + error);
+		}, function (response) {
+			// Modal dismissed
+			console.log("Modal dismissed: " + response);
 		});
 	};
 

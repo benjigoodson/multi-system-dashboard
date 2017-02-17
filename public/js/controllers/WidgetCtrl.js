@@ -111,22 +111,6 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 					// Generate chart for widget
 					ChartService.generateChartData(widget)
 						.then(function(widget) {
-							if(widget.graphType == "bar") {
-
-								widget.options = { 
-									scales: {
-										yAxes: [{
-											ticks: {
-												min : 0,
-												stepSize : 1
-											}
-										}]
-									}
-								}; 
-
-							} else {
-								widget.options = {};
-							}
 
 							widget.loading = false;
 							$scope.widget = widget;
@@ -303,7 +287,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 			} else {
 				// display error with REST call
-				this.errorHandler("Problem making REST call.");
+				self.errorHandler("Problem making REST call.");
 			}
 
 		});

@@ -17,6 +17,7 @@
     "angular-pnotify": "^0.1.2",
     "angular-route": "^1.5.8",
     "angular-sanitize": "^1.6.1",
+    "angular-ui-bootstrap": "^2.5.0",
     "angular-ui-select": "^0.12.100",
     "body-parser": "^1.4.2",
     "bootstrap-switch": "^3.3.2",

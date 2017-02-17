@@ -60,6 +60,25 @@ function ChartService (widgetService) {
                         }
 
                     }
+
+                    if(widget.graphType == "bar") {
+
+                        widget.options = { 
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        min : 0,
+                                        stepSize : 1
+                                    }
+                                }]
+                            }
+                        }; 
+
+                    } else {
+                        widget.options = {};
+                    }
+
+
                 } catch(err) {
                     throw err;
                 }

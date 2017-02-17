@@ -41,8 +41,8 @@
             </div>
           </div>
           <div ng-show="widget.graphType != 'count'">
-            <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" chart-type="widget.graphType" 
-                chart-data="widget.data" chart-labels="widget.labels">
+            <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" 
+                chart-type="widget.graphType" chart-options="widget.options" chart-data="widget.data" chart-labels="widget.labels">
             </canvas>
           </div>
         </div>
