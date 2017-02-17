@@ -5,8 +5,8 @@ var WidgetModule = angular.module('WidgetModule');
 // Imports
 WidgetModule.constant("moment", moment);
 
-WidgetModule.controller('WidgetController', function($scope, $http, $routeParams, $location, WidgetService, SystemService, EndpointService, 
-	ChartService, UserService, notificationService) { 
+WidgetModule.controller('WidgetController', function($scope, $http, $routeParams, $location, WidgetService, SystemService, 
+	EndpointService, ChartService, UserService, notificationService, ModalService) { 
 
 	this.id = $routeParams.widget_id;
 
@@ -136,18 +136,27 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	}
 
 	this.deleteWidget = function(widgetId) {
-		WidgetService.delete(widgetId).then(function(response) {
 
-			if(response.success == true) {
-				notificationService.success(response.message);
-				$location.path("/");
-			} else {
-				self.errorHandler("Unable to delete widget:" + response.message);
+		ModalService.displayModal().result.then(function (modal_response) {
+			if(modal_response) {
+				WidgetService.delete(widgetId).then(function(response) {
+
+					if(response.success == true) {
+						notificationService.success(response.message);
+						$location.path("/");
+					} else {
+						self.errorHandler("Unable to delete widget:" + response.message);
+					}
+
+				}, function(error) {
+					self.errorHandler("Unable to delete widget.");
+				});
 			}
-
-		}, function(error) {
-			self.errorHandler("Unable to delete widget.");
+		}, function (modal_response) {
+			// Modal dismissed
+			console.log("Modal dismissed: " + modal_response);
 		});
+
 	};
 
 	this.getWidgets = function() {

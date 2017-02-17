@@ -7,8 +7,10 @@ SystemModule.constant("moment", moment);
 
 SystemModule.controller('SystemController', SystemController);
 
-SystemController.$inject = ['$scope', '$location', '$routeParams', 'UserService', 'SystemService', 'EndpointService', 'notificationService'];
-function SystemController($scope, $location, $routeParams, UserService, SystemService, EndpointService, notificationService) { 
+SystemController.$inject = ['$scope', '$location', '$routeParams', 'UserService', 'SystemService', 'EndpointService', 
+	'notificationService', 'ModalService'];
+function SystemController($scope, $location, $routeParams, UserService, SystemService, EndpointService, 
+	notificationService, ModalService) { 
 
 	var self = this;
 
@@ -32,8 +34,10 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 	};
 
 	this.getSystems = function() {
-		SystemService.getAll().then(function(data) {
-			$scope.systems = data;
+		SystemService.getAll().then(function(response) {
+			if(response.success == true) {
+				$scope.systems = response.data;
+			}
 		});
 	};
 
@@ -56,25 +60,43 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 	};
 
 	this.deleteSystemFromEdit = function(systemId) {
-		this.deleteSystem(systemId).then(function(response) {
-			if(response.success) {
-				notificationService.success(response.message);
-				$location.path("/systems");
-			} else {
-				self.errorHandler("Unable to delete system:" + response.message);
+
+		ModalService.displayModal().result.then(function (modal_response) {
+			if(modal_response) {
+				self.deleteSystem(systemId).then(function(response) {
+					if(response.success) {
+						notificationService.success(response.message);
+						$location.path("/systems");
+					} else {
+						self.errorHandler("Unable to delete system:" + response.message);
+					}
+				});
 			}
+		}, function (modal_response) {
+			// Modal dismissed
+			console.log("Modal dismissed: " + modal_response);
 		});
+
 	};
 
 	this.deleteSystemFromViewAll = function(systemId) {
-		this.deleteSystem(systemId).then(function(response) {
-			if(response.success) {
-				notificationService.success(response.message);
+
+		ModalService.displayModal().result.then(function (modal_response) {
+			if(modal_response) {
 				
-				self.getSystems();
-			} else {
-				self.errorHandler("Unable to delete system:" + response.message);
+				self.deleteSystem(systemId).then(function(response) {
+					if(response.success) {
+						notificationService.success(response.message);
+						
+						self.getSystems();
+					} else {
+						self.errorHandler("Unable to delete system:" + response.message);
+					}
+				});
 			}
+		}, function (modal_response) {
+			// Modal dismissed
+			console.log("Modal dismissed: " + modal_response);
 		});
 	}
 

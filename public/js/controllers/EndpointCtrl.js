@@ -7,8 +7,10 @@ EndpointModule.constant("moment", moment);
 
 EndpointModule.controller('EndpointController', EndpointController);
 
-EndpointController.$inject = ['$scope', '$location', '$routeParams', 'UserService', 'EndpointService', 'SystemService', 'notificationService'];
-function EndpointController ($scope, $location, $routeParams, UserService, EndpointService, SystemService, notificationService) { 
+EndpointController.$inject = ['$scope', '$location', '$routeParams', 'UserService', 'EndpointService', 'SystemService', 
+	'notificationService', 'ModalService'];
+function EndpointController ($scope, $location, $routeParams, UserService, EndpointService, SystemService, 
+	notificationService, ModalService) { 
 
 	var self = this;
 
@@ -82,31 +84,49 @@ function EndpointController ($scope, $location, $routeParams, UserService, Endpo
 	};
 
 	this.deleteEndpointFromEdit = function(endpointId) {
-		this.deleteEndpoint(endpointId).then(function(response) {
-			if(response.success) {
-				notificationService.success(response.message);
-				$location.path("/endpoints");
-			} else {
-				self.errorHandler("Unable to delete endpoint:" + response.message);
+
+		ModalService.displayModal().result.then(function (modal_response) {
+			if(modal_response) {
+				self.deleteEndpoint(endpointId).then(function(response) {
+					if(response.success) {
+						notificationService.success(response.message);
+						$location.path("/endpoints");
+					} else {
+						self.errorHandler("Unable to delete endpoint:" + response.message);
+					}
+				});
 			}
+		}, function (modal_response) {
+			// Modal dismissed
+			console.log("Modal dismissed: " + modal_response);
 		});
+
 	};
 
 	this.deleteEndpointFromViewAll = function(endpointId) {
 
-		this.deleteEndpoint(endpointId).then(function(response) {
-			if(response.success) {
-				notificationService.success(response.message);
+		ModalService.displayModal().result.then(function (modal_response) {
+			if(modal_response) {
+				self.deleteEndpoint(endpointId).then(function(response) {
+					if(response.success) {
+						notificationService.success(response.message);
 
-				// Refresh table
-				self.getEndpoints();
+						// Refresh table
+						self.getEndpoints();
+					}
+				});
 			}
+		}, function (modal_response) {
+			// Modal dismissed
+			console.log("Modal dismissed: " + modal_response);
 		});
+
 	};
 
 	this.deleteEndpoint = function(endpointId) {
 
 		return EndpointService.delete(endpointId);
+
 	};
 
 	this.setupCreatePage = function() {

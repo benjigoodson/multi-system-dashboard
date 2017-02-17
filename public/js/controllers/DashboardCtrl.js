@@ -215,8 +215,8 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 
 	this.deleteDashboard = function(dashboardId) {
 
-		ModalService.displayModal().result.then(function (response) {
-			if(response) {
+		ModalService.displayModal().result.then(function (modal_response) {
+			if(modal_response) {
 				DashboardService.delete(dashboardId).then(function(response) {
 
 					if(response.data.success == true) {
@@ -232,9 +232,9 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 					self.errorHandler("Unable to delete dashboard: " + error);
 				});
 			}
-		}, function (response) {
+		}, function (modal_response) {
 			// Modal dismissed
-			console.log("Modal dismissed: " + response);
+			console.log("Modal dismissed: " + modal_response);
 		});
 	};
 
