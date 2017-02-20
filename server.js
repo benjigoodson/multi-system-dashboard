@@ -68,14 +68,13 @@ if(!fs.existsSync(dir)) {
 }
 
 // Get local IP
-require('dns').lookup(require('os').hostname(), function (err, address, fam) {
-  server_ip = address;
+var ip = require("ip");
 
-    // Start listening on the server port 
-  app.listen(server_port, function () {
-    console.log("Listening on " + server_ip + ", port " + server_port )
-  });
+server_ip = ip.address();
 
+// Start listening on the server port 
+app.listen(server_port, function () {
+  console.log("Listening on " + server_ip + ", port " + server_port )
 });
 
 // expose app
