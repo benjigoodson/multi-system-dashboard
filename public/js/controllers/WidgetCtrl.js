@@ -437,24 +437,19 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 				];
 
 				$scope.series = [];
-
 				$scope.data = [120, 50, 140, 180, 100];
 
 			} else {
-
 				$scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
-
 				$scope.series = ['Series A', 'Series B'];
-
 				$scope.data = [
 					[65, 59, 80, 81, 56, 55, 40],
 					[28, 48, 40, 19, 86, 27, 90]
 				];
-
+				$scope.exampleCountField = "Colour";
+				$scope.exampleCount = "180";
+				$scope.exampleCountValue = "Green Color";
 			}
-
-			$scope.type = $scope.widget.graphType;
-
 		}
 	};
 
@@ -547,13 +542,5 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		"Green Color",
 		"Blue Color"
 	];
-
-	$scope.exampleCountField = "Colour";
-	$scope.exampleCount = "180";
-	$scope.exampleCountValue = "Green Color";
-
-	$scope.series = [];
-
-	$scope.data = [120, 50, 140, 180, 100];
 
 });
