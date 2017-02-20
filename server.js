@@ -67,9 +67,15 @@ if(!fs.existsSync(dir)) {
   });
 }
 
-// Start listening on the server port 
-app.listen(server_port, function () {
-  console.log("Listening on " + server_ip + ", port " + server_port )
+// Get local IP
+require('dns').lookup(require('os').hostname(), function (err, address, fam) {
+  server_ip = address;
+
+    // Start listening on the server port 
+  app.listen(server_port, function () {
+    console.log("Listening on " + server_ip + ", port " + server_port )
+  });
+
 });
 
 // expose app
