@@ -28,22 +28,22 @@
               <i class="fa fa-calendar-check-o"></i> Created: {{user.createdDate}}
             </li>
             <li>
-              <i class="fa fa-envelope-o"></i> {{user.email}}
+              <i class="fa fa-envelope-o" uib-tooltip="Email"></i> Email: {{user.email}}
             </li>
             <li ng-show="!edit && user.location">
-              <i class="fa fa-map-marker"></i> {{user.location}}
+              <i class="fa fa-map-marker" uib-tooltip="Location"></i> Location: {{user.location}}
             </li>
             <li ng-show="edit">
               <i class="fa fa-map-marker"></i> Location: <input class="form-control" type="text" ng-model="user.location" style="width:65%">
             </li>
             <li ng-show="!edit && user.company">
-              <i class="fa fa-briefcase"></i> {{user.company}}
+              <i class="fa fa-briefcase" uib-tooltip="Company"></i> Company: {{user.company}}
             </li>
             <li ng-show="edit">
               <i class="fa fa-briefcase"></i> Company: <input class="form-control" type="text" ng-model="user.company" style="width:65%">
             </li>
             <li ng-show="!edit && user.website">
-              <i class="fa fa-external-link"></i> {{user.website}}
+              <i class="fa fa-external-link" uib-tooltip="Website"></i> Website: {{user.website}}
             </li>
             <li ng-show="edit">
               <i class="fa fa-external-link"></i> Website: <input class="form-control" type="text" ng-model="user.website" style="width:65%">

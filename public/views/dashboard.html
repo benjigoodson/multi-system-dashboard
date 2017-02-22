@@ -15,8 +15,12 @@
           <p>Description: {{dashboardCtrl.dashboard.description}}</p> 
         </div>      
         <div class="col-md-3 col-sm-3 col-xs-12 bg-white text-right">
-            <a href="#dashboard/{{dashboardCtrl.dashboard._id}}/edit" class="btn btn-success" style="padding-left : 10%"><i class="fa fa-edit m-right-xs"></i> Edit Dashboard</a>
-            <a ng-click="dashboardCtrl.deleteDashboard(dashboardCtrl.dashboard._id)" class="btn btn-danger"><i class="fa fa-trash m-right-xs"></i> Delete Dashboard</a>
+            <a href="#dashboard/{{dashboardCtrl.dashboard._id}}/edit" class="btn btn-success" style="padding-left : 10%">
+              <i class="fa fa-edit m-right-xs"></i> Edit Dashboard
+            </a>
+            <a ng-click="dashboardCtrl.deleteDashboard(dashboardCtrl.dashboard._id)" class="btn btn-danger" style="margin-top: 10px">
+              <i class="fa fa-trash m-right-xs"></i> Delete Dashboard
+            </a>
         </div>
         <div class="clearfix"></div>
       </div>
