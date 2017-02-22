@@ -28,7 +28,6 @@
   max-height: 265px; }
 
 @media only screen and (min-height: 800px) { 
-
   .stepContainer {
       min-height: 42em;
       max-height: 42em; }
@@ -43,7 +42,6 @@
       width: 660px;
       height: 300px; }
 }
-
 
 .nav-sm .container.body .col-md-3.left_col {
   min-height: 100%;
@@ -1792,6 +1790,22 @@ h3 .value {
   width: 12px; }
 
 /** /top tiles **/
+
+.top_search {
+  padding: 0px 10px; }
+
+.top_search .form-control {
+  border-right: 0;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  border-radius: 25px 25px 25px 25px;
+  border: 1px solid rgba(221, 226, 232, 0.49);
+  border-left: 0;
+  padding-left: 15px;
+  border: 1px solid rgba(221, 226, 232, 0.49); }
+
+.top_search .form-control:focus {
+  border: 1px solid rgba(221, 226, 232, 0.49);
+  border-right: 0; }
 
 /* ***** autocomplete ***** */
 .autocomplete-suggestions {

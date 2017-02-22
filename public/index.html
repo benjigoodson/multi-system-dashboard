@@ -86,11 +86,16 @@
                       </ul>
                   </li>
                   <li>
-                      <a><i class="fa fa-edit"></i> Dashboards <span class="fa fa-chevron-down"></span></a>
-                      <ul class="nav child_menu">
-                          <li><a href="#dashboard/create">Create a new dashboard</a></li>
-                          <li ng-repeat="dashboard in mainCtrl.menuDashboards.items"><a href="#dashboard/{{dashboard.id}}">{{dashboard.name}}</a></li>
-                      </ul>
+                    <a><i class="fa fa-edit"></i> Dashboards <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="#dashboard/create">Create a new dashboard</a></li>
+                        <div class="form-group top_search">
+                          <input type="text" class="form-control" ng-model="dashSearch.name" placeholder="Dashboard name..." />
+                        </div>
+                      <li ng-repeat="dashboard in mainCtrl.menuDashboards.items | filter:dashSearch:strict">
+                        <a href="#dashboard/{{dashboard.id}}">{{dashboard.name}}</a>
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </div>
@@ -111,7 +116,7 @@
                 <li>
                   <a class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <img ng-src="api/user/image/small/{{user.image}}" alt="Profile Picture">{{ user.forename }}
-                    <span class=" fa fa-angle-down"></span>
+                    <span class="fa fa-chevron-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
                     <li><a href="#user"><i class="fa fa-user-circle-o pull-right"></i> Profile</a></li>	
