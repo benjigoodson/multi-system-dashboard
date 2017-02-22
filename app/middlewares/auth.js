@@ -74,33 +74,36 @@ module.exports = function (app) {
         console.log("Requested: POST - /api/authenticate");
         console.log("User login - " + email);
 
-        User.findOne({
-                email : email
-        }).lean().exec()
-        .then(function(user) {
+        User.findOne({email : email}).lean().exec().then(function(user) {
             if (!user) {
-                
                 res.json({ success: false, message: 'Authentication failed. User not found.' });
-
             } else if (user) {
 
-                // check if password matches
-                if (user.password != req.body.password) {
+                // Get crypto libary
+                var scrypt = require('scrypt');
 
-                    res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+                var storedPassword = new Buffer(user.password, "base64");
+                var inputPassword = req.body.password;
 
-                } else {
-                    // if user is found and password is right create a token
-                    var token = jwt.sign(user, apiConfig.secret, {
-                        expiresIn: "2 days" // expires in 48 hours
-                    });
+                try {
+                    // check if password matches
+                    if (scrypt.verifyKdfSync(storedPassword, inputPassword)) {
+                        // user is found and password is right create a token
+                        var token = jwt.sign(user, apiConfig.secret, {
+                            expiresIn: "2 days" // expires in 48 hours
+                        });
 
-                    // return the information including token as JSON
-                    res.json({
-                        success: true,
-                        token: token,
-                        user : user
-                    });
+                        // return the information including token as JSON
+                        res.json({
+                            success: true,
+                            token: token,
+                            user : user
+                        });
+                    } else {
+                        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+                    }
+                } catch(exception) {
+                    console.log(exception)
                 }
             }   
         })

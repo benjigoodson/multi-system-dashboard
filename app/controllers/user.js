@@ -2,6 +2,7 @@
 'use strict'
 
 // Import models
+var scrupt = require("scrypt");
 var sharp = require('sharp');
 var format = require('date-format');
 var User = require('../models/user');
@@ -30,6 +31,17 @@ controller.create = function create (newUser, callback) {
     newUser.email = newUser.email.toLowerCase();
 
     newUser.createdDate = format('dd/MM/yyyy', new Date());
+
+    // Get crypto libary
+    var scrypt = require('scrypt');
+
+    // Set up memory params
+    var cryptParams = scrypt.paramsSync(0.1);
+
+    // Hash user password
+    var hash = scrypt.kdfSync(newUser.password, cryptParams);
+
+    newUser.password = hash.toString("base64");
 
     var user = User(newUser);
 
