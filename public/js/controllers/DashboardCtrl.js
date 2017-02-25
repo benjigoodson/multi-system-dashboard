@@ -284,6 +284,30 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 
 	};
 
+	this.deleteWidget = function(widgetId) {
+
+		ModalService.displayModal().result.then(function (modal_response) {
+			if(modal_response) {
+				WidgetService.delete(widgetId).then(function(response) {
+
+					if(response.success == true) {
+						notificationService.success(response.message);
+						self.viewAllWidgets();
+					} else {
+						self.errorHandler("Unable to delete widget:" + response.message);
+					}
+
+				}, function(error) {
+					self.errorHandler("Unable to delete widget.");
+				});
+			}
+		}, function (modal_response) {
+			// Modal dismissed
+			console.log("Modal dismissed: " + modal_response);
+		});
+
+	};
+
 	this.updateWidgetInScope = function(widget) {
         // Find widget in scope and update
         $scope.widgets.forEach(function (scopeWidget, count) {
