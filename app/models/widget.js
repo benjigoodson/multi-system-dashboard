@@ -9,7 +9,9 @@ var WidgetSchema = new Schema({
     name : { 
         type : String,
         required : true, 
-        default : '' 
+        default : '',
+        unique : true,
+        index : true
     },    
     description : { 
         type : String,

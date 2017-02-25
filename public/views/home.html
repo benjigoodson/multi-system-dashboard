@@ -23,7 +23,7 @@
           <div class="clearfix"></div>
         </div>
         <div class="x_content">
-          <div ng-show="widget.loading || widget.error" style="text-align: center; width: 306px; height: 168px;">
+          <div ng-show="widget.loading || widget.error" style="text-align: center;">
             <br>
             <i ng-show="widget.loading" class="fa fa-refresh fa-spin fa-5x fa-fw"></i>
             <i ng-show="widget.error" class="fa fa-exclamation-circle fa-5x fa-fw"></i>
@@ -40,8 +40,8 @@
               <h3 class="count-bottom">Value: <span class="value">{{widget.value}}</span></h3>
             </div>
           </div>
-          <div ng-show="widget.graphType != 'count'">
-            <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" 
+          <div ng-show="widget.graphType != 'count' && !widget.loading && !widget.error" class="chartSize">
+            <canvas id="{{ widget._id }}" class="chart chart-base" 
                 chart-type="widget.graphType" chart-options="widget.options" chart-data="widget.data" chart-labels="widget.labels">
             </canvas>
           </div>

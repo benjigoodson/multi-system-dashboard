@@ -8,7 +8,8 @@ var Schema = mongoose.Schema;
 var UserSchema = new Schema({
     forename : { 
         type : String , 
-        default : '' 
+        default : '',
+        index : true
     },
     surname : { 
         type : String ,

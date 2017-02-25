@@ -11,7 +11,8 @@ var EndpointSchema = new Schema({
     name : {
         type : String, 
         required: true, 
-        unique: true
+        unique: true,
+        index : true
     },
     parentSystem : {
         type : String, 

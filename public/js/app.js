@@ -150,7 +150,8 @@ MainModule.config(['ChartJsProvider', function (ChartJsProvider) {
             "#BDC3C7",
             "#26B99A",
             "#3498DB"],
-        responsive: true
+        responsive: true,
+        maintainAspectRatio: true
     });
     // Configure all line charts
     ChartJsProvider.setOptions('line', {
@@ -160,7 +161,6 @@ MainModule.config(['ChartJsProvider', function (ChartJsProvider) {
 }]);
 
 MainModule.config(['notificationServiceProvider', function(notificationServiceProvider) {
-
     notificationServiceProvider.setDefaults({
         history: false,
         closer: false,

@@ -15,10 +15,10 @@
           <p>Description: {{dashboardCtrl.dashboard.description}}</p> 
         </div>      
         <div class="col-md-3 col-sm-3 col-xs-12 bg-white text-right">
-            <a href="#dashboard/{{dashboardCtrl.dashboard._id}}/edit" class="btn btn-success" style="padding-left : 10%">
+            <a href="#dashboard/{{dashboardCtrl.dashboard._id}}/edit" class="btn btn-success" style="padding: 6px 18px; margin: 5px;">
               <i class="fa fa-edit m-right-xs"></i> Edit Dashboard
             </a>
-            <a ng-click="dashboardCtrl.deleteDashboard(dashboardCtrl.dashboard._id)" class="btn btn-danger" style="margin-top: 10px">
+            <a ng-click="dashboardCtrl.deleteDashboard(dashboardCtrl.dashboard._id)" class="btn btn-danger" style="margin: 5px;">
               <i class="fa fa-trash m-right-xs"></i> Delete Dashboard
             </a>
         </div>
@@ -55,7 +55,7 @@
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
-            <div ng-show="widget.loading || widget.error" style="text-align: center; width: 306px; height: 168px;">
+            <div ng-show="widget.loading || widget.error" style="text-align: center;">
               <br>
               <i ng-show="widget.loading" class="fa fa-refresh fa-spin fa-5x fa-fw"></i>
               <i ng-show="widget.error" class="fa fa-exclamation-circle fa-5x fa-fw"></i>
@@ -65,9 +65,18 @@
               </div>
               <br>
             </div>
-            <canvas ng-show="!widget.loading && !widget.error" id="{{ widget._id }}" class="chart chart-base" 
-                chart-type="widget.graphType" chart-options="widget.options" chart-data="widget.data" chart-labels="widget.labels">
-            </canvas>
+            <div ng-show="widget.graphType == 'count'" class="tile_count">
+              <div class="tile_stats_count">
+                <span class="count-top">Field Path: {{widget.fieldPath.join(".")}}</span>
+                <div class="count">{{widget.data}}</div>
+                <h3 class="count-bottom">Value: <span class="value">{{widget.value}}</span></h3>
+              </div>
+            </div>
+            <div ng-show="widget.graphType != 'count' && !widget.loading && !widget.error" class="chartSize">
+              <canvas id="{{ widget._id }}" class="chart chart-base" 
+                  chart-type="widget.graphType" chart-options="widget.options" chart-data="widget.data" chart-labels="widget.labels">
+              </canvas>
+            </div>
           </div>
         </div>
       </div>
