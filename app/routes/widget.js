@@ -10,61 +10,68 @@ var router = express.Router();;
 
 // Widgets api routes
 // Get all widgets
-router.route('/').get(function(req, res) {
-    console.log("Requested: GET - /api/widget");
+router.route('/')
+    .get(function(req, res) {
+        console.log("Requested: GET - /api/widget");
 
-    controller.getAll(function(err, widgets) {
+        controller.getAll(function(err, widgets) {
 
-        if(err) {
-            Console.log("Error: " + err);
-            res.status(500).send(err);
-        }
+            if(err) {
+                Console.log("Error: " + err);
+                res.status(500).send(err);
+                return;
+            }
 
-        res.send(widgets);
+            res.send(widgets);
 
-    });
-
-})
+        });
+    })
 
 // Get all widgets for the home screen
-router.route('/home').get(function(req, res) {
-    console.log("Requested: GET - /api/widget/home");
+router.route('/home')
+    .get(function(req, res) {
+        console.log("Requested: GET - /api/widget/home");
 
-    controller.getForHome(function(err, widgets) {
-
-        if(err) {
-            console.log("Error: " + err);
-            res.status(500).send({success:false, message: err});
-        }
-
-        res.send(widgets);
-
-    });
-
-})
-
-// Create a new widget
-router.route('/').post(function(req, res) {
-    console.log("Requested: POST - /api/widget");
-
-    if(req._body) {
-
-        var widget = req.body;
-
-        controller.create(widget, function(err, newWidget) {
+        controller.getForHome(function(err, widgets) {
 
             if(err) {
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
+                return;
             }
 
-            res.send({success:true, message: "Widget created.", data : newWidget});
+            res.send(widgets);
 
         });
+    })
 
-    }
+// Create a new widget
+router.route('/')
+    .post(function(req, res) {
+        console.log("Requested: POST - /api/widget");
 
-});
+        if(req._body) {
+
+            var widget = req.body;
+
+            controller.create(widget, function(err, newWidget) {
+
+                if(err) {
+                    console.log("Error: " + err);
+                    res.status(500).send({success:false, message: err});
+                    return;
+                }
+
+                res.send({success:true, message: "Widget created.", data : newWidget});
+
+            });
+
+        } else {
+            console.log("Error: No body content");
+            res.status(500).send({success:false, message: "No body content"});
+            return;
+        }
+    });
 
 router.route('/:widget_id')
 
@@ -80,6 +87,7 @@ router.route('/:widget_id')
             if(err) {
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
+                return;
             }
 
             // return the widget            
@@ -98,6 +106,7 @@ router.route('/:widget_id')
             if(err) {
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
+                return;
             }
 
             // return the message
@@ -118,6 +127,7 @@ router.route('/:widget_id')
             if(err) {
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
+                return;
             }
 
             // return the message

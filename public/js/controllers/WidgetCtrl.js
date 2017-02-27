@@ -31,7 +31,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 				self.errorHandler("Unable to create widget:" + response.message);	
 			}
 		}, function(error) {
-			self.errorHandler("Unable to create widget:" + response.message);
+			self.errorHandler("Unable to create widget:" + error.message);
 		});
 	};
 

@@ -140,7 +140,7 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 		return DashboardService.get(this.id).then(function(response) {
 			return response.data;
 		}, function(error) {
-			self.errorHandler("Unable to load dashboard:" + response.message);
+			self.errorHandler("Unable to load dashboard:" + error.message);
 		});
 
 	};
@@ -272,7 +272,7 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 			}
 
 		}, function(error) {
-			self.errorHandler("Unable to update dashboard:" + error.message);
+			self.errorHandler("Unable to update dashboard:" + error);
 		});
 
 		// Remove from $scope

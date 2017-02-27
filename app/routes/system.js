@@ -18,6 +18,7 @@ router.route('/')
             if(err) {
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
+                return;
             }
 
             res.send({success:true, data : systems});
@@ -35,6 +36,7 @@ router.route('/basic')
             if(err) {
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
+                return;
             }
 
             res.send({success:true, data : systems});
@@ -44,7 +46,8 @@ router.route('/basic')
     })
 
 // Create a new system
-router.route('/').post(function(req, res) {
+router.route('/')
+    .post(function(req, res) {
         console.log("Requested: POST - /api/system");
 
         if(req._body) {
@@ -56,6 +59,7 @@ router.route('/').post(function(req, res) {
                 if(err) {
                     console.log("Error: " + err);
                     res.status(500).json({success:false, message: err.message});
+                    return;
 
                 } else {
                     res.json({success:true, message: "System created.", data : newSystem});
@@ -77,6 +81,7 @@ router.route('/:system_id')
         controller.get(req.params.system_id, function(err, system) {
             if(err) {
                 res.status(500).send({success:false, message: err});
+                return;
             }
 
             // return the system
@@ -97,6 +102,7 @@ router.route('/:system_id')
         controller.update(updatedSystem, function(err, response) {
             if(err) {
                 res.send(500, { success : false, error: err });
+                return;
             }
 
             // return the message
@@ -116,6 +122,7 @@ router.route('/:system_id')
             if(err) {
                 console.log("Error: " + err);
                 res.status(500).send(err);
+                return;
             }
 
             res.json({success : true, message : "System removed."});
