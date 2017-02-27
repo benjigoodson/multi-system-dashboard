@@ -13,6 +13,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	var self = this;
 
 	$scope.chart = {};
+	$scope.type = "pie";
 
 	self.blacklist = [
 		"_id",
@@ -253,15 +254,18 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 				// Store response
 				self.responseObject = responseObject;
 
-				// List every option as dataset array
-				for(var dataset in responseObject)
-				{	
-					if(!_.contains(self.blacklist, dataset)) {
-						datasets.push(dataset);
+				// If object is just an array then we can't pick a dataset
+				if(!Array.isArray(responseObject)) {
+					// List every option as dataset array
+					for(var dataset in responseObject)
+					{	
+						if(!_.contains(self.blacklist, dataset)) {
+							datasets.push(dataset);
+						}
 					}
-				}
 
-				$scope.datasets = datasets;
+					$scope.datasets = datasets;
+				}
 
 				// Reset fields
 				$scope.fields = [];
@@ -426,7 +430,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	}
 
 	this.graphChanged = function() {
-		if($scope.widget.graphType) {
+		if($scope.widget.graphType && $scope.widget.graphType.length > 1) {
 			// Display new graph
 			if($scope.widget.graphType == "pie") {
 
@@ -452,6 +456,8 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 				$scope.exampleCount = "180";
 				$scope.exampleCountValue = "Green Color";
 			}
+
+			$scope.type = $scope.widget.graphType;
 		}
 	};
 
@@ -534,8 +540,6 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			return object;
 		}
 	}
-
-	$scope.type = "pie";
 
 	$scope.labels = [
 		"Dark Grey",

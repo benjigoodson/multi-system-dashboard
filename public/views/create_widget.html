@@ -79,7 +79,7 @@
               </div>
 
               <div class="form-group">
-                <label for="displayHome" class="control-label col-md-3 col-sm-3 col-xs-12">Home Screen
+                <label for="displayHome" class="control-label col-md-3 col-sm-3 col-xs-12">Display on home screen?
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <input type="checkbox" class="form-control" style="width: 4%;" ng-model="widget.displayHome" ng-false-value="'FALSE'" ng-true-value="'TRUE'">
@@ -164,7 +164,7 @@
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12 input-group input-group-sm">
                   <label ng-show="widget.datasetPath && widget.datasetPath.length > 0" class="input-group-addon" for="dataset">{{widget.datasetPath.join('.')}}</label>
-                  <select class="select2_single form-control" id="field" name="dataset" ng-model="dataset" ng-change="widgetCtrl.datasetChanged()">
+                  <select class="select2_single form-control" id="dataset" name="dataset" ng-disabled="!datasets || datasets.length == 0" ng-model="dataset" ng-change="widgetCtrl.datasetChanged()">
                     <option ng-repeat="dataset in datasets" value="{{dataset}}">{{dataset}}</option>
                   </select>
                   <a class="btn btn-default input-group-addon" ng-disabled="!widget.datasetPath || widget.datasetPath.length == 0" title="Click to remove the last the dataset path value." ng-click="widgetCtrl.removeOneDatasetPath()"><i class="fa fa-arrow-left"></i></a>
