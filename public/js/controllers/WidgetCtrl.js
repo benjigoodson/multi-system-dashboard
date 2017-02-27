@@ -174,6 +174,10 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 	};
 
 	this.systemChanged = function() {
+
+		$scope.endpoints = [];
+		$scope.widget.endpoint = "";
+
 		if($scope.widget.system) {
 			var systemId = $scope.widget.system;
 
@@ -183,8 +187,6 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			$scope.widget.fieldPath = [];
 
 			this.getEndpoints(systemId);
-		} else {
-			$scope.endpoints = [];
 		}
 	};
 

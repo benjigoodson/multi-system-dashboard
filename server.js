@@ -5,6 +5,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var fileUpload = require('express-fileupload');
 var fs = require('fs');
+var favicon = require('serve-favicon');
 
 //////////////// Database setup ////////////////
 
@@ -34,6 +35,8 @@ app.use(fileUpload());
 
 // location of web files
 app.use(express.static('public'));
+
+app.use(favicon(__dirname + '/public/images/icon.png'));
 
 // register routes
 require('./app/routes')(app);

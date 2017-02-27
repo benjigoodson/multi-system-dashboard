@@ -22,14 +22,14 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 		}
 
 		SystemService.create($scope.system).then(function(response) {
-			if(response.success) {
+			if(response && response.success) {
 				notificationService.success(response.message);
 				$location.path("/system/" + response.data._id);
 			} else {
 				self.errorHandler("Unable to create system:" + response.message);
 			}
 		}, function(error) {
-			self.errorHandler("Unable to create system:" + response.message);
+			self.errorHandler("Unable to create system:" + error);
 		});
 	};
 
