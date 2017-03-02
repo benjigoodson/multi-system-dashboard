@@ -4,7 +4,7 @@
 // Import models
 var Endpoint = require('../models/endpoint');
 var System = require('../models/system');
-var Widget = require('../models/widget');
+var WidgetController = require('../controllers/widget');
 
 var controller = {};
     
@@ -120,15 +120,11 @@ controller.delete = function create (endpointId, callback) {
 
     var method = this;
 
-    Widget.remove( { endpoint : endpointId }, function (err) {
+    WidgetController.deleteByEndpoint(endpointId, function (err) {
         if(err) {
             method.callback(err);
             return;
         }
-    })
-    .catch(function errorHandler (error) {
-        method.callback(error);
-        return;
     })
 
     Endpoint.remove({ _id : endpointId }, function(err) {
@@ -155,7 +151,7 @@ controller.deleteBySystem = function create (systemId, callback) {
             })
         });
 
-        self.callback(undefined);   
+        self.callback();   
     })
     .catch(function errorHandler (error) {
         self.callback(error);

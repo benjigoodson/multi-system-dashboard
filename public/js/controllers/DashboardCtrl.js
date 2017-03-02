@@ -264,6 +264,8 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 		// Should always be, but error checking
 		if(index > -1) {
 			this.dashboard.widgets.splice(index, 1);
+		} else {
+			return;
 		}
 
 		// Update dashboard

@@ -13,7 +13,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.get(url) .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return error;
+				return { success : error.data.success, message : error.statusText};
 			})		
 		},
 
@@ -22,7 +22,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.get(url + "/home") .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return error;
+				return { success : error.data.success, message : error.statusText};
 			})		
 		},
 		
@@ -31,7 +31,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.get(url + widgetId) .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return error;
+				return { success : error.data.success, message : error.statusText};
 			})		
 		},
 		
@@ -39,7 +39,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.post(url, widgetData) .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return error;
+				return { success : error.data.success, message : error.statusText};
 			})
 		},
 
@@ -47,7 +47,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.put(url + widgetData._id, widgetData) .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return error;
+				return { success : error.data.success, message : error.statusText};
 			})
 		},
 		
@@ -56,7 +56,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.delete(url + widgetId).then(function(response) {
 				return response.data;
 			}, function(error) {
-				return error;
+				return { success : error.data.success, message : error.statusText};
 			})
 		},
 
@@ -72,7 +72,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 			.then(function (response) {	  
 				return response;
 			}, function (error) {
-				return error;
+				return { success : error.data.success, message : error.statusText};
 			});
 
 			return promise;

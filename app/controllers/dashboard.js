@@ -66,6 +66,41 @@ controller.update = function update (updatedDashboard, callback) {
     });
 }
 
+controller.removeWidget = function(widgetId, callback) {
+
+    var self = this;
+
+    Dashboard.find({ widgets : widgetId}).lean().exec().then(function (dashboards) {
+
+        dashboards.forEach(function (dashboard, i) {
+           
+            var index = dashboard.widgets.indexOf(widgetId);
+
+            if(index > -1) {
+
+                dashboard.widgets.splice(index, 1);
+
+                self.update(dashboard, function(error) {
+                    if(error) {
+                        callback(error);
+                        return;
+                    }
+                });
+            } else {
+                callback("Widget Id cannot be found on dashboard.");
+                return;
+            }
+
+        });
+
+        callback();
+    })
+    .catch(function errorHandler (error) {
+        callback(error);
+    })
+
+}
+
 controller.delete = function (dashboardId, callback) {
 
     Dashboard.remove({"_id" : dashboardId}).then(function () {

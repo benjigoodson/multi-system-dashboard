@@ -3,6 +3,7 @@
 
 // Import models
 var Widget = require('../models/widget');
+var DashboardController = require('../controllers/dashboard');
 
 var controller = {};
 
@@ -28,7 +29,7 @@ controller.get = function getUniqueWidget (widgetId, callback) {
 
     var query = { _id : widgetId };
 
-    Widget.findById(query).lean().exec().then(function widgetFindForHome (widget) {
+    Widget.findById(query).lean().exec().then(function (widget) {
         callback(undefined, widget);
     }).catch(function errorHandler (error) {
         callback(error);
@@ -93,7 +94,14 @@ controller.update = function update (updatedWidget, callback) {
 
 controller.delete = function (widgetId, callback) {
 
-    Widget.find({"_id" : widgetId}).remove().then(function () {
+    DashboardController.removeWidget(widgetId, function(error) {
+
+        if(error) {
+            callback(error);
+            return;
+        }
+
+        Widget.remove({"_id" : widgetId}).then(function () {
             callback();
         })
         .catch(function errorHandler (error) {
@@ -101,6 +109,34 @@ controller.delete = function (widgetId, callback) {
 
             callback(error);
         });
+    });
+}
+
+controller.deleteByEndpoint = function(endpointId, callback) {
+
+    var self = this;
+    self.callback = callback;
+
+    Widget.find({ endpoint : endpointId }).lean().exec()
+        .then(function (widgets) {
+
+        widgets.forEach(function (widget, i) {
+
+            self.delete(widget._id, function (err) {
+                if(err) {
+                    self.callback(err);
+                    return;
+                }
+            })
+        });
+
+        self.callback();   
+    })
+    .catch(function errorHandler (error) {
+        self.callback(error);
+        return;
+    })
+
 }
 
 module.exports = controller;
