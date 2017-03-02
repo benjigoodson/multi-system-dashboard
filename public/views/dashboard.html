@@ -65,7 +65,7 @@
               </div>
               <br>
             </div>
-            <div ng-show="widget.graphType == 'count'" class="tile_count">
+            <div ng-show="widget.graphType == 'count' && !widget.loading && !widget.error" class="tile_count">
               <div class="tile_stats_count">
                 <span class="count-top">Field Path: {{widget.fieldPath.join(".")}}</span>
                 <div class="count">{{widget.data}}</div>
