@@ -28,6 +28,7 @@ var WidgetSchema = new Schema({
     displayHome : {
         type : String , 
         default : 'FALSE',
+        index : true,
         required : true
     },
     method : {
