@@ -67,12 +67,16 @@ WidgetModule.factory('WidgetService', function ($http) {
 				{ 
 					method: method, 
 					url: apiURL,
-					timeout: 15000 
+					timeout: 10000
 				})
 			.then(function (response) {	  
 				return response;
 			}, function (error) {
-				return { success : error.data.success, message : error.statusText};
+				if(error && error.status > -1) {
+					return { success : 'false', message : error.statusText};
+				} else {
+					return undefined;
+				}
 			});
 
 			return promise;
