@@ -12,13 +12,22 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 	var self = this;
 
-	$scope.chart = {};
-	$scope.type = "pie";
-
 	self.blacklist = [
 		"_id",
 		"__v"
 	];
+
+	$scope.chart = {};
+
+	$scope.labels = [
+		"Dark Grey",
+		"Purple Color",
+		"Gray Color",
+		"Green Color",
+		"Blue Color"
+	];
+	$scope.data = [120, 50, 140, 180, 100];
+	$scope.type = "pie";
 
 	$scope.edit = false;
 
@@ -448,6 +457,10 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 				$scope.series = [];
 				$scope.data = [120, 50, 140, 180, 100];
 
+			} else if($scope.widget.graphType == "count") {
+				$scope.exampleCountField = "Colour";
+				$scope.exampleCount = "180";
+				$scope.exampleCountValue = "Green Color";
 			} else {
 				$scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
 				$scope.series = ['Series A', 'Series B'];
@@ -455,9 +468,6 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 					[65, 59, 80, 81, 56, 55, 40],
 					[28, 48, 40, 19, 86, 27, 90]
 				];
-				$scope.exampleCountField = "Colour";
-				$scope.exampleCount = "180";
-				$scope.exampleCountValue = "Green Color";
 			}
 
 			$scope.type = $scope.widget.graphType;
@@ -543,13 +553,5 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			return object;
 		}
 	}
-
-	$scope.labels = [
-		"Dark Grey",
-		"Purple Color",
-		"Gray Color",
-		"Green Color",
-		"Blue Color"
-	];
 
 });
