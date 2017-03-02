@@ -20,7 +20,6 @@ if(!db.uri) {
 }
 
 mongoose.Promise = global.Promise;
-
 mongoose.connect(db.uri);
 
 //////////////// Application setup ////////////////
