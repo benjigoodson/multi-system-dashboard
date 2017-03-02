@@ -19,7 +19,7 @@ var DashboardSchema = new Schema({
         default : '' 
     },
     widgets : { 
-        type : Array , 
+        type : [String] , 
         default : [] 
     },
     createdDate : { 

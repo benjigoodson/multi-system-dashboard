@@ -48,11 +48,11 @@ var WidgetSchema = new Schema({
         required : true
     },
     datasetPath : { 
-        type : Array , 
+        type : [String] , 
         default : [] 
     },
     fieldPath : { 
-        type : Array , 
+        type : [String] , 
         default : [],
         required : true
     },
