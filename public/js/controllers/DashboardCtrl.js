@@ -215,7 +215,10 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 
 	this.deleteDashboard = function(dashboardId) {
 
-		ModalService.displayModal().result.then(function (modal_response) {
+		var message = "Are you sure you wish to delete this dashboard, '" + self.dashboard.name + "' [" + dashboardId + "]?";
+		var title = "Delete this dashboard?";
+
+		ModalService.displayModal(message, title).result.then(function (modal_response) {
 			if(modal_response) {
 				DashboardService.delete(dashboardId).then(function(response) {
 
@@ -286,7 +289,10 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 
 	this.deleteWidget = function(widgetId) {
 
-		ModalService.displayModal().result.then(function (modal_response) {
+		var message = "Are you sure you wish to delete this widget [" + widgetId + "]?";
+		var title = "Delete this widget?";
+
+		ModalService.displayModal(message, title).result.then(function (modal_response) {
 			if(modal_response) {
 				WidgetService.delete(widgetId).then(function(response) {
 

@@ -51,8 +51,12 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 
 			if(self.system.numEndpoints > 0) {
 				// Get all endpoints that are saved for this system
-				EndpointService.getBasicEndpoints(self.system._id).then(function(endpoints) {
-					self.endpoints = endpoints;
+				EndpointService.getBasicEndpoints(self.system._id).then(function(response) {
+					if(response.success == true) {
+						self.endpoints = response.data;
+					} else {
+						self.errorHandler("Unable to update system:" + response.message);
+					}
 				});
 			}
 
@@ -61,7 +65,10 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 
 	this.deleteSystemFromEdit = function(systemId) {
 
-		ModalService.displayModal().result.then(function (modal_response) {
+		var message = "Are you sure you wish to delete this system, '" + self.system.name + "' [" + systemId + "]?";
+		var title = "Delete this system?";
+
+		ModalService.displayModal(message, title).result.then(function (modal_response) {
 			if(modal_response) {
 				self.deleteSystem(systemId).then(function(response) {
 					if(response.success) {
@@ -81,7 +88,10 @@ function SystemController($scope, $location, $routeParams, UserService, SystemSe
 
 	this.deleteSystemFromViewAll = function(systemId) {
 
-		ModalService.displayModal().result.then(function (modal_response) {
+		var message = "Are you sure you wish to delte this system [" + systemId + "]?";
+		var title = "Delete this system?";
+
+		ModalService.displayModal(message, title).result.then(function (modal_response) {
 			if(modal_response) {
 				
 				self.deleteSystem(systemId).then(function(response) {

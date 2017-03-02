@@ -20,7 +20,10 @@ function HomeController ($scope, WidgetService, ChartService, notificationServic
 
     this.removeWidget = function(widgetId) {
 
-		ModalService.displayModal().result.then(function (modal_response) {
+        var message = "Are you sure you wish to remove this widget [" + widgetId + "]?";
+		var title = "Remove this widget?";
+
+		ModalService.displayModal(message, title).result.then(function (modal_response) {
 			if(modal_response) {
                 var index = _.chain($scope.widgets).pluck("_id").indexOf(widgetId).value();
 

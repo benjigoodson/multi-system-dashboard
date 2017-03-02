@@ -85,7 +85,10 @@ function EndpointController ($scope, $location, $routeParams, UserService, Endpo
 
 	this.deleteEndpointFromEdit = function(endpointId) {
 
-		ModalService.displayModal().result.then(function (modal_response) {
+		var message = "Are you sure you wish to delete this endpoint, '" + self.endpoint.name + "' [" + endpointId + "]?";
+		var title = "Delete this endpoint?";
+
+		ModalService.displayModal(message, title).result.then(function (modal_response) {
 			if(modal_response) {
 				self.deleteEndpoint(endpointId).then(function(response) {
 					if(response.success) {
@@ -105,7 +108,10 @@ function EndpointController ($scope, $location, $routeParams, UserService, Endpo
 
 	this.deleteEndpointFromViewAll = function(endpointId) {
 
-		ModalService.displayModal().result.then(function (modal_response) {
+		var message = "Are you sure you wish to delete this endpoint [" + endpointId + "]?";
+		var title = "Delete this endpoint?";
+
+		ModalService.displayModal(message, title).result.then(function (modal_response) {
 			if(modal_response) {
 				self.deleteEndpoint(endpointId).then(function(response) {
 					if(response.success) {

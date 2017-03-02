@@ -4,6 +4,7 @@
 // Import models
 var System = require('../models/system');
 var Endpoint = require('../models/endpoint');
+var EndpointController = require('../controllers/endpoint');
 
 var controller = {};
     
@@ -119,7 +120,12 @@ controller.update = function create (updatedSystem, callback) {
 controller.delete = function create (systemId, callback) {
 
     // Remove all endpoints
-    Endpoint.remove({ parentSystem : systemId }, function(err) {
+    EndpointController.deleteBySystem(systemId, function(err) {
+
+        if(err) {
+            callback(err)
+            return;
+        }
 
         // Remove the system
         System.remove({ _id : systemId }, function(err) {

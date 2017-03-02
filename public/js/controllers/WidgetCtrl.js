@@ -138,7 +138,10 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 	this.deleteWidget = function(widgetId) {
 
-		ModalService.displayModal().result.then(function (modal_response) {
+		var message = "Are you sure you wish to delete this widget, '" + $scope.widget.name + "' [" + widgetId + "]?";
+		var title = "Delete this widget?";
+
+		ModalService.displayModal(message, title).result.then(function (modal_response) {
 			if(modal_response) {
 				WidgetService.delete(widgetId).then(function(response) {
 
