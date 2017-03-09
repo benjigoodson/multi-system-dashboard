@@ -4,7 +4,6 @@
 // require the mongoose module
 var mongoose= require('mongoose');
 var Schema = mongoose.Schema;
-var ObjectId = mongoose.Types.ObjectId;
 
 // define our endpoint model
 var EndpointSchema = new Schema({
@@ -25,15 +24,6 @@ var EndpointSchema = new Schema({
     requestType : {
         type : String,
         required: true
-    },
-    requiresBody : {
-        type : Boolean,
-        default : false,
-        required: true
-    },
-    body : {
-        type : String,
-        default : ''
     },
     description : {
         type : String,

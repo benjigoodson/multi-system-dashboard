@@ -21,10 +21,6 @@ var WidgetSchema = new Schema({
         type : String,
         required : true
     },
-    authToken : { 
-        type : String, 
-        default : '' 
-    },
     displayHome : {
         type : String , 
         default : 'FALSE',
@@ -39,10 +35,6 @@ var WidgetSchema = new Schema({
     apiURL : {
         type : String ,
         required : true
-    },
-    body : { 
-        type : String , 
-        default : '' 
     },
     graphType : { 
         type : String,

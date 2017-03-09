@@ -4,7 +4,6 @@
 // require the mongoose module
 var mongoose= require('mongoose');
 var Schema = mongoose.Schema;
-var ObjectId = mongoose.Types.ObjectId;
 
 // define our system model
 var SystemSchema = new Schema({
