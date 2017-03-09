@@ -13,6 +13,8 @@
 		"tmp",
 		"temp",
 		".vscode",
+		".gitignore",
+		"jsconfig.json",
 		"package"
 	]
 }
