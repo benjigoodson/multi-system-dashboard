@@ -13,7 +13,11 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.get(url) .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return { success : error.data.success, message : error.statusText};
+				if(error && error.success != undefined) {
+					return { success : error.data.success, message : error.statusText};
+				} else {
+					return { success : false, message : "Unable to completed request."};
+				}
 			})		
 		},
 
@@ -22,7 +26,11 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.get(url + "/home") .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return { success : error.data.success, message : error.statusText};
+				if(error && error.success != undefined) {
+					return { success : error.data.success, message : error.statusText};
+				} else {
+					return { success : false, message : "Unable to completed request."};
+				}
 			})		
 		},
 		
@@ -31,7 +39,11 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.get(url + widgetId) .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return { success : error.data.success, message : error.statusText};
+				if(error && error.success != undefined) {
+					return { success : error.data.success, message : error.statusText};
+				} else {
+					return { success : false, message : "Unable to completed request."};
+				}
 			})		
 		},
 		
@@ -39,7 +51,11 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.post(url, widgetData) .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return { success : error.data.success, message : error.statusText};
+				if(error && error.success != undefined) {
+					return { success : error.data.success, message : error.statusText};
+				} else {
+					return { success : false, message : "Unable to completed request."};
+				}
 			})
 		},
 
@@ -47,7 +63,11 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.put(url + widgetData._id, widgetData) .then(function(response) {
 				return response.data;
 			}, function(error) {
-				return { success : error.data.success, message : error.statusText};
+				if(error && error.success != undefined) {
+					return { success : error.data.success, message : error.statusText};
+				} else {
+					return { success : false, message : "Unable to completed request."};
+				}
 			})
 		},
 		
@@ -56,13 +76,17 @@ WidgetModule.factory('WidgetService', function ($http) {
 			return $http.delete(url + widgetId).then(function(response) {
 				return response.data;
 			}, function(error) {
-				return { success : error.data.success, message : error.statusText};
+				if(error && error.success != undefined) {
+					return { success : error.data.success, message : error.statusText};
+				} else {
+					return { success : false, message : "Unable to completed request."};
+				}
 			})
 		},
 
 		makeRESTCall : function(method, apiURL) {
 
-			// Time out of 15 seconds
+			// Time out of 10 seconds
 			var promise = $http(
 				{ 
 					method: method, 
