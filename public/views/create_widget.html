@@ -82,7 +82,7 @@
                 <label for="displayHome" class="control-label col-md-3 col-sm-3 col-xs-12">Display on home screen?
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="checkbox" class="form-control" style="width: 4%;" ng-model="widget.displayHome" ng-false-value="'FALSE'" ng-true-value="'TRUE'">
+                  <input type="checkbox" class="form-control" style="width: 4%; height: 25px;" ng-model="widget.displayHome" ng-false-value="'FALSE'" ng-true-value="'TRUE'">
                 </div>
               </div>
 
@@ -123,19 +123,12 @@
                 </div>
               </div>
 
-              <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="auth-token">Authentication Token</span>
+              <div class="form-group" ng-show="requestingParam == true">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="request-param">Request Parameter</span>
                 </label>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" ng-model="widget.authToken" id="auth-token" name="auth-token" class="form-control col-md-7 col-xs-12">
-                </div>
-              </div>
-
-              <div class="form-group" ng-show="requiresBody">
-                <label for="body" class="control-label col-md-3 col-sm-3 col-xs-12">Body
-                </label>
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                  <textarea class="form-control" ng-model="widget.body" name="body" id="body" ng-model="widget.body" rows="3"></textarea>
+                <div class="col-md-6 col-sm-6 col-xs-12 input-group input-group-sm">
+                  <label class="input-group-addon" for="request-param"> / </label>
+                  <input type="text" ng-keyup="widgetCtrl.parameterChanged()" ng-model="widget.requestParam" id="request-param" name="request-param" class="form-control col-md-7 col-xs-12">
                 </div>
               </div>
 

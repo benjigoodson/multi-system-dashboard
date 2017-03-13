@@ -24,6 +24,7 @@ controller.getAll = function getAll (callback) {
 
             Promise.all(countPromises).then(function completedPromises () {
                 callback(undefined, endpoints);      
+                return;
             })
         })
         .catch(function errorHandler (error) {
@@ -63,7 +64,7 @@ controller.getAllBasic = function getAllEndpointsBasic (systemId, callback) {
                     createdBy : endpoints[i].createdBy,
                     createdDate : endpoints[i].createdDate,
                     url : endpoints[i].url,
-                    requiresBody : endpoints[i].requiresBody,
+                    requiresParam : endpoints[i].requiresParam,
                     requestType : endpoints[i].requestType
                 });                
 
@@ -92,6 +93,7 @@ controller.create = function create (newEndpoint, callback) {
     endpoint.save(function(err, createdEndpoint) {
         if(err) {
             callback(err);
+            return;
         }
 
         callback(undefined, createdEndpoint);

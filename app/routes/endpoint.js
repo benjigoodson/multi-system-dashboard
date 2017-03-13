@@ -19,9 +19,9 @@ router.route('/')
                 console.log("Error: " + err);
                 res.status(500).json({success:false, message: err});
                 return;
+            } else {
+                res.json({ success : true, data : endpoints});
             }
-
-            res.json({ success : true, data : endpoints});
 
         });
 
@@ -42,9 +42,9 @@ router.route('/basic/:systemId')
                     console.log("Error: " + err);
                     res.status(500).json({success:false, message: err});
                     return;
+                } else {
+                    res.json({ success : true, data : endpoints});
                 }
-
-                res.json({ success : true, data : endpoints});
             });
         }
     })
@@ -64,9 +64,9 @@ router.route('/')
                     console.log("Error: " + err);
                     res.status(500).json({success:false, message: err});
                     return;
+                } else {
+                    res.json({ success : true, message : "Endpoint created.", data : newEndpoint});
                 }
-
-                res.json({ success : true, message : "Endpoint created.", data : newEndpoint});
             });
         }
     });
@@ -86,10 +86,10 @@ router.route('/:endpoint_id')
                 console.log("Error: " + err);
                 res.status(500).json({success:false, message: err});
                 return;
+            } else {
+                // return the endpoint
+                res.json({ success : true, data : endpoint});
             }
-
-            // return the endpoint
-            res.json({ success : true, data : endpoint});
         });
     })
 
@@ -108,10 +108,10 @@ router.route('/:endpoint_id')
                 console.log("Error: " + err);
                 res.status(500).json({success:false, message: err});
                 return;
+            } else {
+                // return the message
+                res.json({ success : true, message : "Endpoint updated.", data : updatedEndpoint});
             }
-
-            // return the message
-            res.json({ success : true, message : "Endpoint updated.", data : updatedEndpoint});
         });
 
     })
@@ -129,9 +129,9 @@ router.route('/:endpoint_id')
                 console.log("Error: " + err);
                 res.status(500).json({success:false, message: err});
                 return;
+            } else {
+                res.json({success : true, message : "Endpoint removed."});
             }
-
-            res.json({success : true, message : "Endpoint removed."});
 
         });
     });

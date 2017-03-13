@@ -5,12 +5,14 @@ var WidgetModule = angular.module('WidgetModule');
 // Imports
 WidgetModule.constant("moment", moment);
 
-WidgetModule.controller('WidgetController', function($scope, $http, $routeParams, $location, WidgetService, SystemService, 
+WidgetModule.controller('WidgetController', function($scope, $http, $routeParams, $location, $interval, WidgetService, SystemService, 
 	EndpointService, ChartService, UserService, notificationService, ModalService) { 
 
 	this.id = $routeParams.widget_id;
 
 	var self = this;
+
+	self.timer = undefined;
 
 	self.blacklist = [
 		"_id",
@@ -217,7 +219,6 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			$scope.fields = [];
 
 			$scope.dataset = "";
-
 			$scope.field = "";
 
 			$scope.widget.datasetPath = [];
@@ -229,7 +230,9 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			for(var i = 0; i < $scope.endpoints.length; i++) {
 
 				if($scope.endpoints[i].id == $scope.widget.endpoint) {
-					$scope.requiresBody = $scope.endpoints[i].requiresBody;
+
+					$scope.requestingParam = $scope.endpoints[i].requiresParam;
+					
 					apiURL = $scope.endpoints[i].url;
 					method = $scope.endpoints[i].requestType;
 					break;
@@ -239,14 +242,50 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			$scope.widget.method = method;
 			$scope.widget.apiURL = apiURL;
 
-			this.getOptions(method, apiURL);			
+			if($scope.requestingParam == false) {
+				this.getOptions(method, apiURL);
+			}
+				
 		}
 	};
 
-	this.getOptions = function(method, apiURL) {
+	this.parameterChanged = function() {
+
+		// Cancel the timer
+		if(self.timer) {
+			$interval.cancel(self.timer);
+		}
+
+		// Remove a leading '/'
+		if($scope.widget.requestParam && $scope.widget.requestParam.length > 0 && $scope.widget.requestParam.charAt(0) == "/") {
+			$scope.widget.requestParam = $scope.widget.requestParam.substr(1);
+		}
+
+		// If parameter has a value
+		if($scope.widget.requestParam && $scope.widget.requestParam.length > 0) {
+
+			// After 750 milli seconds make the request
+			self.timer = $interval(function() {
+
+				// Cancel it to stop it repeating
+				$interval.cancel(self.timer);
+
+				var method = $scope.widget.method;
+				var apiURL = $scope.widget.apiURL;
+				var requestParam = $scope.widget.requestParam;
+
+				// Make the API request
+				self.getOptions(method, apiURL, requestParam);
+
+			}, 750);
+		}
+
+	};
+
+	this.getOptions = function(method, apiURL, requestParam) {
 
 		// Test endpoint and get data back
-		WidgetService.makeRESTCall(method, apiURL).then(function(response) {
+		WidgetService.makeRESTCall(method, apiURL, requestParam).then(function(response) {
 
 			// Check result is ok
 			if(response && response.status == 200) {
@@ -431,7 +470,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 				$scope.chart.loading = false;
 				$scope.chart.error = errorMessage;
-				console.log("Unable to contact sever for widget: " + widget._id);
+				console.log("Unable to contact sever for widget: " + $scope.widget._id);
 
 			});
 		} catch(err) {
@@ -484,8 +523,6 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 		$scope.widget.datasetPath = [];
 		$scope.widget.fieldPath = [];
-
-		$scope.requiresBody = false;
 
 		$scope.datasets = [];
 		$scope.fields = [];

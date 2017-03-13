@@ -25,6 +25,7 @@ controller.getAll = function getAllSystems (callback) {
 
             Promise.all(countPromises).then(function completedPromises () {
                 callback(undefined, systems);   
+                return;
             })
         })
         .catch(function errorHandler (error) {
@@ -109,6 +110,7 @@ controller.update = function create (updatedSystem, callback) {
         if(err) {
             console.log("Error: " + err);
             callback(err);
+            return;
         }
 
         // return the message

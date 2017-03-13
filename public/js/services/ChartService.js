@@ -10,9 +10,9 @@ function ChartService (widgetService) {
 	var self = {
 
         generateChartData : function(widget) {
- 
+
             // Make REST calls to get the data for each widget           
-            return widgetService.makeRESTCall(widget.method, widget.apiURL).then(function(apiResponse) {
+            return widgetService.makeRESTCall(widget.method, widget.apiURL, widget.requestParam).then(function(apiResponse) {
 
                 var resultArray;
 

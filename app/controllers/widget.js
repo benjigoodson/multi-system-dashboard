@@ -20,6 +20,7 @@ controller.fieldBlacklist = [
 controller.getAll = function getAll (callback) {
     Widget.find().lean().exec().then(function widgetFind (widgets) {
         callback(undefined, widgets);
+        return;
     }).catch(function errorHandler (error) {
         callback(error);
     });
@@ -31,6 +32,7 @@ controller.get = function getUniqueWidget (widgetId, callback) {
 
     Widget.findById(query).lean().exec().then(function (widget) {
         callback(undefined, widget);
+        return;
     }).catch(function errorHandler (error) {
         callback(error);
     });
@@ -42,6 +44,7 @@ controller.getForHome = function getAll (callback) {
 
     Widget.find(query).lean().exec().then(function widgetFindForHome (widgets) {
         callback(undefined, widgets);
+        return;
     }).catch(function errorHandler (error) {
         callback(error);
     });
@@ -54,6 +57,7 @@ controller.create = function create (newWidget, callback) {
     widget.save(function(err, createdWidget) {
         if(err) {
             callback(err);
+            return;
         }
 
         callback(undefined, createdWidget);
@@ -84,6 +88,7 @@ controller.update = function update (updatedWidget, callback) {
         if(err) {
             console.log("Error: " + err);
             callback(err);
+            return;
         }
 
         // return the message
@@ -103,11 +108,13 @@ controller.delete = function (widgetId, callback) {
 
         Widget.remove({"_id" : widgetId}).then(function () {
             callback();
+            return;
         })
         .catch(function errorHandler (error) {
             console.log("Error: " + error);
 
             callback(error);
+            return;
         });
     });
 }

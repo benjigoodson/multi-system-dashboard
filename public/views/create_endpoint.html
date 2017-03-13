@@ -73,18 +73,10 @@
           </div>
 
           <div class="form-group">
-            <label for="requires-body" class="control-label col-md-3 col-sm-3 col-xs-12">Requires Body
+            <label for="requires-param" class="control-label col-md-3 col-sm-3 col-xs-12">Requires Parameter
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <input class="form-control" style="width: 4%;" ng-model="endpoint.requiresBody" type="checkbox" id="requires-body" name="requires-body">
-            </div>
-          </div>
-
-          <div class="form-group" ng-show="endpoint.requiresBody">
-            <label for="body" class="control-label col-md-3 col-sm-3 col-xs-12">Body
-            </label>
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <textarea ng-model="endpoint.body" class="form-control" name="body" id="body" rows="3"></textarea>
+              <input class="form-control" style="width: 4%; height: 25px;" ng-model="endpoint.requiresParam" type="checkbox" id="requires-param" name="requires-param">
             </div>
           </div>
 

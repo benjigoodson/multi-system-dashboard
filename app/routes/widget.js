@@ -20,9 +20,9 @@ router.route('/')
                 Console.log("Error: " + err);
                 res.status(500).send(err);
                 return;
+            } else {
+                res.send(widgets);
             }
-
-            res.send(widgets);
 
         });
     })
@@ -38,9 +38,9 @@ router.route('/home')
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
                 return;
+            } else {
+                res.send(widgets);
             }
-
-            res.send(widgets);
 
         });
     })
@@ -60,9 +60,9 @@ router.route('/')
                     console.log("Error: " + err);
                     res.status(500).send({success:false, message: err});
                     return;
+                } else {
+                    res.send({success:true, message: "Widget created.", data : newWidget});
                 }
-
-                res.send({success:true, message: "Widget created.", data : newWidget});
 
             });
 
@@ -107,10 +107,10 @@ router.route('/:widget_id')
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
                 return;
+            } else {
+                // return the message
+                res.json(response);
             }
-
-            // return the message
-            res.json(response);
 
         });
     })
@@ -128,10 +128,10 @@ router.route('/:widget_id')
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
                 return;
+            } else {
+                // return the message
+                res.json({success : true, message : "Widget removed."});
             }
-
-            // return the message
-            res.json({success : true, message : "Widget removed."});
 
         });
     });

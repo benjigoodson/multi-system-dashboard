@@ -38,14 +38,7 @@
               <i class="fa fa-globe"></i> URL: <input ng-model="endpointCtrl.endpoint.url" class="form-control" type="text">
             </li>
             <li>
-              <i class="fa fa-check-square-o"></i> Requires Body: <input type="checkbox" class="form-control" ng-disabled="!edit" ng-model="endpointCtrl.endpoint.requiresBody" ng-false-value="'false'" ng-true-value="'true'">
-            </li>
-            <li ng-show="!edit && endpointCtrl.endpoint.requiresBody == 'true'">
-              <i class="fa fa-check-square-o"></i> Body: {{endpointCtrl.endpoint.body}}
-            </li>
-            <li ng-show="edit && endpointCtrl.endpoint.requiresBody == 'true'">
-              <i class="fa fa-plus"></i> Body: <br>
-              <textarea rows="2" class="form-control" style="width: 70%" ng-model="endpointCtrl.endpoint.body">{{endpointCtrl.endpoint.body}}</textarea>
+              <i class="fa fa-check-square-o"></i> Requires Parameter: <input type="checkbox" class="form-control" ng-disabled="!edit" ng-model="endpointCtrl.endpoint.requiresParam" ng-false-value="false" ng-true-value="true">
             </li>
           </ul>
           <br>

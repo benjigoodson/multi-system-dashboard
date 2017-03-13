@@ -36,6 +36,10 @@ var WidgetSchema = new Schema({
         type : String ,
         required : true
     },
+    requestParam : {
+        type : String,
+        default : ""
+    },
     graphType : { 
         type : String,
         required : true

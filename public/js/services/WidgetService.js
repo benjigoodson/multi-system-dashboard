@@ -84,14 +84,22 @@ WidgetModule.factory('WidgetService', function ($http) {
 			})
 		},
 
-		makeRESTCall : function(method, apiURL) {
+		makeRESTCall : function(method, apiURL, requestParam) {
 
-			// Time out of 10 seconds
+			var url;
+
+			if(requestParam && requestParam.length > 0) {
+				url = apiURL + "/" + requestParam;
+			} else {
+				url = apiURL;
+			}
+
+			// Time out of 7 seconds
 			var promise = $http(
 				{ 
 					method: method, 
-					url: apiURL,
-					timeout: 10000
+					url: url,
+					timeout: 7000
 				})
 			.then(function (response) {	  
 				return response;

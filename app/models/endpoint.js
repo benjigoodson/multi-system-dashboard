@@ -30,6 +30,10 @@ var EndpointSchema = new Schema({
         default : '',
         required: true
     },
+    requiresParam : {
+        type : Boolean,
+        default : false,
+    },
     createdDate : { 
         type : String,
     },
