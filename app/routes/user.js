@@ -25,9 +25,9 @@ router.route('/').post(function(req, res) {
                 console.log("Error: " + err);
                 res.status(500).json({success:false, message: err});
                 return;
+            } else {
+                res.json({ success : true, message : "User created.", data : newUser});
             }
-
-            res.json({ success : true, message : "User created.", data : newUser});
 
         });
 
@@ -47,9 +47,9 @@ router.route('/stats/:user_id').get(function(req, res) {
             console.log("Error: " + err);
             res.status(500).json({success:false, message: err});
             return;
+        } else {
+            res.json({ success : true, stats : stats});
         }
-
-        res.json({ success : true, stats : stats});
     });
     
 });
@@ -69,10 +69,10 @@ router.route('/:userId').put(function(req, res) {
             console.log("Error: " + err);
             res.status(500).json({success:false, message: err});
             return;
+        } else {
+            // return the message
+            res.json(response);
         }
-
-        // return the message
-        res.json(response);
     });         
 
 });
@@ -98,10 +98,10 @@ router.route('/image/:userId').put(function(req, res) {
             console.log("Error: " + err);
             res.status(500).json({success:false, message: err});
             return;
+        } else {
+            // return the message
+            res.json({success:true, message:"Image uploaded.", data:user});
         }
-        
-        // return the message
-        res.json({success:true, message:"Image uploaded.", data:user});
     });
     
 });
@@ -121,10 +121,10 @@ router.route('/:username').get(function(req, res) {
                 console.log("Error: " + err);
                 res.status(500).json({success:false, message: err});
                 return;
+            } else {
+                // return the user
+                res.json(user);
             }
-
-            // return the user
-            res.json(user);
         });
     }
 });
@@ -146,13 +146,13 @@ router.route('/image/:userId').get(function(req, res) {
                 console.log("Error: " + err);
                 res.status(500).json({success:false, message: err});
                 return;
+            } else {
+                // Write the headers 
+                res.writeHead(200, {'Content-Type': 'image/jpeg'});
+                
+                // Send the file data to the user
+                res.end(data);
             }
-
-            // Write the headers
-            res.writeHead(200, {'Content-Type': 'image/jpeg'});
-            
-            // Send the file data to the user
-            res.end(data);
         });
     }
 });
@@ -174,13 +174,13 @@ router.route('/image/small/:userId').get(function(req, res) {
                 console.log("Error: " + err);
                 res.status(404).json({success:false, message : err});
                 return;
+            } else {
+                // Write the headers
+                res.writeHead(200, {'Content-Type': 'image/jpeg'});
+                
+                // Send the file data to the user
+                res.end(data);
             }
-
-            // Write the headers
-            res.writeHead(200, {'Content-Type': 'image/jpeg'});
-            
-            // Send the file data to the user
-            res.end(data);
         });
     }
 });

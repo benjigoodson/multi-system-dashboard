@@ -15,6 +15,7 @@ controller.getByUsername = function getByUsername (username, callback) {
 
     User.find({email : username}).lean().exec().then(function userFind (user) {
         callback(undefined, user);
+        return;
     })
     .catch(function errorHandler (error) {
         callback(error);

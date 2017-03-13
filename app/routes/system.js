@@ -19,9 +19,9 @@ router.route('/')
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
                 return;
+            } else {
+                res.send({success:true, data : systems});
             }
-
-            res.send({success:true, data : systems});
 
         });
 
@@ -37,9 +37,9 @@ router.route('/basic')
                 console.log("Error: " + err);
                 res.status(500).send({success:false, message: err});
                 return;
+            } else {
+                res.send({success:true, data : systems});
             }
-
-            res.send({success:true, data : systems});
 
         });
 
@@ -60,7 +60,6 @@ router.route('/')
                     console.log("Error: " + err);
                     res.status(500).json({success:false, message: err.message});
                     return;
-
                 } else {
                     res.json({success:true, message: "System created.", data : newSystem});
                 }
@@ -82,10 +81,10 @@ router.route('/:system_id')
             if(err) {
                 res.status(500).send({success:false, message: err});
                 return;
+            } else {
+                // return the system
+                res.json(system);
             }
-
-            // return the system
-            res.json(system);
         });
     })
 
@@ -103,10 +102,10 @@ router.route('/:system_id')
             if(err) {
                 res.send(500, { success : false, error: err });
                 return;
+            } else {
+                // return the message
+                res.json(response);
             }
-
-            // return the message
-            res.json(response);
         });
     })
 
@@ -123,9 +122,9 @@ router.route('/:system_id')
                 console.log("Error: " + err);
                 res.status(500).send(err);
                 return;
+            } else {
+                res.json({success : true, message : "System removed."});
             }
-
-            res.json({success : true, message : "System removed."});
 
         });
     });

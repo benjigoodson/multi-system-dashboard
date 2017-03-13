@@ -19,9 +19,9 @@ router.route('/basic').get(function(req, res) {
             console.log("Error: " + err);
             res.status(500).json({success:false, message: err});
             return;
+        } else {
+            res.send({success:true, message: "Dashboards loaded.", data : basicDashboards});
         }
-
-        res.send({success:true, message: "Dashboards loaded.", data : basicDashboards});
 
     });
 
@@ -41,9 +41,9 @@ router.route('/').post(function(req, res) {
                 console.log("Error: " + err);
                 res.status(500).json({success:false, message: err});
                 return;
+            } else {
+                res.json({success:true, message: "Dashboard created.", data : newDashboard});
             }
-
-            res.json({success:true, message: "Dashboard created.", data : newDashboard});
 
         });
     }
@@ -63,10 +63,10 @@ router.route('/:dashboard_id')
                 console.log("Error: " + err);
                 res.status(500).json({success:false, message: err});
                 return;
+            } else {
+                // return the dashboard
+                res.json({success:true, data : dashboard});
             }
-
-            // return the dashboard
-            res.json({success:true, data : dashboard});
         });
 
     })
@@ -86,10 +86,10 @@ router.route('/:dashboard_id')
                 console.log("Error: " + err);
                 res.status(500).json({success:false, message: err});
                 return;
+            } else {
+                // return the message
+                res.json({success : true, message : "Dashboard Updated.", data : updatedDashboard});
             }
-
-            // return the message
-            res.json({success : true, message : "Dashboard Updated.", data : updatedDashboard});
 
         });
     })
@@ -107,10 +107,10 @@ router.route('/:dashboard_id')
                 console.log("Error: " + err);
                 res.status(500).json({success:false, message: err});
                 return;
+            } else {
+                // return the message
+                res.json({success : true, message : "Dashboard removed."});
             }
-
-            // return the message
-            res.json({success : true, message : "Dashboard removed."});
 
         })
     });
