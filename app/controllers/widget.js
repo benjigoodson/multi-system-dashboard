@@ -3,6 +3,8 @@
 
 // Import models
 var Widget = require('../models/widget');
+var Endpoint = require('../models/endpoint');
+var System = require('../models/system');
 var DashboardController = require('../controllers/dashboard');
 
 var controller = {};
@@ -18,9 +20,26 @@ controller.fieldBlacklist = [
 ];
 
 controller.getAll = function getAll (callback) {
+
+    var countPromises = [];
+
     Widget.find().lean().exec().then(function widgetFind (widgets) {
-        callback(undefined, widgets);
-        return;
+
+        widgets.forEach(function (widget, i) {
+
+            countPromises.push(controller.getMethodAndUrl(widget.endpoint)
+                .then(function (endpoint) {
+                    widget.method = endpoint.method;
+                    widget.apiURL = endpoint.url;
+            }))
+            
+        });
+
+        Promise.all(countPromises).then(function completedPromises () {
+            callback(undefined, widgets);
+            return;
+        })
+
     }).catch(function errorHandler (error) {
         callback(error);
     });
@@ -31,8 +50,14 @@ controller.get = function getUniqueWidget (widgetId, callback) {
     var query = { _id : widgetId };
 
     Widget.findById(query).lean().exec().then(function (widget) {
-        callback(undefined, widget);
-        return;
+        
+        controller.getMethodAndUrl(widget.endpoint).then( function (endpoint) {
+            widget.method = endpoint.method;
+            widget.apiURL = endpoint.url;
+
+            callback(undefined, widget);
+            return;
+        })
     }).catch(function errorHandler (error) {
         callback(error);
     });
@@ -40,11 +65,27 @@ controller.get = function getUniqueWidget (widgetId, callback) {
 
 controller.getForHome = function getAll (callback) {
 
+    var countPromises = [];
+
     var query = {displayHome : "TRUE"};
 
     Widget.find(query).lean().exec().then(function widgetFindForHome (widgets) {
-        callback(undefined, widgets);
-        return;
+        
+        widgets.forEach(function (widget, i) {
+
+            countPromises.push(controller.getMethodAndUrl(widget.endpoint)
+                .then(function (endpoint) {
+                    widget.method = endpoint.method;
+                    widget.apiURL = endpoint.url;
+            }))
+            
+        });
+
+        Promise.all(countPromises).then(function completedPromises () {
+            callback(undefined, widgets);
+            return;
+        })
+        
     }).catch(function errorHandler (error) {
         callback(error);
     });
@@ -117,6 +158,25 @@ controller.delete = function (widgetId, callback) {
             return;
         });
     });
+}
+
+controller.getMethodAndUrl = function(endpointId) {
+
+    var result = {};
+
+    return Endpoint.findOne({_id :  endpointId}, "requestType url parentSystem").lean().exec().then(function (endpoint) {
+
+        result.method = endpoint.requestType;
+
+        // Get the system url
+        return System.findOne({_id :  endpoint.parentSystem}, "url").lean().exec().then(function (system) {
+            result.url = system.url + endpoint.url;
+
+            return result;
+        })
+
+    })
+
 }
 
 controller.deleteByEndpoint = function(endpointId, callback) {

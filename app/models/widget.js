@@ -27,15 +27,6 @@ var WidgetSchema = new Schema({
         index : true,
         required : true
     },
-    method : {
-        type : String , 
-        default : 'GET',
-        required : true
-    },
-    apiURL : {
-        type : String ,
-        required : true
-    },
     requestParam : {
         type : String,
         default : ""

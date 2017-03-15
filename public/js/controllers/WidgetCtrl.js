@@ -233,7 +233,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 
 					$scope.requestingParam = $scope.endpoints[i].requiresParam;
 					
-					apiURL = $scope.endpoints[i].url;
+					apiURL = $scope.endpoints[i].fullUrl;
 					method = $scope.endpoints[i].requestType;
 					break;
 				}

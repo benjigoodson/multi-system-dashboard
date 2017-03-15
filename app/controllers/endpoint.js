@@ -14,12 +14,13 @@ controller.getAll = function getAll (callback) {
     Endpoint.find().lean().exec()
         .then(function endpointFind (endpoints) {
 
-            endpoints.forEach(function (endpoint , i) {
+            endpoints.forEach(function (endpoint, i) {
 
-                countPromises.push(controller.getSystemNames(endpoint)
-                    .then(function updateSystemName (systems) {
-                        endpoint.systemName = systems[0].name;
-                    }))
+                countPromises.push(controller.getSystemNameAndUrl(endpoint.parentSystem)
+                    .then(function (system) {
+                        endpoint.systemName = system.name;
+                        endpoint.fullUrl = system.url + endpoint.url;
+                }))
             });
 
             Promise.all(countPromises).then(function completedPromises () {
@@ -37,53 +38,62 @@ controller.get = function get (endpointId, callback) {
 
     var query = {_id : endpointId};
 
-    Endpoint.findOne(query).lean().exec().then(function endpointFindOne (endpoint) {
+    Endpoint.findById(query).lean().exec().then(function endpointFindOne (endpoint) {
 
-        callback(undefined, endpoint);
+        controller.getSystemNameAndUrl(endpoint.parentSystem).then(function (system) {
+            endpoint.systemName = system.name;
+            endpoint.fullUrl = system.url + endpoint.url;
+
+            callback(undefined, endpoint);
+        })
+
     })
     .catch(function errorHandler (error) {
         callback(error);
     })
 }
 
-controller.getAllBasic = function getAllEndpointsBasic (systemId, callback) {
+controller.getBasicEndpoints = function (systemId, callback) {
 
     var countPromises = []
 
-    var endpointPromise = Endpoint.find({parentSystem : systemId}).lean().exec()
-        .then(function endpointFind (endpoints) {
+    Endpoint.find({parentSystem : systemId}).lean().exec().then(function (endpoints) {
 
-            var basicEndpoints = [];
+        var basicEndpoints = [];
 
-            for(var i = 0; i < endpoints.length; i++) {
+        endpoints.forEach(function (endpoint , i) {
 
-                // Just get basic fields
-                basicEndpoints.push({ 
-                    id : endpoints[i]._id,
-                    name : endpoints[i].name,
-                    createdBy : endpoints[i].createdBy,
-                    createdDate : endpoints[i].createdDate,
-                    url : endpoints[i].url,
-                    requiresParam : endpoints[i].requiresParam,
-                    requestType : endpoints[i].requestType
-                });                
+            countPromises.push(controller.getSystemNameAndUrl(endpoint.parentSystem)
+                .then(function (system) {
 
-            }
-
-            callback(undefined, basicEndpoints);
-
+                    basicEndpoints.push({
+                        id : endpoint._id,
+                        name : endpoint.name,
+                        createdBy : endpoint.createdBy,
+                        createdDate : endpoint.createdDate,
+                        requiresParam : endpoint.requiresParam,
+                        requestType : endpoint.requestType,
+                        fullUrl : system.url + endpoint.url,
+                        method : endpoint.method
+                    })
+            }))
         })
-        .catch(function errorHandler (error) {
-            callback(error);
+
+        Promise.all(countPromises).then(function completedPromises () {
+            callback(undefined, basicEndpoints);      
+            return;
         })
+
+    })
+    .catch(function errorHandler (error) {
+        callback(error);
+    })
 
 }
 
-controller.getSystemNames = function getSystemName (endpoint) {
-
-    // Get the system name
-    return System.find({_id :  endpoint.parentSystem.toString()}).lean().exec()
-
+controller.getSystemNameAndUrl = function(systemId) {    
+    // Get the system name and url
+    return System.findOne({_id :  systemId}, "name url").lean().exec()
 }
 
 controller.create = function create (newEndpoint, callback) {
@@ -124,15 +134,14 @@ controller.delete = function create (endpointId, callback) {
 
     WidgetController.deleteByEndpoint(endpointId, function (err) {
         if(err) {
-            method.callback(err);
-            return;
+            callback(err);
+        } else {
+            Endpoint.remove({ _id : endpointId }, function(err) {
+                callback(err);
+                return;
+            });
         }
     })
-
-    Endpoint.remove({ _id : endpointId }, function(err) {
-        callback(err);
-        return;
-    });
 }
 
 controller.deleteBySystem = function create (systemId, callback) {

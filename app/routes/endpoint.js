@@ -36,7 +36,7 @@ router.route('/basic/:systemId')
 
         if(systemId) {
 
-            controller.getAllBasic(systemId, function(err, endpoints) {
+            controller.getBasicEndpoints(systemId, function(err, endpoints) {
 
                 if(err) {
                     console.log("Error: " + err);

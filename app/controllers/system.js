@@ -101,7 +101,7 @@ controller.create = function create (newSystem, callback) {
     });
 }
 
-controller.update = function create (updatedSystem, callback) {
+controller.update = function update (updatedSystem, callback) {
 
     var query = { _id : updatedSystem._id };
 

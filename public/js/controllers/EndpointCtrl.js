@@ -16,8 +16,6 @@ function EndpointController ($scope, $location, $routeParams, UserService, Endpo
 
 	this.createEndpoint = function() {
 
-		$scope.endpoint.url = this.systemURL + $scope.endpoint.url;	
-
 		EndpointService.create($scope.endpoint).then(function(response) {
 			if(response.success == true) {
 				notificationService.success(response.message);

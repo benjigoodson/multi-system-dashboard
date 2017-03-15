@@ -31,7 +31,7 @@ var SystemSchema = new Schema({
     },
     url : {
         type : String , 
-        default : ''
+        required: true
     },
     createdDate : { 
         type : String,

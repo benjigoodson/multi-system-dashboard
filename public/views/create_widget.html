@@ -118,7 +118,7 @@
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <select class="select2_single form-control" id="endpoint" name="endpoint"
                        ng-model="widget.endpoint" ng-change="widgetCtrl.endpointChanged()" ng-disabled="!widget.system">
-                    <option ng-repeat="endpoint in endpoints" value="{{endpoint.id}}">{{endpoint.url}}</option>
+                    <option ng-repeat="endpoint in endpoints" value="{{endpoint.id}}">{{endpoint.fullUrl}}</option>
                   </select>
                 </div>
               </div>
