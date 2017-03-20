@@ -52,7 +52,7 @@
 
           <div id="step-1">
             
-            <form class="form-horizontal form-label-left">
+            <form id="step-1-form" class="form-horizontal form-label-left" role="form">
                 
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="created-by">Created By <span class="required">*</span>
@@ -99,7 +99,7 @@
           </div>
           <div id="step-2">
 
-            <form class="form-horizontal form-label-left">
+            <form class="form-horizontal form-label-left" role="form">
 
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="system">System <span class="required">*</span>
@@ -137,7 +137,7 @@
           </div>
           <div id="step-3">
 
-            <form class="form-horizontal form-label-left">
+            <form class="form-horizontal form-label-left" role="form">
 
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="graph-type">Graph Type <span class="required">*</span>
@@ -235,22 +235,40 @@
   </div>
 </div>
 
-<script> 
-  $(document).ready(function() {
+<script type="text/javascript">
+  // Store the widget controller
+  var controller;
 
+  $(document).ready(function() {
     $('#wizard').smartWizard({
         transitionEffect: 'fade',
+        onLeaveStep : leaveAStepCallback,
         onFinish: onFinishCallback
-    });
+    })
 
     $('.buttonNext').addClass('btn btn-success');
     $('.buttonPrevious').addClass('btn btn-primary');
     $('.buttonFinish').addClass('btn btn-default');
-
   });
 
-  function onFinishCallback() {
-      // Use methods in controller instead
-      angular.element(document.getElementById("widgetController")).scope().widgetCtrl.onFinish();
+  // Must be done once the window is loaded due to waiting for the controller
+  $(window).on("load", function() {
+    controller = angular.element(document.getElementById("widgetController")).scope().widgetCtrl;
+  });
+
+  function leaveAStepCallback(obj, context) {
+
+      //$("#step-1")
+
+      // return false to stay on step and true to continue navigation 
+      return controller.validateSteps(context.fromStep); 
   }
+
+  function onFinishCallback() {
+      // If valid then finish
+      if(controller.validateAllSteps()){
+          controller.onFinish();
+      }
+  }
+
 </script>

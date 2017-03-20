@@ -561,11 +561,28 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		self.populateFields(self.searchableObject);
 	};
 
-	this.onFinish = function() {
+	this.validateSteps = function(stepnumber){
+      var isStepValid = true;
 
+      // Validate step 1
+      if(stepnumber == 1){
+          // Your step validation logic
+          // set isStepValid = false if has errors
+      }
+		
+
+		return isStepValid;
+	}
+
+	this.validateAllSteps = function(){
+		var isStepValid = true;
+		// all step validation logic     
+		return isStepValid;
+	} 
+
+	this.onFinish = function() {
 		// Create new widget
 		this.createWidget($scope.widget);
-
 	};
 
 	this.errorHandler = function(error) {

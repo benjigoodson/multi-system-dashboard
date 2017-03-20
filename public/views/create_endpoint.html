@@ -7,7 +7,7 @@
       </div>
       <div class="x_content">
 
-        <form class="form-horizontal form-label-left" ng-submit="endpointCtrl.createEndpoint()" role="form">
+        <form class="form-horizontal form-label-left" name="endpointForm" ng-submit="endpointCtrl.createEndpoint()" role="form">
 
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="created-by">Created By <span class="required">*</span>
@@ -29,15 +29,30 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="endpoint-name">Endpoint Name <span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="text" ng-model="endpoint.name" id="endpoint-name" name="endpoint-name" required="required" class="form-control col-md-7 col-xs-12">
+              <input type="text" ng-model="endpoint.name" id="endpointName" name="endpointName" class="form-control col-md-7 col-xs-12" 
+                ng-class="{' inputError': endpointForm.endpointName.$invalid && !endpointForm.endpointName.$pristine }" ng-maxlength="50" required>
+              <p ng-show="endpointForm.endpointName.$invalid && !endpointForm.endpointName.$pristine && !endpointForm.endpointName.$error.maxlength" class="has-error" >
+                An endpoint name is required.
+              </p>
+              <p ng-show="endpointForm.endpointName.$error.maxlength" class="has-error" >
+                The endpoint name must not exceed 50 characters.
+              </p>
             </div>
           </div>
 
           <div class="form-group">
             <label for="description" class="control-label col-md-3 col-sm-3 col-xs-12">Description <span class="required">*</span>
+              <br>
+              <small>
+                Max 255 characters
+              </small>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <textarea ng-model="endpoint.description" required="required" class="form-control" name="description" id="description" rows="2"></textarea>
+              <textarea ng-model="endpoint.description" class="form-control" name="description" id="description" rows="2" maxlength="255"
+               ng-class="{' inputError': endpointForm.description.$invalid && !endpointForm.description.$pristine }" required></textarea>
+              <p ng-show="endpointForm.description.$error.maxlength" class="has-error" >
+                Please enter description that is less than 255 characters.
+              </p>
             </div>
           </div>
 
@@ -45,18 +60,28 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="parent-system">Parent System <span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-               <select ng-model="endpoint.parentSystem" ng-change="endpointCtrl.systemChanged()" class="select2_single form-control" id="parent-system" name="parent-system">
+               <select ng-model="endpoint.parentSystem" ng-change="endpointCtrl.systemChanged()" class="select2_single form-control" id="parentSystem" 
+                name="parentSystem" ng-class="{' inputError': endpointForm.parentSystem.$invalid && !endpointForm.parentSystem.$pristine }" required>
                  <option ng-repeat="system in systems" value="{{system.id}}">{{system.name}}</option>
                </select>
+               <p ng-show="endpointForm.parentSystem.$invalid && !endpointForm.parentSystem.$pristine" class="has-error" >
+                Please select a parent system.
+              </p>
             </div>
           </div>
 
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="endpoint-url">URL <span class="required">*</span>
             </label>
-            <div class="col-md-6 col-sm-6 col-xs-12 input-group input-group-sm">
-              <label ng-show="endpointCtrl.systemURL" class="input-group-addon" for="endpoint-url">{{endpointCtrl.systemURL}}</label>
-              <input type="text" ng-model="endpoint.url" id="endpoint-url" name="endpoint-url" required="required" class="form-control col-md-7 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+              <div ng-class=" { 'input-group input-group-sm' : endpointCtrl.systemURL }">
+                <label ng-show="endpointCtrl.systemURL" class="input-group-addon" for="endpoint-url">{{endpointCtrl.systemURL}}</label>
+                <input type="text" ng-model="endpoint.url" id="endpointUrl" name="endpointUrl" ng-disabled="!endpointCtrl.systemURL" class="form-control"
+                  ng-class="{' inputError': endpointForm.endpointUrl.$invalid && !endpointForm.endpointUrl.$pristine }" required>
+              </div>
+              <p ng-show="endpointForm.endpointUrl.$invalid && !endpointForm.endpointUrl.$pristine" class="has-error">
+                Please enter a url path
+              </p>
             </div>
           </div>
 
@@ -64,11 +89,15 @@
             <label for="request-type" class="control-label col-md-3 col-sm-3 col-xs-12">Request Type<span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <select ng-model="endpoint.requestType" id="request-type" name="request-type" required="required" class="form-control col-md-7 col-xs-12">
+              <select ng-model="endpoint.requestType" id="requestType" name="requestType" class="form-control col-md-7 col-xs-12"
+                ng-class="{' inputError': endpointForm.requestType.$invalid && !endpointForm.requestType.$pristine }" required>
                 <option value="GET">GET</option>
                 <option value="POST">POST</option>
                 <option value="PUT">PUT</option>
               </select>
+              <p ng-show="endpointForm.requestType.$invalid && !endpointForm.requestType.$pristine" class="has-error">
+                Please select a request type
+              </p>
             </div>
           </div>
 
@@ -83,7 +112,7 @@
           <div class="ln_solid"></div>
             <div class="form-group">
               <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="submit" class="btn btn-success" ng-disabled="endpointForm.$pristine || endpointForm.$invalid">Submit</button>
               </div>
             </div>
           </div>

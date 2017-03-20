@@ -1561,9 +1561,13 @@ table.tile_info span.right {
   border: 1px solid #EFEFEF; }
 
 .input-group {
-  margin-bottom: 10px;
+   }
+/** 
+margin-bottom: 10px;
   padding-left: 10px !important;
-  padding-right: 10px !important; }
+  padding-right: 10px !important;
+
+ */
 
 .details-input-group {
   margin-bottom: 10px;
@@ -1636,101 +1640,20 @@ legend {
 .validate {
   margin-top: 10px; }
 
-.invalid-form-error-message {
-  margin-top: 10px;
-  padding: 5px; }
-
-.invalid-form-error-message.filled {
-  border-left: 2px solid #E74C3C; }
-
-p.parsley-success {
-  color: #468847;
-  background-color: #DFF0D8;
-  border: 1px solid #D6E9C6; }
-
-p.parsley-error {
+.has-error {
+  padding: 6px;  
   color: #B94A48;
   background-color: #F2DEDE;
   border: 1px solid #EED3D7; }
 
-ul.parsley-errors-list {
-  list-style: none;
-  color: #E74C3C;
-  padding-left: 0; }
+p.success {
+  color: #468847;
+  background-color: #DFF0D8;
+  border: 1px solid #D6E9C6; }
 
-input.parsley-error, textarea.parsley-error, select.parsley-error {
+.inputError {
   background: #FAEDEC;
   border: 1px solid #E85445; }
-
-.btn-group .parsley-errors-list {
-  display: none; }
-
-.bad input, .bad select, .bad textarea {
-  border: 1px solid #CE5454;
-  box-shadow: 0 0 4px -2px #CE5454;
-  position: relative;
-  left: 0;
-  -moz-animation: .7s 1 shake linear;
-  -webkit-animation: 0.7s 1 shake linear; }
-
-.item input, .item textarea {
-  transition: 0.42s; }
-
-/* alerts (when validation fails) */
-.item .alert {
-  float: left;
-  margin: 0 0 0 20px;
-  padding: 3px 10px;
-  color: #FFF;
-  border-radius: 3px 4px 4px 3px;
-  background-color: #CE5454;
-  max-width: 170px;
-  white-space: pre;
-  position: relative;
-  left: -15px;
-  opacity: 0;
-  z-index: 1;
-  transition: 0.15s ease-out; }
-
-.item .alert::after {
-  content: '';
-  display: block;
-  height: 0;
-  width: 0;
-  border-color: transparent #CE5454 transparent transparent;
-  border-style: solid;
-  border-width: 11px 7px;
-  position: absolute;
-  left: -13px;
-  top: 1px; }
-
-.item.bad .alert {
-  left: 0;
-  opacity: 1; }
-
-.inl-bl {
-  display: inline-block; }
-
-.well .markup {
-  background: #fff;
-  color: #777;
-  position: relative;
-  padding: 45px 15px 15px;
-  margin: 15px 0 0 0;
-  background-color: #fff;
-  border-radius: 0 0 4px 4px;
-  box-shadow: none; }
-
-.well .markup::after {
-  content: "Example";
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  font-size: 12px;
-  font-weight: bold;
-  color: #bbb;
-  text-transform: uppercase;
-  letter-spacing: 1px; }
 
 /** top tiles  */
 .tile_count {
@@ -2296,14 +2219,6 @@ ul.stats-overview li:first-child {
   top: 0px;
   width: 100%; }
 
-.fadeInLeft {
-  z-index: 22;
-  animation-name: fadeInLeft;
-  animation-delay: .1s; }
-
-.fadeOutLeft {
-  animation-name: fadeOutLeft; }
-
 .animate {
   -webkit-animation-duration: 0.5s;
   -webkit-animation-timing-function: ease;
@@ -2517,13 +2432,6 @@ header {
   border: 1px solid #ccc; }
 
 /** /Select2 **/
-/** Normalize.css **/
-fieldset {
-  border: none;
-  margin: 0;
-  padding: 0; }
-
-/** /Normalize.css **/
 /** jQuery Smart Wizard  **/
 .form_wizard .stepContainer {
   display: block;
@@ -2617,69 +2525,6 @@ fieldset {
   display: none; }
 
 /** jQuery Smart Wizard  **/
-/** bootstrap-progressbar  **/
-.progress {
-  border-radius: 0; }
-
-.progress-bar-info {
-  background-color: #3498DB; }
-
-.progress-bar-success {
-  background-color: #26B99A; }
-
-.progress_summary .progress {
-  margin: 5px 0 12px !important; }
-
-.progress_summary .row {
-  margin-bottom: 5px; }
-
-.progress_summary .row .col-xs-2 {
-  padding: 0; }
-
-.progress_summary .more_info span {
-  text-align: right;
-  float: right; }
-
-.progress_summary .data span {
-  text-align: right;
-  float: right; }
-
-.progress_summary p {
-  margin-bottom: 3px;
-  width: 100%; }
-
-.progress_title .left {
-  float: left;
-  text-align: left; }
-
-.progress_title .right {
-  float: right;
-  text-align: right;
-  font-weight: 300; }
-
-.progress.progress_sm {
-  border-radius: 0;
-  margin-bottom: 18px;
-  height: 10px !important; }
-
-.progress.progress_sm .progress-bar {
-  height: 10px !important; }
-
-.dashboard_graph p {
-  margin: 0 0 4px; }
-
-ul.verticle_bars {
-  width: 100%; }
-
-ul.verticle_bars li {
-  width: 23%;
-  height: 200px;
-  margin: 0; }
-
-.progress.vertical.progress_wide {
-  width: 35px; }
-
-/** bootstrap-progressbar  **/
 /** PNotify **/
 .alert-success {
   color: #ffffff;
