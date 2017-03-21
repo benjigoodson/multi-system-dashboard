@@ -94,12 +94,12 @@ WidgetModule.factory('WidgetService', function ($http) {
 				url = apiURL;
 			}
 
-			// Time out of 7 seconds
+			// Time out of 10 seconds
 			var promise = $http(
 				{ 
 					method: method, 
 					url: url,
-					timeout: 7000
+					timeout: 10000
 				})
 			.then(function (response) {	  
 				return response;
