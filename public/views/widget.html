@@ -30,13 +30,16 @@
         </div>
         <div class="col-md-7 col-sm-7 col-xs-12">
           <h3>Widget: {{widget.name}}</h3>
+
+          <form id="form" name="form" class="form-horizontal" role="form" novalidate>
+          
             <div ng-show="!edit">
               Description: {{widget.description}}
             </div>
             <div ng-show="edit">
               Description: 
               <br>
-              <textarea rows="2" style="width: 70%;" ng-model="widget.description" class="form-control">{{widget.description}}</textarea>
+              <textarea id="description" name="description" rows="2" class="form-control" style="width: 70%;" maxlength="255" ng-model="widget.description">{{widget.description}}</textarea>
             </div>
             <ul class="list-unstyled entity_details">
               <li>
@@ -65,11 +68,14 @@
                 <i class="fa fa-code-fork"></i> Field Path:
                 <div class="details-input-group input-group input-group-sm">
                   <label ng-show="widget.fieldPath && widget.fieldPath.length > 0" class="input-group-addon" for="fieldPath">{{widget.fieldPath.join('.')}}</label>
-                  <select class="select2_single form-control editWidget" ng-model="field" ng-change="widgetCtrl.fieldChanged()">
+                  <select id="field" name="field" class="select2_single form-control editWidget" ng-model="field" ng-change="widgetCtrl.fieldChanged()" ng-class="{' inputError': form.field.$invalid && ! form.field.$pristine }" required>
                     <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
                   </select>
                   <a class="btn btn-default input-group-addon" title="Click to clear the fields path." ng-click="widgetCtrl.clearFieldPath()"><i class="fa fa-ban"></i></a>
                 </div>
+                <p ng-show="form.field.$invalid && !form.field.$pristine" class="has-error" >
+                    A field path must be selected.
+                </p>
               </li>
               <li ng-show="!edit">
                 <i ng-show="widget.graphType == 'count'" class="fa fa-arrow-circle-o-up"></i><i class="fa fa-{{widget.graphType}}-chart"></i> Graph type: {{widget.graphType}}
@@ -88,15 +94,25 @@
               </li>
               <li ng-show="edit && widget.graphType == 'count'">
                 <i class="fa fa-commenting-o"></i> Value:
-                <input ng-model="widget.value" class="form-control" type="text">
+                <input id="widgetValue" name="widgetValue" ng-model="widget.value" class="form-control" type="text" 
+                  ng-class="{' inputError': form.widgetValue.$invalid && ! form.widgetValue.$pristine }" ng-required="edit && widget.graphType == 'count'">
+                <p ng-show="form.widgetValue.$invalid && !form.widgetValue.$pristine" class="has-error" >
+                    Please enter the value to count
+                </p>
               </li>
             </ul>
-            <br>
+
             <a class="btn btn-success" ng-show="!edit" ng-click="widgetCtrl.setEdit()"><i class="fa fa-edit m-right-xs"></i> Edit Widget</a>
             <a class="btn btn-success" ng-show="edit" ng-click="widgetCtrl.saveWidget(widget)"><i class="fa fa-floppy-o m-right-xs"></i> Save Widget</a>
             
             <a class="btn btn-danger" ng-show="!edit" ng-click="widgetCtrl.deleteWidget(widget._id)"><i class="fa fa-trash m-right-xs"></i> Delete Widget</a>
             <a class="btn btn-danger" ng-show="edit" ng-click="widgetCtrl.setEdit()"><i class="fa fa-minus-circle m-right-xs"></i> Cancel Edit</a>
+
+          </form>
+
+          <!-- Space to allow page scrolling -->
+          <br />
+
         </div>
       </div>
     </div>
