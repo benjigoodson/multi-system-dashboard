@@ -11,7 +11,7 @@ function ChartService (widgetService) {
 
         generateChartData : function(widget) {
 
-            // Make REST calls to get the data for each widget           
+            // Make REST calls to get the data for the widget           
             return widgetService.makeRESTCall(widget.method, widget.apiURL, widget.requestParam).then(function(apiResponse) {
 
                 var resultArray;
@@ -20,6 +20,9 @@ function ChartService (widgetService) {
                     // If no data in response
                     if(!apiResponse || apiResponse.status == -1 || !apiResponse.data) {
                         throw "No response from server.";
+                    } else if(apiResponse.status != 200) {
+                        // If response is not 200 (Ok)then throw error
+                        throw "Not an ok status from server.";
                     }
 
                     // If an object is returned containing just a single array
