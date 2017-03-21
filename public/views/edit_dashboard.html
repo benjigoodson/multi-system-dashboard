@@ -10,32 +10,38 @@
         </div>
         <div class="col-md-7 col-sm-7 col-xs-12">
           <h3>Dashboard: {{dashboardCtrl.dashboard.name}}</h3>
-          <div>
-            Description: 
+
+          <form id="form" name="form" class="form-horizontal" role="form" novalidate>
+
+            <div>
+              Description: 
+              <br>
+              <textarea id="description" name="description" rows="2" class="form-control" style="width: 70%;" maxlength="255" ng-model="dashboardCtrl.dashboard.description">{{dashboardCtrl.dashboard.description}}</textarea>
+            </div>
+            <ul class="list-unstyled user_data">
+              <li>
+                <i class="fa fa-user-circle"></i> Created By: {{dashboardCtrl.dashboard.createdBy.forename}}
+              </li>
+              <li>
+                <i class="fa fa-calendar-check-o"></i> Created Date: {{dashboardCtrl.dashboard.createdDate}}
+              </li>
+              <li>
+                <i class="fa fa-tasks"></i> Widgets:
+                <ui-select multiple title="Choose widgets" theme="bootstrap" ng-model="dashboardCtrl.savedWidgets" style="width: 70%">
+                    <ui-select-match class="ui-select-match" placeholder="Select widgets...">{{$item.name}}</ui-select-match>
+                    <ui-select-choices class="ui-select-choices" repeat="widget in widgets | filter:$select.search track by widget.name">
+                      <div ng-bind-html="widget.name | highlight: $select.search"></div>
+                      <div ng-bind-html="widget.apiURL | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+              </li>
+            </ul>
             <br>
-            <textarea rows="2" style="width: 70%" ng-model="dashboardCtrl.dashboard.description">{{dashboardCtrl.dashboard.description}}</textarea>
-          </div>
-          <ul class="list-unstyled user_data">
-            <li>
-              <i class="fa fa-user-circle"></i> Created By: {{dashboardCtrl.dashboard.createdBy.forename}}
-            </li>
-            <li>
-              <i class="fa fa-calendar-check-o"></i> Created Date: {{dashboardCtrl.dashboard.createdDate}}
-            </li>
-            <li>
-              <i class="fa fa-tasks"></i> Widgets:
-              <ui-select multiple title="Choose widgets" theme="bootstrap" ng-model="dashboardCtrl.savedWidgets" style="width: 70%">
-                  <ui-select-match class="ui-select-match" placeholder="Select widgets...">{{$item.name}}</ui-select-match>
-                  <ui-select-choices class="ui-select-choices" repeat="widget in widgets | filter:$select.search track by widget.name">
-                    <div ng-bind-html="widget.name | highlight: $select.search"></div>
-                    <div ng-bind-html="widget.apiURL | highlight: $select.search"></div>
-                  </ui-select-choices>
-              </ui-select>
-            </li>
-          </ul>
-          <br>
-          <a class="btn btn-success" ng-click="dashboardCtrl.saveDashboard()"><i class="fa fa-floppy-o m-right-xs"></i> Save Dashboard</a>
-          <a class="btn btn-danger" ng-click="dashboardCtrl.deleteDashboard(dashboardCtrl.dashboard._id)"><i class="fa fa-trash m-right-xs"></i> Delete Dashboard</a>
+            <a class="btn btn-success" ng-click="dashboardCtrl.saveDashboard()"><i class="fa fa-floppy-o m-right-xs"></i> Save Dashboard</a>
+            <a class="btn btn-danger" ng-click="dashboardCtrl.deleteDashboard(dashboardCtrl.dashboard._id)"><i class="fa fa-trash m-right-xs"></i> Delete Dashboard</a>
+
+          </form>
+
         </div>
       </div>
     </div>
