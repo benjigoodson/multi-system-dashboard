@@ -39,6 +39,27 @@ function SmartWizard(target, options) {
         });
 
         var allDivs = $this.target.children('div');
+        // CHeck if ul with steps has been added by user, if not add them
+        if($this.target.children('ul').length == 0 ){
+            var ul = $("<ul/>");
+            target.prepend(ul)
+
+            // for each div create a li
+            allDivs.each(function(i,e){
+                var title = $(e).first().children(".StepTitle").text();
+                var s = $(e).attr("id")
+                // if referenced div has no id, add one.
+                if (s==undefined){
+                    s = "step-"+(i+1)
+                    $(e).attr("id",s);
+                }
+                var span = $("<span/>").addClass("stepDesc").text(title);
+                var li = $("<li></li>").append($("<a></a>").attr("href", "#" + s).append($("<label></label>").addClass("stepNumber").text(i + 1)).append(span));
+                ul.append(li);
+            });
+            // (re)initialise the steps property
+            $this.steps = $(target).children("ul").children("li").children("a"); // Get all anchors
+        }
         $this.target.children('ul').addClass("anchor");
         allDivs.addClass("content");
 
@@ -52,9 +73,22 @@ function SmartWizard(target, options) {
         $this.elmStepContainer.append(allDivs);
         elmActionBar.append($this.loader);
         $this.target.append($this.elmStepContainer);
-        elmActionBar.append($this.buttons.finish)
-                    .append($this.buttons.next)
-                    .append($this.buttons.previous);
+        
+        if($this.options.reverseButtonsOrder){
+            elmActionBar.append($this.buttons.previous)
+                        .append($this.buttons.next);
+            if ($this.options.includeFinishButton){
+                elmActionBar.append($this.buttons.finish)
+            }
+        }
+        else {
+            if ($this.options.includeFinishButton){
+                elmActionBar.append($this.buttons.finish)
+            }
+            elmActionBar.append($this.buttons.next)
+                        .append($this.buttons.previous);
+        }
+        
         $this.target.append(elmActionBar);
         this.contentWidth = $this.elmStepContainer.width();
 
@@ -145,7 +179,7 @@ function SmartWizard(target, options) {
             } else {
                 var ajax_args = {
                     url: ajaxurl,
-                    type: "POST",
+                    type: $this.options.ajaxType,
                     data: ({step_number : stepNum}),
                     dataType: "text",
                     beforeSend: function(){
@@ -203,7 +237,7 @@ function SmartWizard(target, options) {
             var nextElmLeft = null;
             var curElementLeft = 0;
             if(stepIdx > prevCurStepIdx){
-                nextElmLeft1 = $this.contentWidth + 10;
+                nextElmLeft1 = $this.elmStepContainer.width() + 10;
                 nextElmLeft2 = 0;
                 curElementLeft = 0 - _step($this, curStep).outerWidth();
             } else {
@@ -262,7 +296,7 @@ function SmartWizard(target, options) {
         if (! $this.options.cycleSteps){
             if (0 >= $this.curStepIdx) {
                 $($this.buttons.previous).addClass("buttonDisabled");
-				if ($this.options.hideButtonsOnDisabled) {
+                if ($this.options.hideButtonsOnDisabled) {
                     $($this.buttons.previous).hide();
                 }
             }else{
@@ -284,17 +318,7 @@ function SmartWizard(target, options) {
             }
         }
         // Finish Button
-        if (! $this.steps.hasClass('disabled') || $this.options.enableFinishButton){
-            $($this.buttons.finish).removeClass("buttonDisabled");
-            if ($this.options.hideButtonsOnDisabled) {
-                $($this.buttons.finish).show();
-            }
-        }else{
-            $($this.buttons.finish).addClass("buttonDisabled");
-            if ($this.options.hideButtonsOnDisabled) {
-                $($this.buttons.finish).hide();
-            }
-        }
+        $this.enableFinish($this.options.enableFinishButton);
     };
 
     /*
@@ -355,6 +379,27 @@ function SmartWizard(target, options) {
         $('.content', this.msgBox).html(msg);
         this.msgBox.show();
     }
+
+    SmartWizard.prototype.enableFinish = function (enable) {
+        // Controll status of finish button dynamically
+        // just call this with status you want
+        this.options.enableFinishButton = enable;
+        if (this.options.includeFinishButton){
+            if (!this.steps.hasClass('disabled') || this.options.enableFinishButton){
+                $(this.buttons.finish).removeClass("buttonDisabled");
+                if (this.options.hideButtonsOnDisabled) {
+                    $(this.buttons.finish).show();
+                }
+            }else{
+                $(this.buttons.finish).addClass("buttonDisabled");
+                if (this.options.hideButtonsOnDisabled) {
+                    $(this.buttons.finish).hide();
+                }
+            }
+        }
+        return this.options.enableFinishButton;
+    }
+
     SmartWizard.prototype.hideMessage = function () {
         this.msgBox.fadeOut("normal");
     }
@@ -383,7 +428,9 @@ function SmartWizard(target, options) {
         var selStep = this.steps.eq(this.curStepIdx);
         var stepContainer = _step(this, selStep);
         stepContainer.children().each(function() {
-            height += $(this).outerHeight();
+            if($(this).is(':visible')) {
+                 height += $(this).outerHeight(true);
+            }
         });
 
         // These values (5 and 20) are experimentally chosen.
@@ -398,52 +445,55 @@ function SmartWizard(target, options) {
 
 (function($){
 
-$.fn.smartWizard = function(method) {
-    var args = arguments;
-    var rv = undefined;
-    var allObjs = this.each(function() {
-        var wiz = $(this).data('smartWizard');
-        if (typeof method == 'object' || ! method || ! wiz) {
-            var options = $.extend({}, $.fn.smartWizard.defaults, method || {});
-            if (! wiz) {
-                wiz = new SmartWizard($(this), options);
-                $(this).data('smartWizard', wiz);
-            }
-        } else {
-            if (typeof SmartWizard.prototype[method] == "function") {
-                rv = SmartWizard.prototype[method].apply(wiz, Array.prototype.slice.call(args, 1));
-                return rv;
+    $.fn.smartWizard = function(method) {
+        var args = arguments;
+        var rv = undefined;
+        var allObjs = this.each(function() {
+            var wiz = $(this).data('smartWizard');
+            if (typeof method == 'object' || ! method || ! wiz) {
+                var options = $.extend({}, $.fn.smartWizard.defaults, method || {});
+                if (! wiz) {
+                    wiz = new SmartWizard($(this), options);
+                    $(this).data('smartWizard', wiz);
+                }
             } else {
-                $.error('Method ' + method + ' does not exist on jQuery.smartWizard');
+                if (typeof SmartWizard.prototype[method] == "function") {
+                    rv = SmartWizard.prototype[method].apply(wiz, Array.prototype.slice.call(args, 1));
+                    return rv;
+                } else {
+                    $.error('Method ' + method + ' does not exist on jQuery.smartWizard');
+                }
             }
+        });
+        if (rv === undefined) {
+            return allObjs;
+        } else {
+            return rv;
         }
-    });
-    if (rv === undefined) {
-        return allObjs;
-    } else {
-        return rv;
-    }
-};
+    };
 
 // Default Properties and Events
-$.fn.smartWizard.defaults = {
-    selected: 0,  // Selected Step, 0 = first step
-    keyNavigation: true, // Enable/Disable key navigation(left and right keys are used if enabled)
-    enableAllSteps: false,
-    transitionEffect: 'fade', // Effect on navigation, none/fade/slide/slideleft
-    contentURL:null, // content url, Enables Ajax content loading
-    contentCache:true, // cache step contents, if false content is fetched always from ajax url
-    cycleSteps: false, // cycle step navigation
-    enableFinishButton: false, // make finish button enabled always
-	hideButtonsOnDisabled: false, // when the previous/next/finish buttons are disabled, hide them instead?
-    errorSteps:[],    // Array Steps with errors
-    labelNext:'Next',
-    labelPrevious:'Previous',
-    labelFinish:'Finish',
-    noForwardJumping: false,
-    onLeaveStep: null, // triggers when leaving a step
-    onShowStep: null,  // triggers when showing a step
-    onFinish: null  // triggers when Finish button is clicked
+    $.fn.smartWizard.defaults = {
+        selected: 0,  // Selected Step, 0 = first step
+        keyNavigation: true, // Enable/Disable key navigation(left and right keys are used if enabled)
+        enableAllSteps: false,
+        transitionEffect: 'fade', // Effect on navigation, none/fade/slide/slideleft
+        contentURL:null, // content url, Enables Ajax content loading
+        contentCache:true, // cache step contents, if false content is fetched always from ajax url
+        cycleSteps: false, // cycle step navigation
+        enableFinishButton: false, // make finish button enabled always
+        hideButtonsOnDisabled: false, // when the previous/next/finish buttons are disabled, hide them instead?
+        errorSteps:[],    // Array Steps with errors
+        labelNext:'Next',
+        labelPrevious:'Previous',
+        labelFinish:'Finish',
+        noForwardJumping: false,
+        ajaxType: "POST",
+        onLeaveStep: null, // triggers when leaving a step
+        onShowStep: null,  // triggers when showing a step
+        onFinish: null,  // triggers when Finish button is clicked
+        includeFinishButton : true,   // Add the finish button
+        reverseButtonsOrder: false //shows buttons ordered as: prev, next and finish       
 };
 
 })(jQuery);
