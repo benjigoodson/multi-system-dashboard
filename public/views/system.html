@@ -10,62 +10,75 @@
         </div>
         <div class="col-md-7 col-sm-7 col-xs-12">
           <h3>System: {{systemCtrl.system.name}}</h3>
-          <div ng-show="!edit">
-              Description: {{systemCtrl.system.description}}
-          </div>
-          <div ng-show="edit">
-            Description: 
+
+          <form id="form" name="form" class="form-horizontal" role="form" novalidate>
+
+            <div ng-show="!edit">
+                Description: {{systemCtrl.system.description}}
+            </div>
+            <div ng-show="edit">
+              Description: 
+              <br>
+              <textarea rows="2" class="form-control" style="width: 70%;" maxlength="255" ng-model="systemCtrl.system.description">{{systemCtrl.system.description}}</textarea>
+            </div>          
+            <ul class="list-unstyled entity_details">
+              <li>
+                <i class="fa fa-user-circle"></i> Created By: {{systemCtrl.system.createdBy.forename}}
+              </li>
+              <li>
+                <i class="fa fa-calendar-check-o"></i> Created Date: {{systemCtrl.system.createdDate}}
+              </li>
+
+              <li ng-show="!edit">
+                <i class="fa fa-envelope-o"></i> Contact Email: {{systemCtrl.system.contact}}
+              </li>
+              <li ng-show="!edit">
+                <i class="fa fa-globe"></i> URL: {{systemCtrl.system.url}}
+              </li>
+              <li ng-show="!edit">
+                <i class="fa fa-cogs"></i> Status:
+                <button type="button" class="btn btn-xs" ng-class="{ 'btn-success' : systemCtrl.system.status == 'online', 'btn-danger' : systemCtrl.system.status == 'offline'}" >{{systemCtrl.system.status}}</button></td>
+              </li>
+
+              <li ng-show="edit">
+                <i class="fa fa-envelope-o"></i> Contact Email: <input id="email" name="email" type="email" ng-model="systemCtrl.system.contact"class="form-control" ng-class="{' inputError': form.email.$invalid && !form.email.$pristine }" required>
+                <p ng-show="form.email.$invalid && !form.email.$pristine" class="has-error" >
+                  Enter a valid email address.
+                </p>
+              </li>
+              <li ng-show="edit">
+                <i class="fa fa-globe"></i> URL: <input id="url" name="url" ng-model="systemCtrl.system.url" class="form-control" type="url" ng-class="{' inputError': form.url.$invalid && !form.url.$pristine }" required>
+                <p ng-show="form.url.$invalid && !form.url.$pristine" class="has-error" >
+                  Enter a valid URL.
+                </p>
+              </li>
+              <li ng-show="edit">
+                <i class="fa fa-cogs"></i> Status: <br />
+                <input
+                  bs-switch
+                  ng-model="systemCtrl.system.status"
+                  type="checkbox"
+                  value="online"
+                  ng-value="offline"
+                  switch-active="true"
+                  switch-on-text="Online"
+                  switch-off-text="Offline"
+                  switch-on-color="primary"
+                  switch-off-color="danger"
+                  ng-true-value="'online'"
+                  ng-false-value="'offline'"
+                />
+              </li>
+            </ul>
             <br>
-            <textarea rows="2" class="form-control" style="width: 70%;" ng-model="systemCtrl.system.description">{{systemCtrl.system.description}}</textarea>
-          </div>          
-          <ul class="list-unstyled user_data">
-            <li>
-              <i class="fa fa-user-circle"></i> Created By: {{systemCtrl.system.createdBy.forename}}
-            </li>
-            <li>
-              <i class="fa fa-calendar-check-o"></i> Created Date: {{systemCtrl.system.createdDate}}
-            </li>
+            <a class="btn btn-success" ng-show="!edit" ng-click="systemCtrl.setEdit()"><i class="fa fa-edit m-right-xs"></i> Edit System</a>
+            <a class="btn btn-success" ng-show="edit" ng-click="systemCtrl.saveSystem(systemCtrl.system)"><i class="fa fa-floppy-o m-right-xs"></i> Save System</a>
 
-            <li ng-show="!edit">
-              <i class="fa fa-envelope-o"></i> Contact Email: {{systemCtrl.system.contact}}
-            </li>
-            <li ng-show="!edit">
-              <i class="fa fa-globe"></i> URL: {{systemCtrl.system.url}}
-            </li>
-            <li ng-show="!edit">
-              <i class="fa fa-cogs"></i> Status:
-              <button type="button" class="btn btn-xs" ng-class="{ 'btn-success' : systemCtrl.system.status == 'online', 'btn-danger' : systemCtrl.system.status == 'offline'}" >{{systemCtrl.system.status}}</button></td>
-            </li>
+            <a class="btn btn-danger" ng-show="!edit" ng-click="systemCtrl.deleteSystemFromEdit(systemCtrl.system._id)"><i class="fa fa-trash m-right-xs"></i> Delete System</a>
+            <a class="btn btn-danger" ng-show="edit" ng-click="systemCtrl.setEdit()"><i class="fa fa-minus-circle m-right-xs"></i> Cancel Edit</a>   
 
-            <li ng-show="edit">
-              <i class="fa fa-envelope-o"></i> Contact Email: <input type="email" ng-model="systemCtrl.system.contact" required="required" class="form-control">
-            </li>
-            <li ng-show="edit">
-              <i class="fa fa-globe"></i> URL: <input ng-model="systemCtrl.system.url" class="form-control" type="text">
-            </li>
-            <li ng-show="edit">
-              <input
-                bs-switch
-                ng-model="systemCtrl.system.status"
-                type="checkbox"
-                value="online"
-                ng-value="offline"
-                switch-active="true"
-                switch-on-text="Online"
-                switch-off-text="Offline"
-                switch-on-color="primary"
-                switch-off-color="danger"
-                ng-true-value="'online'"
-                ng-false-value="'offline'"
-              />
-            </li>
-          </ul>
-          <br>
-          <a class="btn btn-success" ng-show="!edit" ng-click="systemCtrl.setEdit()"><i class="fa fa-edit m-right-xs"></i> Edit System</a>
-          <a class="btn btn-success" ng-show="edit" ng-click="systemCtrl.saveSystem(systemCtrl.system)"><i class="fa fa-floppy-o m-right-xs"></i> Save System</a>
+          </form>
 
-          <a class="btn btn-danger" ng-show="!edit" ng-click="systemCtrl.deleteSystemFromEdit(systemCtrl.system._id)"><i class="fa fa-trash m-right-xs"></i> Delete System</a>
-          <a class="btn btn-danger" ng-show="edit" ng-click="systemCtrl.setEdit()"><i class="fa fa-minus-circle m-right-xs"></i> Cancel Edit</a>          
         </div>
 
         <div class="col-md-12 col-sm-12 col-xs-12">
