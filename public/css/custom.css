@@ -2108,19 +2108,22 @@ ul.count2 li span {
   height: 1px;
   margin: 10px 0; }
 
-ul.user_data li {
+ul.entity_details li {
   margin-bottom: 6px; }
 
-ul.user_data li p {
+ul.entity_details li p {
   margin-bottom: 0; }
 
-ul.user_data input {
+ul.entity_details input {
   width: 70%; }
 
-ul.user_data input[type=checkbox] {
+ul.entity_details input[type=checkbox] {
   width: 4%; }
 
-ul.user_data select {
+ul.entity_details select {
+  width: 70%; }
+
+ul.entity_details p {
   width: 70%; }
 
 .profile_title {
