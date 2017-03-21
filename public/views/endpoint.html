@@ -10,46 +10,53 @@
         </div>
         <div class="col-md-7 col-sm-7 col-xs-12">
           <h3>Endpoint: {{endpointCtrl.endpoint.name}}</h3>
-          <div ng-show="!edit">
-              Description: {{endpointCtrl.endpoint.description}}
-          </div>
-          <div ng-show="edit">
-            Description: 
-            <br>
-            <textarea rows="2" class="form-control" style="width: 70%;" ng-model="endpointCtrl.endpoint.description">{{endpointCtrl.endpoint.description}}</textarea>
-          </div>  
-          <ul class="list-unstyled entity_details">
-            <li>
-              <i class="fa fa-user-circle"></i> Created By: {{endpointCtrl.endpoint.createdBy.forename}}
-            </li>
-            <li>
-              <i class="fa fa-calendar-check-o"></i> Created Date: {{endpointCtrl.endpoint.createdDate}}
-            </li>
-            <li>
-              <i class="fa fa-desktop"></i> Parent System: {{endpointCtrl.system.name}}
-            </li>
-            <li>
-              <i class="fa fa-exchange"></i> Request Type: {{endpointCtrl.endpoint.requestType}}
-            </li>
-            <li ng-show="!edit">
-              <i class="fa fa-globe"></i> URL: {{endpointCtrl.endpoint.fullUrl}}
-            </li>
-             <li ng-show="edit">
-              <i class="fa fa-globe"></i> URL: <input ng-model="endpointCtrl.endpoint.url" class="form-control" type="text">
-            </li>
-            <li>
-              <i class="fa fa-check-square-o"></i> Requires Parameter: <input type="checkbox" class="form-control" ng-disabled="!edit" ng-model="endpointCtrl.endpoint.requiresParam" ng-false-value="false" ng-true-value="true">
-            </li>
-          </ul>
-          <br>
-          <a class="btn btn-success" ng-show="!edit" ng-click="endpointCtrl.setEdit()"><i class="fa fa-edit m-right-xs"></i> Edit Endpoint</a>
-          <a class="btn btn-success" ng-show="edit" ng-click="endpointCtrl.saveEndpoint(endpointCtrl.endpoint)"><i class="fa fa-floppy-o m-right-xs"></i> Save Endpoint</a>
 
-          <a class="btn btn-danger" ng-show="!edit" ng-click="endpointCtrl.deleteEndpointFromEdit(endpointCtrl.endpoint._id)"><i class="fa fa-trash m-right-xs"></i> Delete Endpoint</a>
-          <a class="btn btn-danger" ng-show="edit" ng-click="endpointCtrl.setEdit()"><i class="fa fa-minus-circle m-right-xs"></i> Cancel Edit</a>          
-        </div>
+          <form id="form" name="form" class="form-horizontal" role="form" novalidate>
+
+            <div ng-show="!edit">
+                Description: {{endpointCtrl.endpoint.description}}
+            </div>
+            <div ng-show="edit">
+              Description: 
+              <br>
+              <textarea id="description" name="description" rows="2" maxlength="255" class="form-control" style="width: 70%;" ng-model="endpointCtrl.endpoint.description">{{endpointCtrl.endpoint.description}}</textarea>
+            </div>  
+            <ul class="list-unstyled entity_details">
+              <li>
+                <i class="fa fa-user-circle"></i> Created By: {{endpointCtrl.endpoint.createdBy.forename}}
+              </li>
+              <li>
+                <i class="fa fa-calendar-check-o"></i> Created Date: {{endpointCtrl.endpoint.createdDate}}
+              </li>
+              <li>
+                <i class="fa fa-desktop"></i> Parent System: {{endpointCtrl.system.name}}
+              </li>
+              <li>
+                <i class="fa fa-exchange"></i> Request Type: {{endpointCtrl.endpoint.requestType}}
+              </li>
+              <li ng-show="!edit">
+                <i class="fa fa-globe"></i> URL: {{endpointCtrl.endpoint.fullUrl}}
+              </li>
+              <li ng-show="edit">
+                <i class="fa fa-globe"></i> URL: <input name ="endpointUrl" id="endpointUrl" ng-model="endpointCtrl.endpoint.url" class="form-control" type="text" ng-class="{' inputError': form.endpointUrl.$invalid && !form.endpointUrl.$pristine }" required>
+                <p ng-show="form.endpointUrl.$invalid && !endpointForm.endpointUrl.$pristine" class="has-error">
+                  Please enter a url path
+                </p>
+              </li>
+              <li>
+                <i class="fa fa-check-square-o"></i> Requires Parameter: <input type="checkbox" class="form-control" ng-disabled="!edit" ng-model="endpointCtrl.endpoint.requiresParam" ng-false-value="false" ng-true-value="true">
+              </li>
+            </ul>
+            <br>
+            <a class="btn btn-success" ng-show="!edit" ng-click="endpointCtrl.setEdit()"><i class="fa fa-edit m-right-xs"></i> Edit Endpoint</a>
+            <a class="btn btn-success" ng-show="edit" ng-click="endpointCtrl.saveEndpoint(endpointCtrl.endpoint)"><i class="fa fa-floppy-o m-right-xs"></i> Save Endpoint</a>
+
+            <a class="btn btn-danger" ng-show="!edit" ng-click="endpointCtrl.deleteEndpointFromEdit(endpointCtrl.endpoint._id)"><i class="fa fa-trash m-right-xs"></i> Delete Endpoint</a>
+            <a class="btn btn-danger" ng-show="edit" ng-click="endpointCtrl.setEdit()"><i class="fa fa-minus-circle m-right-xs"></i> Cancel Edit</a>          
         
-        </div>
+          </form>
+        
+        </div>        
       </div>
     </div>
   </div>
