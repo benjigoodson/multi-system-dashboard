@@ -261,8 +261,8 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			$scope.widget.requestParam = $scope.widget.requestParam.substr(1);
 		}
 
-		// If parameter has a value
-		if($scope.widget.requestParam && $scope.widget.requestParam.length > 0) {
+		// If parameter has a value and form is valid
+		if($scope.widget.requestParam && $scope.widget.requestParam.length > 0 && $scope.currentForm.$valid) {
 
 			// After 750 milli seconds make the request
 			self.timer = $interval(function() {
@@ -561,17 +561,34 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		self.populateFields(self.searchableObject);
 	};
 
-	this.validateSteps = function(stepnumber){
-      var isStepValid = true;
+	this.getForm = function() {
+		var scope = angular.element(document.getElementById("step-" + $("#wizard").smartWizard("currentStep") + "-form")).scope();
 
-      // Validate step 1
-      if(stepnumber == 1){
-          // Your step validation logic
-          // set isStepValid = false if has errors
-      }
-		
+		var form = scope["widgetForm" + $("#wizard").smartWizard("currentStep")];
 
-		return isStepValid;
+		if(form) {
+			return form;
+		}
+	};
+
+	this.updateCurrentForm = function() {
+		$scope.currentForm = this.getForm();
+	};
+
+	this.validateSteps = function(context){
+
+		if(context.toStep < context.fromStep) {
+			// Previous clicked
+			return true;
+		}
+
+	  	var formId = "step-" + context.fromStep + "-form";
+
+	  	var scope = angular.element(document.getElementById(formId)).scope();
+
+		$scope.formValid = scope["widgetForm" + context.fromStep].$valid;
+
+      	return $scope.formValid;
 	}
 
 	this.validateAllSteps = function(){

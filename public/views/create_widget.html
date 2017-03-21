@@ -52,7 +52,7 @@
 
           <div id="step-1">
             
-            <form id="step-1-form" class="form-horizontal form-label-left" role="form">
+            <form id="step-1-form" name="widgetForm1" class="form-horizontal form-label-left" role="form">
                 
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="created-by">Created By <span class="required">*</span>
@@ -71,10 +71,17 @@
               </div>
 
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="widget-name">Widget Name <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="widgetName">Widget Name <span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" ng-model="widget.name" id="widget-name" name="widget-name" required="required" class="form-control col-md-7 col-xs-12">
+                  <input type="text" ng-model="widget.name" id="widgetName" name="widgetName" class="form-control col-md-7 col-xs-12" 
+                    ng-class="{' inputError': widgetForm1.widgetName.$invalid && !widgetForm1.widgetName.$pristine }" ng-maxlength="50" required>
+                  <p ng-show="widgetForm1.widgetName.$invalid && !widgetForm1.widgetName.$pristine && !widgetForm1.widgetName.$error.maxlength" class="has-error" >
+                    A widget name is required.
+                  </p>
+                  <p ng-show="widgetForm1.widgetName.$error.maxlength" class="has-error" >
+                    The widget name must not exceed 50 characters.
+                  </p>
                 </div>
               </div>
 
@@ -88,9 +95,17 @@
 
               <div class="form-group">
                 <label for="description" class="control-label col-md-3 col-sm-3 col-xs-12">Description
+                  <br>
+                  <small>
+                    Max 255 characters
+                  </small>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <textarea ng-model="widget.description" class="form-control" name="description" id="description" rows="3"></textarea>
+                  <textarea ng-model="widget.description" class="form-control" name="description" id="description" rows="3" maxlength="255"
+                    ng-class="{' inputError': widgetForm1.description.$invalid && !widgetForm1.description.$pristine }"></textarea>
+                  <p ng-show="widgetForm1.description.$invalid && !widgetForm1.description.$pristine && !widgetForm1.description.$error.maxlength" class="has-error" >
+                    Please enter description that is less than 255 characters
+                  </p>
                 </div>
               </div>
 
@@ -99,16 +114,20 @@
           </div>
           <div id="step-2">
 
-            <form class="form-horizontal form-label-left" role="form">
+            <form id="step-2-form" name="widgetForm2" class="form-horizontal form-label-left" role="form">
 
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="system">System <span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <select class="select2_single form-control" id="system" name="system" ng-model="widget.system" ng-change="widgetCtrl.systemChanged()">
+                  <select class="select2_single form-control" id="system" name="system" ng-model="widget.system" ng-change="widgetCtrl.systemChanged()"
+                    ng-class="{' inputError': widgetForm2.system.$invalid && !widgetForm2.system.$pristine }" required>
                     <option></option>
                     <option ng-repeat="system in systems" value="{{system.id}}">{{system.name}}</option>
                   </select>
+                  <p ng-show="widgetForm2.system.$invalid && !widgetForm2.system.$pristine" class="has-error" >
+                    A system must be selected.
+                  </p>
                 </div>
               </div>
 
@@ -116,19 +135,29 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="endpoint">Endpoint <span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <select class="select2_single form-control" id="endpoint" name="endpoint"
-                       ng-model="widget.endpoint" ng-change="widgetCtrl.endpointChanged()" ng-disabled="!widget.system">
+                  <select class="select2_single form-control" id="endpoint" name="endpoint" ng-model="widget.endpoint" ng-change="widgetCtrl.endpointChanged()"
+                    ng-disabled="!widget.system" ng-class="{' inputError': widgetForm2.system.$invalid && !widgetForm2.system.$pristine }" required>
                     <option ng-repeat="endpoint in endpoints" value="{{endpoint.id}}">{{endpoint.fullUrl}}</option>
                   </select>
+                  <p ng-show="widgetForm2.endpoint.$invalid && !widgetForm2.endpoint.$pristine" class="has-error" >
+                    An endpoint must be selected.
+                  </p>
                 </div>
               </div>
 
               <div class="form-group" ng-show="requestingParam == true">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="request-param">Request Parameter</span>
                 </label>
-                <div class="col-md-6 col-sm-6 col-xs-12 input-group input-group-sm">
-                  <label class="input-group-addon" for="request-param"> / </label>
-                  <input type="text" ng-keyup="widgetCtrl.parameterChanged()" ng-model="widget.requestParam" id="request-param" name="request-param" class="form-control col-md-7 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="input-group input-group-sm">
+                    <label class="input-group-addon" for="request-param"> / </label>
+                    <input type="text" ng-keyup="widgetCtrl.parameterChanged()" ng-model="widget.requestParam" id="requestParam" name="requestParam" 
+                      class="form-control col-md-7 col-xs-12" ng-class="{' inputError': widgetForm2.requestParam.$invalid && !widgetForm2.requestParam.$pristine }"
+                      ng-required="requestingParam">
+                  </div>
+                  <p ng-show="widgetForm2.requestParam.$invalid && !widgetForm2.requestParam.$pristine" class="has-error">
+                    Enter a parameter for the request.
+                  </p>
                 </div>
               </div>
 
@@ -137,25 +166,29 @@
           </div>
           <div id="step-3">
 
-            <form class="form-horizontal form-label-left" role="form">
+            <form id="step-3-form" name="widgetForm3" class="form-horizontal form-label-left" role="form">
 
               <div class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="graph-type">Graph Type <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="graphType">Graph Type <span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <select class="select2_single form-control" id="graph-type" name="graph-type" ng-model="widget.graphType" ng-change="widgetCtrl.graphChanged()">
+                  <select class="select2_single form-control" id="graphType" name="graphType" ng-model="widget.graphType" 
+                    ng-change="widgetCtrl.graphChanged()" ng-class="{' inputError': widgetForm3.graphType.$invalid && !widgetForm2.graphType.$pristine }" required>
                     <option value="bar">Bar</option>
                     <option value="pie" selected >Pie</option>
                     <option value="line">Line</option>
                     <option value="count">Count</option>
                   </select>
+                  <p ng-show="widgetForm3.graphType.$invalid && !widgetForm3.graphType.$pristine" class="has-error" >
+                    A graph type must be selected.
+                  </p>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="dataset">Dataset
                 </label>
-                <div class="col-md-6 col-sm-6 col-xs-12 input-group input-group-sm">
+                <div class="col-md-6 col-sm-6 col-xs-12 input-group-padded input-group input-group-sm">
                   <label ng-show="widget.datasetPath && widget.datasetPath.length > 0" class="input-group-addon" for="dataset">{{widget.datasetPath.join('.')}}</label>
                   <select class="select2_single form-control" id="dataset" name="dataset" ng-disabled="!datasets || datasets.length == 0" ng-model="dataset" ng-change="widgetCtrl.datasetChanged()">
                     <option ng-repeat="dataset in datasets" value="{{dataset}}">{{dataset}}</option>
@@ -167,21 +200,31 @@
               <div class="form-group">
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="field">Field <span class="required">*</span>
                 </label>
-                <div class="col-md-6 col-sm-6 col-xs-12 input-group input-group-sm">
-                  <label ng-show="widget.fieldPath && widget.fieldPath.length > 0" class="input-group-addon" for="field">{{widget.fieldPath.join('.')}}</label>
-                  <select class="select2_single form-control" id="field" name="field" ng-model="field" ng-change="widgetCtrl.fieldChanged()">
-                    <option ng-hide="dataset || widgetCtrl.searchableObject" value="" disabled selected>Select an array as your dataset</option>
-                    <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
-                  </select>
-                  <a class="btn btn-default input-group-addon" ng-disabled="!widget.fieldPath || widget.fieldPath.length == 0" title="Click to remove the last the field path value." ng-click="widgetCtrl.removeOneFieldPath()"><i class="fa fa-arrow-left"></i></a>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <div class="input-group input-group-sm">
+                    <label ng-show="widget.fieldPath && widget.fieldPath.length > 0" class="input-group-addon" for="field">{{widget.fieldPath.join('.')}}</label>
+                    <select class="select2_single form-control" id="field" name="field" ng-model="field" ng-change="widgetCtrl.fieldChanged()" 
+                      ng-class="{' inputError': widgetForm3.graphType.$invalid && !widgetForm3.graphType.$pristine }" required>
+                      <option ng-hide="dataset || widgetCtrl.searchableObject" value="" disabled selected>Select an array as your dataset</option>
+                      <option ng-repeat="field in fields" value="{{field}}">{{field}}</option>
+                    </select>
+                    <a class="btn btn-default input-group-addon" ng-disabled="!widget.fieldPath || widget.fieldPath.length == 0" title="Click to remove the last the field path value." ng-click="widgetCtrl.removeOneFieldPath()"><i class="fa fa-arrow-left"></i></a>
+                  </div>
+                  <p ng-show="widgetForm3.field.$invalid && !widgetForm3.field.$pristine" class="has-error" >
+                    A field path must be selected.
+                  </p>
                 </div>
               </div>
 
               <div ng-show="widget.graphType == 'count'" class="form-group">
-                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="value">Value <span class="required">*</span>
+                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="widgetValue">Value <span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" ng-model="widget.value" ng-change="widgetCtrl.valueChanged()" id="widget-value" name="widget-value" required="required" class="form-control col-md-7 col-xs-12">
+                  <input type="text" ng-model="widget.value" ng-change="widgetCtrl.valueChanged()" id="widgetValue" name="widgetValue" class="form-control col-md-7 col-xs-12"
+                  ng-required="widget.graphType == 'count'" ng-class="{' inputError': widgetForm3.widgetValue.$invalid && !widgetForm3.widgetValue.$pristine }">
+                  <p ng-show="widgetForm3.widgetValue.$invalid && !widgetForm3.widgetValue.$pristine" class="has-error" >
+                    Please enter the value to count
+                  </p>
                 </div>
               </div>
 
@@ -201,33 +244,39 @@
             </form>
 
           </div>
-          <div id="step-4">            
-            <h2 class="StepTitle">Created Widget:</h2>
-            <div class="sampleChart">
-              <div ng-show="chart.loading == true || chart.error" style="text-align: center; width: 306px; height: 168px;">
-                <br>
-                <i ng-show="chart.loading == true" class="fa fa-refresh fa-spin fa-5x fa-fw"></i>
-                <i ng-show="chart.error" class="fa fa-exclamation-circle fa-5x fa-fw"></i>
-                <div ng-show"chart.error">
-                  {{chart.error}}
+          <div id="step-4">      
+
+            <form id="step-4-form" name="widgetForm4" class="form-horizontal form-label-left" role="form">  
+
+              <h2 class="StepTitle">Created Widget:</h2>
+              <div class="sampleChart">
+                <div ng-show="chart.loading == true || chart.error" style="text-align: center; width: 306px; height: 168px;">
+                  <br>
+                  <i ng-show="chart.loading == true" class="fa fa-refresh fa-spin fa-5x fa-fw"></i>
+                  <i ng-show="chart.error" class="fa fa-exclamation-circle fa-5x fa-fw"></i>
+                  <div ng-show"chart.error">
+                    {{chart.error}}
+                    <br>
+                  </div>
                   <br>
                 </div>
-                <br>
-              </div>
-              <div ng-show="chart.loading == false && !chart.error">
-                 <div ng-show="widget.graphType == 'count'" class="tile_count">
-                  <div class="tile_stats_count">
-                    <span class="count-top">Field Path: {{widget.fieldPath.join(".")}}</span>
-                    <div class="count">{{chart.data}}</div>
-                    <h3 class="count-bottom">Value: <span class="value">{{widget.value}}</span></h3>
+                <div ng-show="chart.loading == false && !chart.error">
+                  <div ng-show="widget.graphType == 'count'" class="tile_count">
+                    <div class="tile_stats_count">
+                      <span class="count-top">Field Path: {{widget.fieldPath.join(".")}}</span>
+                      <div class="count">{{chart.data}}</div>
+                      <h3 class="count-bottom">Value: <span class="value">{{widget.value}}</span></h3>
+                    </div>
+                  </div>
+                  <div ng-show="widget.graphType != 'count'">
+                    <canvas class="chart-base" chart-type="widget.graphType" chart-data="chart.data" chart-options="widget.options" chart-labels="chart.labels" 
+                      width="450px" height="204px"></canvas>
                   </div>
                 </div>
-                <div ng-show="widget.graphType != 'count'">
-                  <canvas class="chart-base" chart-type="widget.graphType" chart-data="chart.data" chart-options="widget.options" chart-labels="chart.labels" 
-                    width="450px" height="204px"></canvas>
-                </div>
               </div>
-            </div>
+
+            </form>
+
           </div>
         </div>
       </div>
@@ -242,7 +291,13 @@
   $(document).ready(function() {
     $('#wizard').smartWizard({
         transitionEffect: 'fade',
-        onLeaveStep : leaveAStepCallback,
+        enableAllSteps : false,
+        cycleSteps : false,
+        reverseButtonsOrder : true,
+        hideButtonsOnDisabled : true,
+        noForwardJumping : true,
+        onLeaveStep : onLeaveStepCallback,
+        onShowStep : onShowStepCallback,
         onFinish: onFinishCallback
     })
 
@@ -254,21 +309,27 @@
   // Must be done once the window is loaded due to waiting for the controller
   $(window).on("load", function() {
     controller = angular.element(document.getElementById("widgetController")).scope().widgetCtrl;
+
+    controller.updateCurrentForm();
   });
 
-  function leaveAStepCallback(obj, context) {
+  function onLeaveStepCallback(obj, context) {    
+    // return false to stay on step and true to continue navigation
+    return controller.validateSteps(context);
+  };
 
-      //$("#step-1")
-
-      // return false to stay on step and true to continue navigation 
-      return controller.validateSteps(context.fromStep); 
-  }
+  function onShowStepCallback() {
+    // Prevents load issue on first panel
+    if(controller) {
+      controller.updateCurrentForm();
+    }    
+  };
 
   function onFinishCallback() {
       // If valid then finish
       if(controller.validateAllSteps()){
           controller.onFinish();
       }
-  }
+  };
 
 </script>
