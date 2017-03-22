@@ -297,7 +297,6 @@
         hideButtonsOnDisabled : true,
         noForwardJumping : true,
         onLeaveStep : onLeaveStepCallback,
-        onShowStep : onShowStepCallback,
         onFinish: onFinishCallback
     })
 
@@ -308,31 +307,31 @@
 
   // Must be done once the window is loaded due to waiting for the controller
   $(window).on("load", function() {
-    controller = angular.element(document.getElementById("widgetController")).scope().widgetCtrl;
-
-    controller.updateCurrentForm();
+    controller = getController();    
   });
 
   function onLeaveStepCallback(obj, context) {    
     // Prevents load issue on first panel
-    if(controller) {
-      // return false to stay on step and true to continue navigation
-      return controller.validateSteps(context);
+    if(!controller) {
+      controller = getController();
     }
-  };
-
-  function onShowStepCallback() {
-    // Prevents load issue on first panel
-    if(controller) {
-      controller.updateCurrentForm();
-    }    
+    // return false to stay on step and true to continue navigation
+    return controller.validateSteps(context);
   };
 
   function onFinishCallback() {
       // If valid then finish
+      if(!controller) {
+        controller = getController();
+      }
+
       if(controller.validateAllSteps()){
           controller.onFinish();
       }
   };
+
+  function getController() {
+    return angular.element(document.getElementById("widgetController")).scope().widgetCtrl;
+  }
 
 </script>

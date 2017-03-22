@@ -262,7 +262,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		}
 
 		// If parameter has a value and form is valid
-		if($scope.widget.requestParam && $scope.widget.requestParam.length > 0 && $scope.currentForm.$valid) {
+		if($scope.widget.requestParam && $scope.widget.requestParam.length > 0 && this.getForm().$valid) {
 
 			// After 750 milli seconds make the request
 			self.timer = $interval(function() {
@@ -569,10 +569,6 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 		if(form) {
 			return form;
 		}
-	};
-
-	this.updateCurrentForm = function() {
-		$scope.currentForm = this.getForm();
 	};
 
 	this.validateSteps = function(context){
