@@ -314,8 +314,11 @@
   });
 
   function onLeaveStepCallback(obj, context) {    
-    // return false to stay on step and true to continue navigation
-    return controller.validateSteps(context);
+    // Prevents load issue on first panel
+    if(controller) {
+      // return false to stay on step and true to continue navigation
+      return controller.validateSteps(context);
+    }
   };
 
   function onShowStepCallback() {
