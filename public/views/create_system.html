@@ -30,7 +30,7 @@
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="text" ng-model="system.name" id="systemName" name="systemName" class="form-control col-md-7 col-xs-12" 
-                ng-class="{' inputError': systemForm.systemName.$invalid && !systemForm.systemName.$pristine }" ng-maxlength="50" required>
+                ng-class="{' inputError': systemForm.systemName.$invalid && !systemForm.systemName.$pristine }" maxlength="50" ng-maxlength="50" required>
               <p ng-show="systemForm.systemName.$invalid && !systemForm.systemName.$pristine && !systemForm.systemName.$error.maxlength" class="has-error" >
                 A system name is required.
               </p>

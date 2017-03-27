@@ -74,7 +74,7 @@
                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="widgetName">Widget Name <span class="required">*</span>
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
-                  <input type="text" ng-model="widget.name" id="widgetName" name="widgetName" class="form-control col-md-7 col-xs-12" 
+                  <input type="text" ng-model="widget.name" id="widgetName" name="widgetName" maxlength="50" class="form-control col-md-7 col-xs-12" 
                     ng-class="{' inputError': widgetForm1.widgetName.$invalid && !widgetForm1.widgetName.$pristine }" ng-maxlength="50" required>
                   <p ng-show="widgetForm1.widgetName.$invalid && !widgetForm1.widgetName.$pristine && !widgetForm1.widgetName.$error.maxlength" class="has-error" >
                     A widget name is required.

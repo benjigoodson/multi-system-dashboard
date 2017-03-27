@@ -30,7 +30,7 @@
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
               <input type="text" ng-model="endpoint.name" id="endpointName" name="endpointName" class="form-control col-md-7 col-xs-12" 
-                ng-class="{' inputError': endpointForm.endpointName.$invalid && !endpointForm.endpointName.$pristine }" ng-maxlength="50" required>
+                ng-class="{' inputError': endpointForm.endpointName.$invalid && !endpointForm.endpointName.$pristine }" maxlength="50" ng-maxlength="50" required>
               <p ng-show="endpointForm.endpointName.$invalid && !endpointForm.endpointName.$pristine && !endpointForm.endpointName.$error.maxlength" class="has-error" >
                 An endpoint name is required.
               </p>

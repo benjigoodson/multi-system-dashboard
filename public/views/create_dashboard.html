@@ -29,7 +29,7 @@
             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="dashboard-name">Dashboard Name <span class="required">*</span>
             </label>
             <div class="col-md-6 col-sm-6 col-xs-12">
-              <input type="text" ng-model="dashboard.name" id="dashboardName" name="dashboardName" required="required" class="form-control col-md-7 col-xs-12" 
+              <input type="text" ng-model="dashboard.name" id="dashboardName" name="dashboardName" class="form-control col-md-7 col-xs-12" maxlength="50" 
                 ng-class="{' inputError': dashboardForm.dashboardName.$invalid && !dashboardForm.dashboardName.$pristine }" ng-maxlength="50" required>
               <p ng-show="dashboardForm.dashboardName.$invalid && !dashboardForm.dashboardName.$pristine && !dashboardForm.dashboardName.$error.maxlength" class="has-error" >
                 A dashboard name is required.
