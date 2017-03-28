@@ -1,4 +1,5 @@
 // database config details
+'use strict'
 
 // Local host settings
 var host = "127.0.0.1";

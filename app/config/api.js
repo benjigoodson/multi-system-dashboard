@@ -1,4 +1,5 @@
 // api config details
+'use strict'
 
 module.exports = {
 
