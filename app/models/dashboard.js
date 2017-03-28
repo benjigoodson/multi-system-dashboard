@@ -8,17 +8,17 @@ var Schema = mongoose.Schema;
 // define our system model
 var DashboardSchema = new Schema({
     name : { 
-        type : String , 
+        type : String, 
         required: true, 
         unique: true,
         index : true
     },
     description : { 
-        type : String , 
+        type : String,
         default : '' 
     },
     widgets : { 
-        type : [String] , 
+        type : [String], 
         default : [] 
     },
     createdDate : { 
