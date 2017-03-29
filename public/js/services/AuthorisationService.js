@@ -1,43 +1,38 @@
 var AppModule = angular.module('app');
 
-AppModule.factory('AuthorizationService', AuthorizationService);
+AppModule.factory('AuthorisationService', AuthorisationService);
 	
-AuthorizationService.$inject = ['$http', '$cookieStore', '$rootScope', '$timeout', 'UserService'];
-function AuthorizationService($http, $cookieStore, $rootScope, $timeout, UserService) {
+AuthorisationService.$inject = ['$http', '$cookieStore', '$rootScope', '$timeout', 'UserService'];
+function AuthorisationService($http, $cookieStore, $rootScope, $timeout, UserService) {
 
-    var service = {};
+    return {
 
-    service.Login = Login;
-    service.SetCredentials = SetCredentials;
-    service.ClearCredentials = ClearCredentials;
+        login : function(username, password, callback) {
 
-    return service;
+            $http.post('/api/authenticate', { username: username, password: password })
+                .success(function (response) {
+                    callback(response);
+                }
+            );
+        },
 
-    function Login(username, password, callback) {
+        setCredentials : function(username, token) {
 
-        $http.post('/api/authenticate', { username: username, password: password })
-            .success(function (response) {
-                callback(response);
-            });
+            $rootScope.globals = {
+                currentUser: {
+                    username: username,
+                    token: token
+                }
+            };
 
-    }
+            $http.defaults.headers.common['authorisation'] = "token " + token;
+            $cookieStore.put('globals', $rootScope.globals);
+        },
 
-    function SetCredentials(username, token) {
-
-        $rootScope.globals = {
-            currentUser: {
-                username: username,
-                token: token
-            }
-        };
-
-        $http.defaults.headers.common['authorization'] = "token " + token;
-        $cookieStore.put('globals', $rootScope.globals);
-    }
-
-    function ClearCredentials() {
-        $rootScope.globals = {};
-        $cookieStore.remove('globals');
-        $http.defaults.headers.common.Authorization = 'token';
-    }
+        clearCredentials : function() {
+            $rootScope.globals = {};
+            $cookieStore.remove('globals');
+            $http.defaults.headers.common.Authorisation = 'token';
+        }
+    };
 }

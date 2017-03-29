@@ -20,7 +20,7 @@ module.exports = function (app) {
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 
         // Headers to allow
-        res.setHeader('Access-Control-Allow-Headers', '*, authorization');
+        res.setHeader('Access-Control-Allow-Headers', '*, authorisation');
 
         // Allow senidng of cookies for sessions etc
         res.setHeader('Access-Control-Allow-Credentials', true);
@@ -30,36 +30,36 @@ module.exports = function (app) {
     });
 
     app.use(function(req, res, next) {
-        console.log("Authorizing at middleware");
+        console.log("Authorising at middleware");
 
-        console.log("Auth deactivated");
+        // check header or url parameters or post parameters for token
+        var token = req.body.token || req.query.token || req.headers['authorisation'];
 
-        // // check header or url parameters or post parameters for token
-        // var token = req.body.token || req.query.token || req.headers['authorization'];
+        // decode token
+        if (token) {
 
-        // // decode token
-        // if (token) {
+            // verifies secret and checks exp
+            jwt.verify(token, apiConfig.secret, function(err, decoded) {      
+                if (err) {
+                    console.log("Authentication failed.");
+                    return res.json({ success: false, message: 'Failed to authenticate token.' });    
+                } else {
+                    // if everything is good, save to request for use in the routes
+                    console.log("Authentication successful.");
+                    req.decoded = decoded;    
+                    next();
+                }
+            });
 
-        //     // verifies secret and checks exp
-        //     jwt.verify(token, apiConfig.secret, function(err, decoded) {      
-        //         if (err) {
-        //             return res.json({ success: false, message: 'Failed to authenticate token.' });    
-        //         } else {
-        //             // if everything is good, save to request for use in other routes
-        //             req.decoded = decoded;    
-                     next();
-        //         }
-        //     });
+        } else {
 
-        // } else {
-
-        //     // if there is no token
-        //     // return an error
-        //     return res.status(403).send({ 
-        //         success: false, 
-        //         message: 'No authentication token provided.' 
-        //     });
-        // }
+            // if there is no token
+            // return an error
+            return res.status(403).send({ 
+                success: false, 
+                message: 'No authentication token provided.' 
+            });
+        }
     });
 
     app.route('/api/authenticate/').post(function(req, res) {
@@ -77,6 +77,7 @@ module.exports = function (app) {
         User.findOne({email : email}).lean().exec().then(function(user) {
             if (!user) {
                 res.json({ success: false, message: 'Authentication failed. User not found.' });
+                return;
             } else if (user) {
 
                 // Get crypto libary

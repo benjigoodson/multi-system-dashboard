@@ -2,12 +2,12 @@ var UserModule = angular.module('UserModule');
 
 UserModule.controller('LoginController', LoginController);
 
-LoginController.$inject = ['$location', '$window', 'AuthorizationService', 'UserService'];
-function LoginController($location, $window, AuthorizationService, UserService) { 
+LoginController.$inject = ['$location', '$window', 'AuthorisationService', 'UserService'];
+function LoginController($location, $window, AuthorisationService, UserService) { 
 
 	(function initController() {
 		// reset login status
-		AuthorizationService.ClearCredentials();
+		AuthorisationService.clearCredentials();
 	})();
 
 	this.login = function() {
@@ -15,10 +15,10 @@ function LoginController($location, $window, AuthorizationService, UserService) 
 		var self = this;
 		self.errorMessage = "";
 
-		AuthorizationService.Login(self.username, self.password, function (response) {
+		AuthorisationService.login(self.username, self.password, function (response) {
 			if (response.success) {
 
-				AuthorizationService.SetCredentials(self.username, response.token);
+				AuthorisationService.setCredentials(self.username, response.token);
 				UserService.setCurrentUser(response.user);
 				$location.path('/');
 				$window.location.reload();

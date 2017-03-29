@@ -2,8 +2,8 @@ var MainModule = angular.module('MainModule');
 
 MainModule.controller('MainController', MainController);
 
-MainController.$inject = ['$location', '$window', 'AuthorizationService', 'DashboardService'];
-function MainController($scope, $location, AuthorizationService, DashboardService) { 
+MainController.$inject = ['$location', '$window', 'AuthorisationService', 'DashboardService'];
+function MainController($scope, $location, AuthorisationService, DashboardService) { 
 
     var self = this;
 
@@ -12,7 +12,7 @@ function MainController($scope, $location, AuthorizationService, DashboardServic
     this.logout = function() {
 
         // Clear credentials
-        AuthorizationService.ClearCredentials();
+        AuthorisationService.clearCredentials();
 
     }; 
 
