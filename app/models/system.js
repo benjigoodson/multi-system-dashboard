@@ -19,11 +19,13 @@ var SystemSchema = new Schema({
             "offline",
             "online"
         ],
-        default : 'online' 
+        default : 'online',
+        required : true
     },
     contact : { 
         type : String , 
-        default : '' 
+        default : '',
+        required : true 
     },
     description : { 
         type : String , 
@@ -31,20 +33,20 @@ var SystemSchema = new Schema({
     },
     url : {
         type : String , 
-        required: true
+        required : true
     },
     createdDate : { 
         type : String,
-        required: true
+        required : true
     },
     createdBy : { 
         id : {
             type : Schema.ObjectId,
-            required: true
+            required : true
         },
         forename : {
             type : String,
-            required: true 
+            required : true 
         }
     }
 }, 

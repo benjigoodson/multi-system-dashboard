@@ -9,16 +9,19 @@ var UserSchema = new Schema({
     forename : { 
         type : String , 
         default : '',
-        index : true
+        index : true,
+        required: true
     },
     surname : { 
         type : String ,
-        default : '' 
+        default : '',
+        required: true
     },
     email : { 
         type : String , 
         required: true, 
         unique: true,
+        index : true,
         default : '' 
     },
     password : { 
