@@ -91,6 +91,7 @@ function config($routeProvider, $locationProvider) {
             templateUrl : 'views/widget.html',
             controller : 'WidgetController'
         })
+        
 
         // Create Dashboard Page
         .when('/dashboard/create', {	
