@@ -22,7 +22,7 @@ function UserService($http, $q, $cookieStore) {
 						});
 					}
 				} else {
-					resolve(currentUser);
+					resolve(self.currentUser);
 				}
 			});
 		},
