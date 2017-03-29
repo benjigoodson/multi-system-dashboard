@@ -25,14 +25,14 @@ function AuthorisationService($http, $cookieStore, $rootScope, $timeout, UserSer
                 }
             };
 
-            $http.defaults.headers.common['authorisation'] = "token " + token;
+            $http.defaults.headers.common['authorization'] = "token " + token;
             $cookieStore.put('globals', $rootScope.globals);
         },
 
         clearCredentials : function() {
             $rootScope.globals = {};
             $cookieStore.remove('globals');
-            $http.defaults.headers.common.Authorisation = 'token';
+            $http.defaults.headers.common.authorisation = 'token';
         }
     };
 }

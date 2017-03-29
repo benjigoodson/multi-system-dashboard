@@ -5,11 +5,14 @@
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var User = require('../models/user');
+var _ = require('underscore');
 
 // Get config
 var apiConfig = require('../config/api');
 
 module.exports = function (app) {
+
+    var insecure_routes = ["/libs/", "/api/authenticate", "/api/user/image/small/"];
 
     app.use(function(req, res, next) {
 
@@ -32,8 +35,18 @@ module.exports = function (app) {
     app.use(function(req, res, next) {
         console.log("Authorising at middleware");
 
+        var authRequired = _.filter(insecure_routes, function(route) {
+            return req.url.indexOf(route) > -1;
+        });
+
+        if(authRequired && authRequired.length > 0) {
+            console.log("Authorisation not required - Reason: " + authRequired[0]);
+            next();
+            return;
+        }
+
         // check header or url parameters or post parameters for token
-        var token = req.body.token || req.query.token || req.headers['authorisation'];
+        var token = req.body.token || req.query.token || req.headers['authorization'];
 
         // decode token
         if (token) {
@@ -42,7 +55,7 @@ module.exports = function (app) {
             jwt.verify(token, apiConfig.secret, function(err, decoded) {      
                 if (err) {
                     console.log("Authentication failed.");
-                    return res.json({ success: false, message: 'Failed to authenticate token.' });    
+                    return res.json({ success: false, message: 'Failed to authenticate token.'});    
                 } else {
                     // if everything is good, save to request for use in the routes
                     console.log("Authentication successful.");
