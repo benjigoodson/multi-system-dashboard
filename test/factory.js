@@ -16,12 +16,45 @@ module.exports.validDashboard = function() {
 
 module.exports.validEndpoint = function() {
   return {
-    name : "DashboardTest",
+    name : "EndpointTest",
     description : "This is a description",
     parentSystem : "507f1f77bcf86cd799439011",
-    url : "http://google.com",
+    url : "/test/endpoint",
     requestType : "GET",
     requiresParam : true,
+    createdDate : "01/01/17",
+    createdBy : {
+        id : "507f1f77bcf86cd799439011",
+        forename : "Ben"
+    }
+  };
+};
+
+module.exports.validSystem = function() {
+  return {
+    name : "SystemTest",
+    description : "This is a description",
+    status : "online",
+    contact : "email@email.com",
+    url : "http://google.com",
+    createdDate : "01/01/17",
+    createdBy : {
+        id : "507f1f77bcf86cd799439011",
+        forename : "Ben"
+    }
+  };
+};
+
+module.exports.validUser = function() {
+  return {
+    forename : "Ben",
+    surname : "Goodson",
+    email : "email@email.com",
+    password : "MyPassword",
+    image : "Path/To/Image",
+    location : "Sunderland",
+    company : "company",
+    website : "myWebsite.com",
     createdDate : "01/01/17",
     createdBy : {
         id : "507f1f77bcf86cd799439011",

@@ -1,4 +1,4 @@
-// endpoint database test file
+// user database test file
 'use strict'
 
 // Imports
@@ -8,7 +8,7 @@ var expect = require('chai').expect;
 var factory = require('../factory');
 
 // Database models
-var Endpoint = require('../../app/models/endpoint');
+var User = require('../../app/models/user');
 
 mongoose.Promise = global.Promise;
 
@@ -17,21 +17,20 @@ before(function (done) {
     mongoose.createConnection("mongodb://localhost/dashboardapp_test", done);
 });
 
-
 after(function (done) {
     // close all connections to the database
     mongoose.connection.close(done);
 });
 
-describe('Endpoint model', function() {
+describe('User model', function() {
 
     beforeEach(function (done) {
         // Make sure database is empty
-        Endpoint.remove({}, function () {
-            var validEndpoint = factory.validEndpoint();
-            // Before each test add one endpoint to the database
-            Endpoint(validEndpoint).save(function(err, createdEndpoint) {
-                if(err || !createdEndpoint) {
+        User.remove({}, function () {
+            var validUser = factory.validUser();
+            // Before each test add one user to the database
+            User(validUser).save(function(err, createdUser) {
+                if(err || !createdUser) {
                     throw err;
                 }
 
@@ -42,61 +41,70 @@ describe('Endpoint model', function() {
 
     afterEach(function (done) {
         // After each test remove all contents in the database
-        Endpoint.remove({}, function () {
+        User.remove({}, function () {
             done();
         });
     });
 
-    it('should be invalid if name is empty', function(done) {
-        var model = new Endpoint();
+    it('should be invalid if forename is empty', function(done) {
+        var model = new User();
 
         model.validate(function(err) {
-            expect(err.errors.name).to.exist;
+            expect(err.errors.forename).to.exist;
             done();
         });
     });
 
-    it('should be invalid if description is empty', function(done) {
-        var model = new Endpoint();
+    it('should be invalid if surname is empty', function(done) {
+        var model = new User();
 
         model.validate(function(err) {
-            expect(err.errors.description).to.exist;
+            expect(err.errors.surname).to.exist;
             done();
         });
     });
 
-    it('should be invalid if parentSystem is empty', function(done) {
-        var model = new Endpoint();
+    it('should be invalid if email is empty', function(done) {
+        var model = new User();
 
         model.validate(function(err) {
-            expect(err.errors.parentSystem).to.exist;
+            expect(err.errors.email).to.exist;
             done();
         });
     });
 
-    it('should be invalid if url is empty', function(done) {
-        var model = new Endpoint();
+    it('should be invalid if password is empty', function(done) {
+        var model = new User();
 
         model.validate(function(err) {
-            expect(err.errors.url).to.exist;
+            expect(err.errors.password).to.exist;
             done();
         });
     });
 
-    it('should be invalid if requestType is empty', function(done) {
-        var model = new Endpoint();
+    it('should prevent email being repeated', function(done) {
+        var validUser = factory.validUser();
 
-        model.validate(function(err) {
-            expect(err.errors.requestType).to.exist;
+        validUser.forename = "Ben10";
+
+        User(validUser).save(function(err, createdUser) {
+            if(err || !createdUser) {
+                expect(err).to.exist;
+            }
+
+            done();
+        }).catch(function errorHandler (error) {
+            expect(error).to.exist;
+
             done();
         });
     });
 
     it('should prevent duplicates', function(done) {
-        var validEndpoint = factory.validEndpoint();
+        var validUser = factory.validUser();
         
-        Endpoint(validEndpoint).save(function(err, createdEndpoint) {
-            if(err || !createdEndpoint) {
+        User(validUser).save(function(err, createdUser) {
+            if(err || !createdUser) {
                 expect(err).to.exist;
             }
 
@@ -110,7 +118,7 @@ describe('Endpoint model', function() {
 
     it('should be valid', function(done) {
 
-        var model = new Endpoint(factory.validEndpoint());
+        var model = new User(factory.validUser());
 
         model.validate(function(err) {
             expect(err).to.not.exist;
@@ -120,9 +128,9 @@ describe('Endpoint model', function() {
 
     it('should find one', function(done) {
  
-        var validEndpoint = factory.validEndpoint();
+        var validUser = factory.validUser();
 
-        Endpoint.find({ name : validEndpoint.name }).lean().exec().then(function(results) {
+        User.find({ name : validUser.name }).lean().exec().then(function(results) {
             expect(results).to.exist;
             expect(results).to.have.lengthOf(1);
 
@@ -136,18 +144,19 @@ describe('Endpoint model', function() {
     });
 
     it('should return all, which will be two', function(done) {
-        var validEndpoint = factory.validEndpoint();
-        validEndpoint.name = "EndpointTwo";
+        var validUser = factory.validUser();
+        validUser.name = "UserTwo";
+        validUser.email = "email2@email.com";
 
-        Endpoint(validEndpoint).save(function(err, createdEndpoint) {
-            if(err || !createdEndpoint) {
+        User(validUser).save(function(err, createdUser) {
+            if(err || !createdUser) {
                 throw err;
             }
 
             done();
         });
 
-        Endpoint.find({}).lean().exec().then(function(results) {
+        User.find({}).lean().exec().then(function(results) {
             expect(results).to.exist;
             expect(results).to.have.lengthOf(2);
 
