@@ -5,79 +5,75 @@ UserModule.factory('UserService', UserService);
 UserService.$inject = ['$http', '$q', '$cookieStore'];
 function UserService($http, $q, $cookieStore) {
 
-	var currentUser;
+	var self = {
 
-	function getCurrentUser() {
-		return $q(function(resolve, reject) {
+		currentUser : "",
 
-			if(!currentUser) {
-				if($cookieStore.get('globals')) {
-					var username = $cookieStore.get('globals').currentUser.username;
+		getCurrentUser : function() {
+			return $q(function(resolve, reject) {
 
-					getByUsername(username).then(function(user) {
-						currentUser = user;
-						resolve(currentUser);
-					});
+				if(!self.currentUser) {
+					if($cookieStore.get('globals')) {
+						var username = $cookieStore.get('globals').currentUser.username;
+
+						self.getByUsername(username).then(function(user) {
+							self.currentUser = user;
+							resolve(self.currentUser);
+						});
+					}
+				} else {
+					resolve(currentUser);
 				}
-			} else {
-				resolve(currentUser);
-			}
-		});
+			});
+		},
+
+		setCurrentUser : function(user) {
+			currentUser = user;		
+		},
+		
+		getStats : function(userId) {
+
+			return $http.get('/api/user/stats/' + userId).then(function(response) {
+				return response.data;
+			}, function(error) {
+				return error.data;
+			});	
+
+		},
+
+		getByUsername : function(username) {
+			return $http.get('/api/user/' + username).then(function(response) {
+				return response.data[0];
+			}, function(error) {
+				return error.data;
+			});
+		},
+
+		create : function(user) {
+			return $http.post('/api/user', user).then(function(response) {
+				return response.data;
+			}, function(error) {
+				return error.data;
+			});
+		},
+
+		uploadImage : function(id, image) {
+			return $http.put('/api/user/' + id, image).then(function(response) {
+				return response;
+			}, function(error) {
+				return error.data;
+			});
+		},
+
+		update : function(id, user) {
+			return $http.put('/api/user/' + id, user) .then(function(response) {
+				return response.data;
+			}, function(error) {
+				return error.data;
+			});
+		}
+
 	};
 
-	function setCurrentUser(user) {
-		currentUser = user;		
-	};
-	
-	function getStats(userId) {
-
-		return $http.get('/api/user/stats/' + userId).then(function(response) {
-			return response.data;
-		}, function(error) {
- 			return error.data;
-		});	
-
-	};
-
-	function getByUsername(username) {
-		return $http.get('/api/user/' + username).then(function(response) {
-			return response.data[0];
-		}, function(error) {
- 			return error.data;
-		});
-	};
-
-	function create(user) {
-		return $http.post('/api/user', user).then(function(response) {
-			return response.data;
-		}, function(error) {
- 			return error.data;
-		});
-	};
-
-	function uploadImage(id, image) {
-		return $http.put('/api/user/' + id, image).then(function(response) {
-			return response;
-		}, function(error) {
- 			return error.data;
-		});
-	};
-
-	function update(id, user) {
-		return $http.put('/api/user/' + id, user) .then(function(response) {
-			return response.data;
-		}, function(error) {
- 			return error.data;
-		});
-	};
-
-	return {
-		getByUsername : getByUsername,
-		getStats : getStats,
-		create : create,
-		uploadImage : uploadImage,
-		update : update,
-		setCurrentUser : setCurrentUser,
-		getCurrentUser : getCurrentUser
-	};
+	return self;
 }
