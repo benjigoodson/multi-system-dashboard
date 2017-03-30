@@ -136,8 +136,8 @@
                 </label>
                 <div class="col-md-6 col-sm-6 col-xs-12">
                   <select class="select2_single form-control" id="endpoint" name="endpoint" ng-model="widget.endpoint" ng-change="widgetCtrl.endpointChanged()"
-                    ng-disabled="!widget.system" ng-class="{' inputError': widgetForm2.system.$invalid && !widgetForm2.system.$pristine }" required>
-                    <option ng-repeat="endpoint in endpoints" value="{{endpoint.id}}">{{endpoint.fullUrl}}</option>
+                    ng-disabled="!widget.system" ng-class="{' inputError': widgetForm2.endpoint.$invalid && !widgetForm2.endpoint.$pristine }" required>
+                    <option ng-repeat="endpoint in endpoints" value="{{endpoint.id}}">{{endpoint.requiresParam ? endpoint.fullUrl + " - Requires Parameter" : endpoint.fullUrl}}</option>
                   </select>
                   <p ng-show="widgetForm2.endpoint.$invalid && !widgetForm2.endpoint.$pristine" class="has-error" >
                     An endpoint must be selected.
