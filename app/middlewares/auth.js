@@ -12,7 +12,7 @@ var apiConfig = require('../config/api');
 
 module.exports = function (app) {
 
-    var insecure_routes = ["/libs/", "/api/authenticate", "/api/user/image/small/"];
+    var unsecured_routes = ["/libs/", "/api/authenticate", "/api/user/image/small/", "/api/user/create"];
 
     app.use(function(req, res, next) {
 
@@ -35,7 +35,7 @@ module.exports = function (app) {
     app.use(function(req, res, next) {
         console.log("Authorising at middleware");
 
-        var authRequired = _.filter(insecure_routes, function(route) {
+        var authRequired = _.filter(unsecured_routes, function(route) {
             return req.url.indexOf(route) > -1;
         });
 

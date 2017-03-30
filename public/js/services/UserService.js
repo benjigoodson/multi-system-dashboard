@@ -50,7 +50,7 @@ function UserService($http, $q, $cookieStore) {
 		},
 
 		create : function(user) {
-			return $http.post('/api/user', user).then(function(response) {
+			return $http.post('/api/user/create', user).then(function(response) {
 				return response.data;
 			}, function(error) {
 				return error.data;

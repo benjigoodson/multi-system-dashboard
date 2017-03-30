@@ -11,7 +11,7 @@ var controller = require('../controllers/user');
 var router = express.Router();
 
 // Create user
-router.route('/').post(function(req, res) {
+router.route('/create').post(function(req, res) {
 
     console.log("Requested: POST - /api/user");
 
