@@ -67,17 +67,14 @@ DashboardModule.factory('DashboardService', function ($http) {
 		},
 
 		updateMenu : function() {
-			// If user is logged in
-			if($scope.user) {
-				// Load menu list dashboards
-				return this.getAllBasic().then(function(response) {
+			// Load menu list dashboards
+			return this.getAllBasic().then(function(response) {
 
-					if(response.success == true) {
-						self.dashboardMenu.items = response.data;
-					}
+				if(response.success == true) {
+					self.dashboardMenu.items = response.data;
+				}
 
-				});
-		}
+			});
 		}
 	}
 
