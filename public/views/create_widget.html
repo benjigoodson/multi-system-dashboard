@@ -325,9 +325,7 @@
         controller = getController();
       }
 
-      if(controller.validateAllSteps()){
-          controller.onFinish();
-      }
+      controller.onFinish();
   };
 
   function getController() {

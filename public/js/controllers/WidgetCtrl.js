@@ -587,15 +587,13 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
       	return $scope.formValid;
 	}
 
-	this.validateAllSteps = function(){
-		var isStepValid = true;
-		// all step validation logic     
-		return isStepValid;
-	} 
-
 	this.onFinish = function() {
+
+		// Get current scope 
+		var currentScope = angular.element(document.getElementById("widgetController")).scope();
+
 		// Create new widget
-		this.createWidget($scope.widget);
+		this.createWidget(currentScope.widget);
 	};
 
 	this.errorHandler = function(error) {
