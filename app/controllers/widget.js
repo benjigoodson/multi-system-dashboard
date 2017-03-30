@@ -29,6 +29,15 @@ controller.getAll = function getAll (callback) {
 
             countPromises.push(controller.getMethodAndUrl(widget.endpoint)
                 .then(function (endpoint) {
+                    if(!endpoint) {
+                        Console.log("Not all widgets could be lodded correctly!");
+
+                        widget.method = null;
+                        widget.apiURL = null;
+
+                        return;
+                    }
+
                     widget.method = endpoint.method;
                     widget.apiURL = endpoint.url;
             }))
@@ -52,6 +61,15 @@ controller.get = function getUniqueWidget (widgetId, callback) {
     Widget.findById(query).lean().exec().then(function (widget) {
         
         controller.getMethodAndUrl(widget.endpoint).then( function (endpoint) {
+            if(!endpoint) {
+                Console.log("Not all widgets could be lodded correctly!");
+
+                widget.method = null;
+                widget.apiURL = null;
+
+                return;
+            }
+
             widget.method = endpoint.method;
             widget.apiURL = endpoint.url;
 
@@ -75,13 +93,26 @@ controller.getForHome = function getAll (callback) {
 
             countPromises.push(controller.getMethodAndUrl(widget.endpoint)
                 .then(function (endpoint) {
+                    if(!endpoint) {
+                        Console.log("Not all widgets could be lodded correctly!");
+
+                        widget.method = null;
+                        widget.apiURL = null;
+
+                        return;
+                    }
+
                     widget.method = endpoint.method;
                     widget.apiURL = endpoint.url;
             }))
             
         });
 
-        Promise.all(countPromises).then(function completedPromises () {
+        Promise.all(countPromises)
+        .catch(function() {
+            Console.log("Not all widgets could be lodded correctly!");
+        })
+        .then(function completedPromises () {
             callback(undefined, widgets);
             return;
         })
@@ -166,14 +197,19 @@ controller.getMethodAndUrl = function(endpointId) {
 
     return Endpoint.findOne({_id :  endpointId}, "requestType url parentSystem").lean().exec().then(function (endpoint) {
 
-        result.method = endpoint.requestType;
+        if(endpoint) {
 
-        // Get the system url
-        return System.findOne({_id :  endpoint.parentSystem}, "url").lean().exec().then(function (system) {
-            result.url = system.url + endpoint.url;
+            result.method = endpoint.requestType;
 
-            return result;
-        })
+            // Get the system url
+            return System.findOne({_id :  endpoint.parentSystem}, "url").lean().exec().then(function (system) {
+                result.url = system.url + endpoint.url;
+
+                return result;
+            })
+        } else {
+            Promise.resolve(null);
+        }
 
     })
 
