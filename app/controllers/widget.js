@@ -30,7 +30,7 @@ controller.getAll = function getAll (callback) {
             countPromises.push(controller.getMethodAndUrl(widget.endpoint)
                 .then(function (endpoint) {
                     if(!endpoint) {
-                        Console.log("Not all widgets could be lodded correctly!");
+                        console.log("Not all widgets could be loaded correctly!");
 
                         widget.method = null;
                         widget.apiURL = null;
@@ -44,7 +44,11 @@ controller.getAll = function getAll (callback) {
             
         });
 
-        Promise.all(countPromises).then(function completedPromises () {
+        Promise.all(countPromises)
+        .catch(function(err) {
+            console.log("Problem laoding widgets: " + err.message);
+        })
+        .then(function completedPromises () {
             callback(undefined, widgets);
             return;
         })
@@ -62,7 +66,7 @@ controller.get = function getUniqueWidget (widgetId, callback) {
         
         controller.getMethodAndUrl(widget.endpoint).then( function (endpoint) {
             if(!endpoint) {
-                Console.log("Not all widgets could be lodded correctly!");
+                console.log("Not all widgets could be loaded correctly!");
 
                 widget.method = null;
                 widget.apiURL = null;
@@ -94,7 +98,7 @@ controller.getForHome = function getAll (callback) {
             countPromises.push(controller.getMethodAndUrl(widget.endpoint)
                 .then(function (endpoint) {
                     if(!endpoint) {
-                        Console.log("Not all widgets could be lodded correctly!");
+                        console.log("Not all widgets could be loaded correctly!");
 
                         widget.method = null;
                         widget.apiURL = null;
@@ -109,8 +113,8 @@ controller.getForHome = function getAll (callback) {
         });
 
         Promise.all(countPromises)
-        .catch(function() {
-            Console.log("Not all widgets could be lodded correctly!");
+        .catch(function(err) {
+            console.log("Problem laoding widgets: " + err.message);
         })
         .then(function completedPromises () {
             callback(undefined, widgets);
