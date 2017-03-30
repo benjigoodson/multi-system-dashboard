@@ -129,6 +129,8 @@ controller.saveImage = function saveImage (userId, userImage, callback) {
                     callback(err);
                     return;
                 }
+
+                return;
         });
     });
 

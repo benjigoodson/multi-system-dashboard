@@ -12,7 +12,7 @@ var apiConfig = require('../config/api');
 
 module.exports = function (app) {
 
-    var unsecured_routes = ["/libs/", "/api/authenticate", "/api/user/image/small/", "/api/user/create"];
+    var unsecured_routes = ["/libs/", "/api/authenticate", "/api/user/image/small/", "/api/user/create", "/api/user/image"];
 
     app.use(function(req, res, next) {
 
