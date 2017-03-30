@@ -3,7 +3,7 @@ var MainModule = angular.module('MainModule');
 MainModule.controller('MainController', MainController);
 
 MainController.$inject = ['$scope', '$http', '$location', '$window', 'AuthorisationService', 'DashboardService'];
-function MainController($scope, $http, $location, Window, AuthorisationService, DashboardServicee) { 
+function MainController($scope, $http, $location, Window, AuthorisationService, DashboardService) { 
 
     var self = this;
 
