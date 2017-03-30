@@ -28,7 +28,7 @@ function UserService($http, $q, $cookieStore) {
 		},
 
 		setCurrentUser : function(user) {
-			currentUser = user;		
+			self.currentUser = user;		
 		},
 		
 		getStats : function(userId) {
