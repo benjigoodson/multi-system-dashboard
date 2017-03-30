@@ -1,3 +1,5 @@
+'use strict'
+
 var DashboardModule = angular.module('DashboardModule');
 
 DashboardModule.factory('DashboardService', function ($http) {
@@ -65,14 +67,17 @@ DashboardModule.factory('DashboardService', function ($http) {
 		},
 
 		updateMenu : function() {
-			// Load menu list dashboards
-			return this.getAllBasic().then(function(response) {
+			// If user is logged in
+			if($scope.user) {
+				// Load menu list dashboards
+				return this.getAllBasic().then(function(response) {
 
-				if(response.success == true) {
-					self.dashboardMenu.items = response.data;
-				}
+					if(response.success == true) {
+						self.dashboardMenu.items = response.data;
+					}
 
-			});
+				});
+		}
 		}
 	}
 
