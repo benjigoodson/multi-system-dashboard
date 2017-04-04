@@ -6,7 +6,7 @@ var express = require('express');
 var controller = require('../controllers/endpoint');
 
 // instance of an express router
-var router = express.Router();;
+var router = express.Router();
 
 // Endpoints api routes
 
@@ -87,6 +87,12 @@ router.route('/')
                     res.json({ success : true, message : "Endpoint created.", data : newEndpoint});
                 }
             });
+        } else {
+            // If there is an error thrown log the error
+            console.log("Error: No body content");
+            // Return an error to the user
+            res.status(500).send({success:false, message: "No body content"});
+            return;
         }
     });
 
