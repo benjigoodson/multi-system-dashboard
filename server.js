@@ -9,61 +9,76 @@ var favicon = require('serve-favicon');
 
 //////////////// Database setup ////////////////
 
-// database config values
+// Set the promises used by mongoose
+mongoose.Promise = global.Promise;
+
+// Database config values
 var db = require('./app/config/db');
 
-// connect to our Mongo database
+// Connect to our Mongo database
 console.log('Connecting to database...   ' + db.uri);
 
+// If no database connection string is set
 if(!db.uri) {
-  console.warn("No database connection string set.");
+  // Display an error and end the application
+  console.error("No database connection string set.");
+  return;
 }
 
-mongoose.Promise = global.Promise;
+// Connect to the database
 mongoose.connect(db.uri);
 
 //////////////// Application setup ////////////////
 
-// select port and IP
+// Set port and ip, if arguments are passed to the application use those
 var server_port = process.env.SERVICE_PORT || 3000;
 var server_ip = process.env.SERVICE_IP || '127.0.0.1';
 
+// Create an insatnce of an express application
 var app = express();
 
+// Creatse instance of the file upload library
 app.use(fileUpload());
 
-// location of web files
+// Location of web files
 app.use(express.static('public'));
 
 app.use(favicon(__dirname + '/public/images/icon.png'));
 
-// register routes
+// Register routes
 require('./app/routes')(app);
 
 // Ensure folder structure is correct
 var dir = __dirname + "/public/userImages";
 
+// If the directory doesn't exist
 if(!fs.existsSync(dir)) {
+  // Create the directory, give it 0744 permissions
   fs.mkdirSync(dir, 0744, function(err) {
     if (err) {
-          // something went wrong
-          console.log("Problem creating folder:" + dir); 
+        // Something went wrong creating the folder
+        console.log("Problem creating folder: " + dir); 
+        console.log("Error : " + err);
     } else {
-      // successfully created folder
+      // Successfully created folder
       console.log("Created folder: " + dir);
     }
   });
 }
 
+// Change the folder we want to check
 dir = dir + "/resized";
 
+// If the directory doesn't exist
 if(!fs.existsSync(dir)) {  
+  // Create the directory, give it 0744 permissions
   fs.mkdirSync(dir, 0744, function(err) {
     if (err) {
-        // something went wrong
-        console.log("Problem creating folder:" + dir); 
+        // Something went wrong creating the folder
+        console.log("Problem creating folder: " + dir); 
+        console.log("Error : " + err);
     } else {
-      // successfully created folder
+      // Successfully created folder
       console.log("Created folder: " + dir);
     }
   });
@@ -72,6 +87,7 @@ if(!fs.existsSync(dir)) {
 // Get local IP
 var ip = require("ip");
 
+// This library gets the local ip address of the machine
 server_ip = ip.address();
 
 // Start listening on the server port 
@@ -79,5 +95,5 @@ app.listen(server_port, function () {
   console.log("Listening on " + server_ip + ", port " + server_port )
 });
 
-// expose app
+// Expose app
 exports = module.exports = app;
