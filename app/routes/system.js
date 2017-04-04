@@ -9,6 +9,8 @@ var controller = require('../controllers/system');
 var router = express.Router();
 
 // Systems api routes
+
+// Get all systems
 router.route('/')
     .get(function(req, res) {
         console.log("Requested: GET - /api/system");
@@ -16,7 +18,9 @@ router.route('/')
         controller.getAll(function(err, systems) {
 
             if(err) {
+                // If there is an error thrown log the error
                 console.log("Error: " + err);
+                // Return an error to the user
                 res.status(500).send({success:false, message: err});
                 return;
             } else {
@@ -34,7 +38,9 @@ router.route('/basic')
         controller.getAllBasic(function(err, systems) {
 
             if(err) {
+                // If there is an error thrown log the error
                 console.log("Error: " + err);
+                // Return an error to the user
                 res.status(500).send({success:false, message: err});
                 return;
             } else {
@@ -57,7 +63,9 @@ router.route('/')
             controller.create(system, function(err, newSystem) {
 
                 if(err) {
+                    // If there is an error thrown log the error
                     console.log("Error: " + err);
+                    // Return an error to the user
                     res.status(500).json({success:false, message: err.message});
                     return;
                 } else {
@@ -79,6 +87,9 @@ router.route('/:system_id')
         // Get system by the id passed
         controller.get(req.params.system_id, function(err, system) {
             if(err) {
+                // If there is an error thrown log the error
+                console.log("Error: " + err);
+                // Return an error to the user
                 res.status(500).send({success:false, message: err});
                 return;
             } else {
@@ -100,6 +111,9 @@ router.route('/:system_id')
         // Get system by the id passed
         controller.update(updatedSystem, function(err, response) {
             if(err) {
+                // If there is an error thrown log the error
+                console.log("Error: " + err);
+                // Return an error to the user
                 res.send(500, { success : false, error: err });
                 return;
             } else {
@@ -119,7 +133,9 @@ router.route('/:system_id')
         controller.delete(systemId, function(err) {
 
             if(err) {
+                // If there is an error thrown log the error
                 console.log("Error: " + err);
+                // Return an error to the user
                 res.status(500).send(err);
                 return;
             } else {
