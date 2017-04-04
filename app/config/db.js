@@ -10,15 +10,18 @@ var password = "";
 
 var mongoURL = "mongodb://";
 
+// If arguments are passed into the applciation when its ran
+// This is used when deploying on a cloud server
 if (process.env.DATABASE_HOST) {
 
-    // OpenShift
+    // Set the varibles based on these arguments
     var mongoUser = process.env.DATABASE_USER;
     var mongoPassword = process.env.DATABASE_PASSWORD;
     var mongoHost = process.env.DATABASE_HOST;
     var mongoPort = process.env.DATABASE_PORT;
     var mongoDatabase = process.env.DATABASE_COLLECTION;
 
+    // Generate a url for mongo to use usign the varibles passed in
     mongoURL += mongoUser + ':' + mongoPassword + '@';
     mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
 
