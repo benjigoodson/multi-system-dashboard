@@ -9,6 +9,7 @@ var controller = require('../controllers/dashboard');
 var router = express.Router();
 
 // Dashboards api routes
+
 // Get a basic dashboard
 router.route('/basic').get(function(req, res) {
     console.log("Requested: GET - /api/dashboard/basic");
@@ -23,7 +24,7 @@ router.route('/basic').get(function(req, res) {
             res.status(500).json({success:false, message: err});
             return;
         } else {
-            // Send the reults of the query
+            // Send the results of the query
             res.send({success:true, message: "Dashboards loaded.", data : basicDashboards});
         }
 
