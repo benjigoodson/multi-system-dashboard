@@ -9,6 +9,7 @@ function UserService($http, $q, $cookieStore) {
 
 		currentUser : "",
 
+		// Make request to get the details for the user currently logged in
 		getCurrentUser : function() {
 			return $q(function(resolve, reject) {
 
@@ -27,12 +28,13 @@ function UserService($http, $q, $cookieStore) {
 			});
 		},
 
+		// Set the value of the currently logged in user
 		setCurrentUser : function(user) {
 			self.currentUser = user;		
 		},
 		
+		// Make request to get the stats for the user id passed
 		getStats : function(userId) {
-
 			return $http.get('/api/user/stats/' + userId).then(function(response) {
 				return response.data;
 			}, function(error) {
@@ -41,6 +43,7 @@ function UserService($http, $q, $cookieStore) {
 
 		},
 
+		// Make request to get as user by the username
 		getByUsername : function(username) {
 			return $http.get('/api/user/' + username).then(function(response) {
 				return response.data[0];
@@ -49,6 +52,7 @@ function UserService($http, $q, $cookieStore) {
 			});
 		},
 
+		// Make request to create a user
 		create : function(user) {
 			return $http.post('/api/user/create', user).then(function(response) {
 				return response.data;
@@ -57,6 +61,7 @@ function UserService($http, $q, $cookieStore) {
 			});
 		},
 
+		// Make request to upload an image
 		uploadImage : function(id, image) {
 			return $http.put('/api/user/' + id, image).then(function(response) {
 				return response;
@@ -65,6 +70,7 @@ function UserService($http, $q, $cookieStore) {
 			});
 		},
 
+		// Make request to update a user
 		update : function(id, user) {
 			return $http.put('/api/user/' + id, user) .then(function(response) {
 				return response.data;
