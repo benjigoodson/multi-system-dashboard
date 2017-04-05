@@ -113,7 +113,7 @@ describe('System model', function() {
         // Get a valid system
         var validSystem = factory.validSystem();
 
-        // Return a dashboard from the database
+        // Return a system from the database
         System.find({ name : validSystem.name }).lean().exec().then(function(results) {
             // Results should exist
             expect(results).to.exist;
@@ -142,8 +142,8 @@ describe('System model', function() {
             // Expect no errors
             expect(err).to.not.exist;
 
-            // Expect a dashboard object back
-            expect(createdDash).to.exist;
+            // Expect a system object back
+            expect(createdSystem).to.exist;
 
             done();
         });

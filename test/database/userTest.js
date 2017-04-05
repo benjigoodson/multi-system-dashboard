@@ -34,8 +34,8 @@ describe('User model', function() {
                 // Expect no errors
                 expect(err).to.not.exist;
 
-                // Expect dashboard object to be returned
-                expect(createdDash).to.exist;
+                // Expect user object to be returned
+                expect(createdUser).to.exist;
 
                 // Test done
                 done();
@@ -156,7 +156,7 @@ describe('User model', function() {
 
     it('should find one', function(done) {
  
-        // Get a valid dashboard
+        // Get a valid user
         var validUser = factory.validUser();
 
         // Return a user from the database
@@ -177,7 +177,7 @@ describe('User model', function() {
     });
 
     it('should return all, which will be two', function(done) {
-        // Get a valid dashboard
+        // Get a valid user
         var validUser = factory.validUser();
          // Change the name
         validUser.forename = "UserTwo";
