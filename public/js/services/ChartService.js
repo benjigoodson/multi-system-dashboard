@@ -34,6 +34,7 @@ function ChartService (widgetService) {
                     // Get the dataset
                     resultArray = self.traverseObject(widget.datasetPath, apiResponse.data);
 
+                    // Set the data as either an integer or an array
                     if(widget.graphType == "count") {
                         widget.data = 0;
                     } else {
@@ -64,8 +65,10 @@ function ChartService (widgetService) {
 
                     }
 
+                    // If its a barchart
                     if(widget.graphType == "bar") {
 
+                        // Give ti these options
                         widget.options = { 
                             scales: {
                                 yAxes: [{
@@ -78,18 +81,22 @@ function ChartService (widgetService) {
                         }; 
 
                     } else {
+                        // Don;t give it any custom options
                         widget.options = {};
                     }
 
 
                 } catch(err) {
+                    // Throw the error
                     throw err;
                 }
 
+                // Return the completed widget
                 return widget;
 
             }, function(errorMessage) {
                 
+                // Return the error message
                 return errorMessage;
 
             });
@@ -99,6 +106,8 @@ function ChartService (widgetService) {
 
             if(widget.graphType == "count") {
                 if(widget.value == value) {
+                    // If the value matches the value we want to count
+                    // Increase the data value
                     widget.data++;
                 }
             } else {
@@ -118,6 +127,7 @@ function ChartService (widgetService) {
                 }
             }
 
+            // Return the widget
             return widget;
         },
 
