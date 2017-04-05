@@ -6,6 +6,7 @@ SystemModule.factory('SystemService', function ($http) {
 
 	return {
 
+		// Make request to get all systems
 		getAll : function() {			
 			return $http.get(url) .then(function(response) {
 				return response.data;
@@ -14,6 +15,7 @@ SystemModule.factory('SystemService', function ($http) {
 			})		
 		},
 		
+		// Make request to get a system matching the id
 		get : function(systemId) {			
 			return $http.get(url + systemId) .then(function(response) {
 				return response.data;
@@ -22,6 +24,7 @@ SystemModule.factory('SystemService', function ($http) {
 			})		
 		},
 		
+		// Make request to ceate a system
 		create : function(systemData) {
 			return $http.post(url, systemData) .then(function(response) {
 				return response.data;
@@ -30,6 +33,7 @@ SystemModule.factory('SystemService', function ($http) {
 			})
 		},
 
+		// Make request to get the basic details for all systems
 		getBasicSystems : function() {
 			
 			return $http.get(url + "basic/").then(function(response) {
@@ -39,6 +43,7 @@ SystemModule.factory('SystemService', function ($http) {
 			})		
 		},
 
+		// Make request to updsate a system
 		update : function(systemData) {
 			return $http.put(url + systemData._id, systemData) .then(function(response) {
 				return response.data;
@@ -47,6 +52,7 @@ SystemModule.factory('SystemService', function ($http) {
 			})
 		},
 		
+		// Make request to delete a system
 		delete : function(systemId) {
 			return $http.delete(url + systemId) .then(function(response) {
 				return response.data;
