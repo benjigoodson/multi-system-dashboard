@@ -9,6 +9,7 @@ function AuthorisationService($http, $cookieStore, $rootScope, $timeout, UserSer
 
         login : function(username, password, callback) {
 
+            // Make request to authenticate the user
             $http.post('/api/authenticate', { username: username, password: password })
                 .success(function (response) {
                     callback(response);
@@ -18,6 +19,7 @@ function AuthorisationService($http, $cookieStore, $rootScope, $timeout, UserSer
 
         setCredentials : function(username, token) {
 
+            // Set the global value in the root scope
             $rootScope.globals = {
                 currentUser: {
                     username: username,
@@ -25,11 +27,15 @@ function AuthorisationService($http, $cookieStore, $rootScope, $timeout, UserSer
                 }
             };
 
+            // Create a header which is used for every request containing the api token
             $http.defaults.headers.common['authorization'] = "token " + token;
+
+            // Create a cookie with the users details
             $cookieStore.put('globals', $rootScope.globals);
         },
 
         clearCredentials : function() {
+            // Remove all of the saved credentails
             $rootScope.globals = {};
             $cookieStore.remove('globals');
             $http.defaults.headers.common.authorisation = 'token';
