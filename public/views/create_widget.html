@@ -289,6 +289,7 @@
   var controller;
 
   $(document).ready(function() {
+    // Configure the wizard 
     $('#wizard').smartWizard({
         transitionEffect: 'fade',
         enableAllSteps : false,
@@ -300,6 +301,7 @@
         onFinish: onFinishCallback
     })
 
+    // Add classes to style the buttons
     $('.buttonNext').addClass('btn btn-success');
     $('.buttonPrevious').addClass('btn btn-primary');
     $('.buttonFinish').addClass('btn btn-default');
@@ -307,12 +309,14 @@
 
   // Must be done once the window is loaded due to waiting for the controller
   $(window).on("load", function() {
+    // Get the widget controller
     controller = getController();    
   });
 
   function onLeaveStepCallback(obj, context) {    
     // Prevents load issue on first panel
     if(!controller) {
+      // If a controller hasn't been set, get the widget controller
       controller = getController();
     }
     // return false to stay on step and true to continue navigation
@@ -322,13 +326,16 @@
   function onFinishCallback() {
       // If valid then finish
       if(!controller) {
+        // If a controller hasn't been set, get the widget controller
         controller = getController();
       }
 
+      // Call the finish function
       controller.onFinish();
   };
 
   function getController() {
+    // Get the controller element from the screen
     return angular.element(document.getElementById("widgetController")).scope().widgetCtrl;
   }
 
