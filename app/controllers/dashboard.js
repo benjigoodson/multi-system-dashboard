@@ -25,6 +25,7 @@ controller.getAllBasic = function getAllBasicDashboards (callback) {
     })
     .catch(function errorHandler (error) {
         // Return error to the calling function
+        console.log("Error: " + error);
         callback(error);
     })
 }
@@ -42,17 +43,22 @@ controller.get = function getDashboard (dashboardId, callback) {
     })
     .catch(function errorHandler (error) {
         // Return error to the calling function
+        console.log("Error: " + error);
         callback(error);
     })
 }
 
 controller.create = function create (newDashboard, callback) {
 
+    // Create a new system matching the Dashboard Schema
+    var dashboard = new Dashboard(newDashboard);
+
     // Database query to create a new dashboard
      Dashboard(newDashboard).save(function(err, createdDashboard) {
         
         // If there is an error, return it
         if(err) {
+            console.log("Error: " + err);
             callback(err);
             return;
         }
@@ -66,8 +72,10 @@ controller.update = function update (updatedDashboard, callback) {
     var query = { "_id" : updatedDashboard._id };
 
     Dashboard.findOneAndUpdate(query, updatedDashboard, {new: true}, function(err, dashboard) {
+        
         // If there is an error, return it
         if(err) {
+            console.log("Error: " + err);
             callback(err);
             return;
         }
@@ -101,10 +109,11 @@ controller.removeWidget = function(widgetId, callback) {
                 dashboard.widgets.splice(index, 1);
 
                 // Update the dashboard in the database
-                self.promises.push(self.update(dashboard, function(error) {
-                    // If there is an error return it to the calling function
-                    if(error) {
-                        callback(error);
+                self.promises.push(self.update(dashboard, function(err) {
+                    // If there is an error, return it
+                    if(err) {
+                        console.log("Error: " + err);
+                        callback(err);
                         return;
                     }
                 }));
@@ -125,6 +134,7 @@ controller.removeWidget = function(widgetId, callback) {
     })
     .catch(function errorHandler (error) {
         // Catch any thrown errors and return it to the calling function
+        console.log("Error: " + error);
         callback(error);
     })
 
@@ -139,6 +149,7 @@ controller.delete = function (dashboardId, callback) {
     })
     .catch(function errorHandler (error) {
         // Catch any errors and return it to the callign function
+        console.log("Error: " + error);
         callback(error);
     });
 }
