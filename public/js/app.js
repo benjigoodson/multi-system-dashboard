@@ -1,6 +1,6 @@
 'use strict'
 
-// Create modules
+// Create modules and import key dependencies
 var MainModule = angular.module('MainModule', ['chart.js', 'underscore', 'frapontillo.bootstrap-switch', 'angularFileUpload',
     'jlareau.pnotify', 'ui.select', 'ngSanitize', 'ui.bootstrap']);
 
@@ -13,12 +13,20 @@ angular.module('WidgetModule', ['MainModule']);
 var app = angular.module('app', ['ngRoute', 'ngCookies',
      'jlareau.pnotify', 'UserModule', 'SystemModule', 'EndpointModule', 'WidgetModule', 'DashboardModule']);
 
+// Configure the application using the config function below
 app.config(config);
+
+// Run the application using the fun function
 app.run(run);
 
+// Inject dependencies
 config.$inject = ['$routeProvider', '$locationProvider'];
 function config($routeProvider, $locationProvider) {
+
+    // Set up the routes for the application
     $routeProvider
+
+        // home page
         .when("/", {
             templateUrl : "views/home.html"
         })
@@ -26,10 +34,12 @@ function config($routeProvider, $locationProvider) {
             templateUrl : "views/home.html"
         })
 
+        // Login page
         .when("/login", {
             templateUrl : "views/login.html",
             controller : "LoginController"
         })
+        // Register Page
         .when("/register", {
             templateUrl : "views/register.html",
             controller : "RegisterController"
@@ -114,17 +124,23 @@ function config($routeProvider, $locationProvider) {
         });
 };
 
+// Inject dependencies
 run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
+
 function run($rootScope, $location, $cookieStore, $http) {
-    // keep user logged in after page refresh
+    // Keep user logged in after page refresh
+    // Get the cookies
     $rootScope.globals = $cookieStore.get('globals') || {};
 
+    // If a user is logged in
     if ($rootScope.globals.currentUser) {
+        // set the API auth to their API token
         $http.defaults.headers.common['authorization'] = $rootScope.globals.currentUser.token;
     }
 
+    // When changing location
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
-        // redirect to login page if not logged in and trying to access a restricted page
+        // Redirect to login page if not logged in and trying to access a restricted page
         var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
         var loggedIn = $rootScope.globals.currentUser;
 
@@ -133,6 +149,7 @@ function run($rootScope, $location, $cookieStore, $http) {
             $location.path('/login');
         }
 
+        // Global varibles used to help format the page 
         if($location.path() === '/login' || $location.path() === '/register') {
             $rootScope.fullPage = true;
         } else {
@@ -161,7 +178,9 @@ MainModule.config(['ChartJsProvider', function (ChartJsProvider) {
 
 }]);
 
+// Configuration for the notification provider
 MainModule.config(['notificationServiceProvider', function(notificationServiceProvider) {
+    // Set the config values
     notificationServiceProvider.setDefaults({
         history: false,
         closer: false,

@@ -30,10 +30,13 @@ describe('Dashboard model', function() {
             var validDash = factory.validDashboard();
             // Before each test add one dashboard to the database
             Dashboard(validDash).save(function(err, createdDash) {
+                // If error or a dashboard is not returned
                 if(err || !createdDash) {
+                    // Throw an error
                     throw err;
                 }
 
+                // Test done
                 done();
             });
         });
@@ -42,6 +45,7 @@ describe('Dashboard model', function() {
     afterEach(function (done) {
         // After each test remove all contents in the database
         Dashboard.remove({}, function () {
+            // Test done
             done();
         });
     });
@@ -49,22 +53,29 @@ describe('Dashboard model', function() {
     it('should be invalid if name is empty', function(done) {
         var model = new Dashboard();
 
+        // Create a blank dashboard and validate it
         model.validate(function(err) {
+            // Check there is an error for having a blank name
             expect(err.errors.name).to.exist;
             done();
         });
     });
 
     it('should prevent duplicates', function(done) {
+        // Get a valid dashboard
         var validDash = factory.validDashboard();
         
+        // Add the dashboard to the database
         Dashboard(validDash).save(function(err, createdDash) {
-            if(err || !createdDash) {
-                expect(err).to.exist;
-            }
+            // Error should exist
+            expect(err).to.exist;
+
+            // A created dashboard should not be returned
+            expect(createdDash).to.not.exist
 
             done();
         }).catch(function errorHandler (error) {
+            // Error should exist if catch is triggered
             expect(error).to.exist;
             done();
         });
@@ -72,9 +83,12 @@ describe('Dashboard model', function() {
 
     it('should be valid', function(done) {
 
+        // Get a valid dashboard
         var model = new Dashboard(factory.validDashboard());
 
+        // Validate
         model.validate(function(err) {
+            // An error shouldn't exist
             expect(err).to.not.exist;
             done();
         });
@@ -82,14 +96,19 @@ describe('Dashboard model', function() {
 
     it('should find one', function(done) {
  
+        // Get a valid dashboard
         var validDash = factory.validDashboard();
 
+        // Return a dashboard from the database
         Dashboard.find({ name : validDash.name }).lean().exec().then(function(results) {
+            // Results should exist
             expect(results).to.exist;
+            // One result
             expect(results).to.have.lengthOf(1);
 
             done();
         }).catch(function errorHandler (error) {
+            // No errors
             expect(error).to.not.exist;
             done();
         });
