@@ -31,11 +31,11 @@ describe('Dashboard model', function() {
             var validDash = factory.validDashboard();
             // Before each test add one dashboard to the database
             Dashboard(validDash).save(function(err, createdDash) {
-                // If error or a dashboard is not returned
-                if(err || !createdDash) {
-                    // Throw an error
-                    throw err;
-                }
+                // Expect no errors
+                expect(err).to.not.exist;
+
+                // Expect dashboard object to be returned
+                expect(createdDash).to.exist;
 
                 // Test done
                 done();
