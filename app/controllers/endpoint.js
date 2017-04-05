@@ -161,7 +161,7 @@ controller.update = function update (endpoint, callback) {
     });
 }
 
-controller.delete = function delete (endpointId, callback) {
+controller.delete = function (endpointId, callback) {
 
     // Call widget controller method to remove delete widgets
     // that use this endpoint
@@ -184,7 +184,7 @@ controller.delete = function delete (endpointId, callback) {
                 callback();
             });
         }
-    })
+    });
 }
 
 controller.deleteBySystem = function create (systemId, callback) {
