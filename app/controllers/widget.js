@@ -114,7 +114,7 @@ controller.getForHome = function getAll (callback) {
 
         Promise.all(countPromises)
         .catch(function(err) {
-            console.log("Problem laoding widgets: " + err.message);
+            console.log("Problem loading widgets: " + err.message);
         })
         .then(function completedPromises () {
             callback(undefined, widgets);

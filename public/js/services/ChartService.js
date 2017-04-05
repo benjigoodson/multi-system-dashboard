@@ -18,10 +18,10 @@ function ChartService (widgetService) {
 
                 try {
                     // If no data in response
-                    if(!apiResponse || apiResponse.status == -1 || !apiResponse.data) {
+                    if(!apiResponse || !apiResponse.status || apiResponse.status == -1 || !apiResponse.data) {
                         throw "No response from server.";
                     } else if(apiResponse.status != 200) {
-                        // If response is not 200 (Ok)then throw error
+                        // If response is not 200 (Ok) then throw error
                         throw "Not an ok status from server.";
                     }
 

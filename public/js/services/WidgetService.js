@@ -2,7 +2,7 @@
 
 var WidgetModule = angular.module('WidgetModule');
 
-WidgetModule.factory('WidgetService', function ($http) {
+WidgetModule.factory('WidgetService', function ($http, $q) {
 	
 	var url = '/api/widget/';
 
@@ -88,6 +88,12 @@ WidgetModule.factory('WidgetService', function ($http) {
 
 			var url;
 
+			// If a URL isn't present
+			if(!apiURL || apiURL == undefined) {
+				// Return error and handle this in the calling function
+				throw "No URL is present.";
+			}
+
 			if(requestParam && requestParam.length > 0) {
 				url = apiURL + "/" + requestParam;
 			} else {
@@ -107,7 +113,7 @@ WidgetModule.factory('WidgetService', function ($http) {
 				if(error && error.status > -1) {
 					return { success : 'false', message : error.statusText};
 				} else {
-					return undefined;
+					return { success : 'false', message : "Problem making request."};
 				}
 			});
 

@@ -210,6 +210,9 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 			widget.loading = false;
 			widget.error = err;
 			self.errorHandler(err);
+
+			console.log("Unable to contact sever for widget: " + widget._id);
+			console.log("Error: " + err);
 		}
 	};
 
