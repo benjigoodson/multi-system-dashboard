@@ -7,8 +7,10 @@ EndpointModule.constant("moment", moment);
 
 EndpointModule.controller('EndpointController', EndpointController);
 
+// Inject dependencies
 EndpointController.$inject = ['$scope', '$location', '$routeParams', 'UserService', 'EndpointService', 'SystemService', 
 	'notificationService', 'ModalService'];
+	
 function EndpointController ($scope, $location, $routeParams, UserService, EndpointService, SystemService, 
 	notificationService, ModalService) { 
 

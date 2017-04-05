@@ -4,7 +4,9 @@ var MainModule = angular.module('MainModule');
 
 MainModule.controller('HomeController', HomeController);
 
+// Inject dependencies
 HomeController.$inject = ['$scope', 'WidgetService', 'ChartService', 'notificationService', 'ModalService'];
+
 function HomeController ($scope, WidgetService, ChartService, notificationService, ModalService) { 
 
     var self = this;
