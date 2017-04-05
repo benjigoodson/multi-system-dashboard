@@ -27,6 +27,7 @@ describe('Dashboard model', function() {
     beforeEach(function (done) {
         // Make sure database is empty
         Dashboard.remove({}, function () {
+            // Get a valid dashboard 
             var validDash = factory.validDashboard();
             // Before each test add one dashboard to the database
             Dashboard(validDash).save(function(err, createdDash) {
@@ -103,6 +104,7 @@ describe('Dashboard model', function() {
         Dashboard.find({ name : validDash.name }).lean().exec().then(function(results) {
             // Results should exist
             expect(results).to.exist;
+
             // One result
             expect(results).to.have.lengthOf(1);
 
