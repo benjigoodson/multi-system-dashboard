@@ -2,6 +2,7 @@
 'use strict'
 
 module.exports.validDashboard = function() {
+  // Return a valid Dashboard
   return {
     name : "DashboardTest",
     description : "This is a description",
@@ -15,6 +16,7 @@ module.exports.validDashboard = function() {
 };
 
 module.exports.validEndpoint = function() {
+  // Return a valid Endpoint
   return {
     name : "EndpointTest",
     description : "This is a description",
@@ -31,6 +33,7 @@ module.exports.validEndpoint = function() {
 };
 
 module.exports.validSystem = function() {
+  // Return a valid System
   return {
     name : "SystemTest",
     description : "This is a description",
@@ -46,6 +49,7 @@ module.exports.validSystem = function() {
 };
 
 module.exports.validUser = function() {
+  // Return a valid User
   return {
     forename : "Ben",
     surname : "Goodson",
