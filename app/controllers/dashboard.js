@@ -24,6 +24,7 @@ controller.getAllBasic = function getAllBasicDashboards (callback) {
         callback(undefined, basicDashboards);
     })
     .catch(function errorHandler (error) {
+        // Return error to the calling function
         callback(error);
     })
 }
@@ -40,6 +41,7 @@ controller.get = function getDashboard (dashboardId, callback) {
         callback(undefined, dashboard);
     })
     .catch(function errorHandler (error) {
+        // Return error to the calling function
         callback(error);
     })
 }
@@ -115,7 +117,7 @@ controller.removeWidget = function(widgetId, callback) {
         });
 
         // Complete the callback if all queries have been completed
-        Promise.all(promises).then(function () {
+        Promise.all(self.promises).then(function () {
             callback();   
             return;
         })
