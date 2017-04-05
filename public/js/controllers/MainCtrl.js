@@ -7,6 +7,7 @@ function MainController($scope, $http, $location, Window, AuthorisationService, 
 
     var self = this;
 
+    // Set the menu
     self.menuDashboards = DashboardService.dashboardMenu;
 
     this.logout = function() {
@@ -16,35 +17,33 @@ function MainController($scope, $http, $location, Window, AuthorisationService, 
 
     }; 
 
+    // Used by widgets to allow them to collaspe
     this.collapse = function collapse(ev) {
 
+        // Get the source element of the element being passed
         var element = ev.srcElement ? ev.srcElement : ev.target;
 
+        // Get the nearest x_panel class
         var e = $(element).closest(".x_panel")
           , t = $(element).find("i")
           , n = e.find(".x_content");
+        // Slide the contents
         e.attr("style") ? n.slideToggle(200, function() {
             e.removeAttr("style")
         }) : (n.slideToggle(200),
         e.css("height", "auto")),
+        // Swap the arrows round
         t.toggleClass("fa-chevron-up fa-chevron-down")
     };
 
-    $(".close-link").click(function() {
-        var e = $(this).closest(".x_panel");
-        e.remove()
-    });
-
     $scope.update = function() {
+        // Update the list of dashboards on the menu
         DashboardService.updateMenu();
     }
 
     this.init = function() {
+        // Update the list of dashboards on the menu
         DashboardService.updateMenu();
-    }
-
-    this.errorHandler = function(error) {
-        notificationService.error(error);
     }
 
 };
