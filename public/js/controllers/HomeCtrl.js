@@ -12,35 +12,44 @@ function HomeController ($scope, WidgetService, ChartService, notificationServic
     var self = this;
 
     this.init = function() {
-        $scope.type = "pie";
 
         $scope.widgets = [];
 
+        // Get widgets
         this.getWidgets();
 
     }
 
     this.removeWidget = function(widgetId) {
 
+        // Set the modal message
         var message = "Are you sure you wish to remove this widget [" + widgetId + "] from the home screen?";
 		var title = "Remove this widget?";
 
+        // Display the moda;
 		ModalService.displayModal(message, title).result.then(function (modal_response) {
 			if(modal_response) {
+                // Using underscore
+                // Get the idnex where the id's match
                 var index = _.chain($scope.widgets).pluck("_id").indexOf(widgetId).value();
 
+                // Get the widget
                 var widget = $scope.widgets[index];
 
+                // Set display home as false
                 widget.displayHome = "FALSE";
 
-                // Update dashboard
+                // Update the widget
                 WidgetService.update(widget).then(function(response) {
                     if(response.success == true) {
+                        // Display a message
                         notificationService.info(response.message);
                     } else {
+                        // Display an error
                         self.errorHandler("Unable to update widget:" + response.message);
                     }
                 }, function(error) {
+                    // Display an error
                     self.errorHandler("Unable to update widget:" + error.message);
                 });
 
@@ -58,6 +67,7 @@ function HomeController ($scope, WidgetService, ChartService, notificationServic
 
     this.getWidgets = function() {
 
+        // Get the widgets for the home screen
         WidgetService.getForHome().then(function(widgets) {
 
             if(!widgets || widgets.length == 0) {
@@ -78,8 +88,11 @@ function HomeController ($scope, WidgetService, ChartService, notificationServic
                     // Generate chart for widget
                     ChartService.generateChartData(widget)
                         .then(function(widget) {
+
+                            // if its a bar chart
                             if(widget.graphType == "bar") {
 
+                                // Set these options
                                 widget.options = { 
                                     scales: {
                                         yAxes: [{
@@ -92,20 +105,28 @@ function HomeController ($scope, WidgetService, ChartService, notificationServic
                                 }; 
 
                             } else {
+                                // Don't set any options
                                 widget.options = {};
                             }
-
+                        
+                        // Update widget displayed on screen 
                         self.updateWidgetInScope(widget);
 
                     }, function(errorMessage) {
+                        // Turn off the laoding animations
                         widget.loading = false;
+
+                        // Set the error message
                         widget.error = errorMessage;
 
+                        // Update widget displayed on screen 
                         self.updateWidgetInScope(widget);
 
+                        // Log the error
                         console.log("Unable to contact sever for widget: " + widget._id);
                     });
                 } catch(err) {
+                    // Display an error to the user
                     self.errorHandler(err);
                 }
             });
@@ -116,27 +137,19 @@ function HomeController ($scope, WidgetService, ChartService, notificationServic
         // Find widget in scope and update
         $scope.widgets.forEach(function (scopeWidget, count) {
 
+            // Find thw diegt in the scope
             if(widget._id == scopeWidget._id) {
                 
-                widget.loading = false;
-
+                // Update it's details
                 scopeWidget = widget;
+                scopeWidget.loading = false;
             }
 
         });
     }
 
-    this.labels = ["January", "February", "March", "April", "May", "June", "July"];
-
-    this.series = ['Series A', 'Series B'];
-
-    this.data = [
-        [65, 59, 80, 81, 56, 55, 40],
-        [28, 48, 40, 19, 86, 27, 90]
-    ];
-
     this.errorHandler = function(error) {
-
+        // Display an error
         notificationService.error(error);
     }
 
