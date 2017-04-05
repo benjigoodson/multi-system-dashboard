@@ -33,6 +33,7 @@ router.route('/')
 
     })
 
+// Get basic details for endpoints that match a system id
 router.route('/basic/:systemId')
     .get(function(req, res) {
 
