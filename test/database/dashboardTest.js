@@ -116,23 +116,32 @@ describe('Dashboard model', function() {
     });
 
     it('should return all, which will be two', function(done) {
+        // Get a valid dashboard 
         var validDash = factory.validDashboard();
+        // Change the name
         validDash.name = "DashboardTwo";
 
+        // Add the dashboard to the database
         Dashboard(validDash).save(function(err, createdDash) {
-            if(err || !createdDash) {
-                throw err;
-            }
+            // Expect no errors
+            expect(err).to.not.exist;
+
+            // Expect a dashboard object back
+            expect(createdDash).to.exist;
 
             done();
         });
 
         Dashboard.find({}).lean().exec().then(function(results) {
+            // Expect results back
             expect(results).to.exist;
+
+            // Reults have two objects
             expect(results).to.have.lengthOf(2);
 
             done();
         }).catch(function errorHandler (error) {
+            // Expect no error
             expect(error).to.not.exist;
             done();
         });
