@@ -21,7 +21,7 @@ if (process.env.DATABASE_HOST) {
     var mongoPort = process.env.DATABASE_PORT;
     var mongoDatabase = process.env.DATABASE_COLLECTION;
 
-    // Generate a url for mongo to use usign the varibles passed in
+    // Generate a url for mongo to use assigning the varibles passed in
     mongoURL += mongoUser + ':' + mongoPassword + '@';
     mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
 

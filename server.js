@@ -37,7 +37,7 @@ var server_ip = process.env.SERVICE_IP || '127.0.0.1';
 // Create an insatnce of an express application
 var app = express();
 
-// Creatse instance of the file upload library
+// Create instance of the file upload library
 app.use(fileUpload());
 
 // Location of web files
