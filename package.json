@@ -1,7 +1,7 @@
 {
   "name": "multi-system-dashboard-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "A system to allow dashboards to be created for multiple systems",
   "main": "server.js",
   "author": "Benjamin Goodson",
   "license": "ISC",
@@ -43,12 +43,12 @@
     "sinon": "^2.1.0",
     "chai": "^3.5.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/benjigoodson/multi-system-dashboard.git"
-  },
   "scripts": {
     "start": "node server.js",
     "test": "mocha --reporter spec --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/benjigoodson/multi-system-dashboard.git"
   }
 }
