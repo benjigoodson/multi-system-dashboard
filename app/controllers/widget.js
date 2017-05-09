@@ -289,21 +289,25 @@ controller.deleteByEndpoint = function(endpointId, callback) {
     Widget.find({ endpoint : endpointId }).lean().exec()
         .then(function (widgets) {
 
-        // For each widget
-        widgets.forEach(function (widget, i) {
+        if(widgets.length > 0) {
+            // For each widget
+            widgets.forEach(function (widget, i) {
 
-            // Use the controller method to delete the widget
-            // This handles cascading to other entites
-            self.delete(widget._id, function (err) {
-                // If an error occurs, return it
-                if(err) {
-                    self.callback(err);
-                    return;
-                }
+                // Use the controller method to delete the widget
+                // This handles cascading to other entites
+                self.delete(widget._id, function (err) {
+                    // If an error occurs, return it
+                    if(err) {
+                        self.callback(err);
+                        return;
+                    }
 
-                self.callback(); 
-            })
-        });
+                    self.callback(); 
+                })
+            });
+        } else {
+            self.callback();
+        }
   
     })
     .catch(function errorHandler (error) {

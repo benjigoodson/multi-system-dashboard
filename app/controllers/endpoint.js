@@ -198,22 +198,26 @@ controller.deleteBySystem = function create (systemId, callback) {
     Endpoint.find({ parentSystem : systemId }).lean().exec()
         .then(function (endpoints) {
         
-        // For each ednpoint
-        endpoints.forEach(function (endpoint, i) {
+            if(endpoints.length > 0) {
+                // For each endpoint
+                endpoints.forEach(function (endpoint, i) {
 
-            // Call the controlelrs delete method to remove them from the database
-            // This also removes any other entities that sue it
-            self.delete(endpoint._id, function (err) {
+                    // Call the controlelrs delete method to remove them from the database
+                    // This also removes any other entities that sue it
+                    self.delete(endpoint._id, function (err) {
 
-                // If there is an error, return it
-                if(err) {
-                    self.callback(err);
-                    return;
-                }
+                        // If there is an error, return it
+                        if(err) {
+                            self.callback(err);
+                            return;
+                        }
 
+                        self.callback();
+                    })
+                });
+            } else {
                 self.callback();
-            })
-        });
+            }
   
     })
     .catch(function errorHandler (error) {
