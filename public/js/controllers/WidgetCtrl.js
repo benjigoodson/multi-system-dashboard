@@ -119,7 +119,7 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			$scope.datasets = [];
 			$scope.fields = [];
 
-			this.getOptions($scope.widget.method, $scope.widget.apiURL);
+			this.getOptions($scope.widget.method, $scope.widget.apiURL, $scope.widget.apiKey);
 		}
 
 	};
@@ -263,26 +263,33 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 			$scope.widget.datasetPath = [];
 			$scope.widget.fieldPath = [];
 
-			var apiURL;
 			var method;
+			var apiURL;
+			var apiKey;
 
+			// Loop through the store endpoints
 			for(var i = 0; i < $scope.endpoints.length; i++) {
 
+				// Find the one thats been selected
 				if($scope.endpoints[i].id == $scope.widget.endpoint) {
 
+					// Get the details
 					$scope.requestingParam = $scope.endpoints[i].requiresParam;
-					
-					apiURL = $scope.endpoints[i].fullUrl;
+
 					method = $scope.endpoints[i].requestType;
+					apiURL = $scope.endpoints[i].fullUrl;
+					apiKey = $scope.endpoints[i].apiKey || '';
 					break;
 				}
 			}
 
+			// Store the endpoints details onto the widget
 			$scope.widget.method = method;
 			$scope.widget.apiURL = apiURL;
+			$scope.widget.apiKey = apiKey;
 
 			if($scope.requestingParam == false) {
-				this.getOptions(method, apiURL);
+				this.getOptions(method, apiURL, apiKey);
 			}
 				
 		}
@@ -312,20 +319,23 @@ WidgetModule.controller('WidgetController', function($scope, $http, $routeParams
 				// Set the values
 				var method = $scope.widget.method;
 				var apiURL = $scope.widget.apiURL;
-				var requestParam = $scope.widget.requestParam;
+
+				// Optional values
+				var apiKey = $scope.widget.apiKey || '';
+				var requestParam = $scope.widget.requestParam || '';
 
 				// Make the API request
-				self.getOptions(method, apiURL, requestParam);
+				self.getOptions(method, apiURL, apiKey, requestParam);
 
 			}, 750);
 		}
 
 	};
 
-	this.getOptions = function(method, apiURL, requestParam) {
+	this.getOptions = function(method, apiURL, apiKey, requestParam) {
 
 		// Test endpoint and get data back
-		WidgetService.makeRESTCall(method, apiURL, requestParam).then(function(response) {
+		WidgetService.makeRESTCall(method, apiURL, apiKey, requestParam).then(function(response) {
 
 			// Check result is ok
 			if(response && response.status == 200) {

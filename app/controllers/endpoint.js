@@ -95,6 +95,7 @@ controller.getBasicEndpoints = function (systemId, callback) {
                         requiresParam : endpoint.requiresParam,
                         requestType : endpoint.requestType,
                         fullUrl : system.url + endpoint.url,
+                        apiKey : endpoint.apiKey,
                         method : endpoint.method
                     })
             }))

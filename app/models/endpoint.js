@@ -27,7 +27,7 @@ var EndpointSchema = new Schema({
     },
     description : {
         type : String,
-        default : '',
+        default : "",
         required: true
     },
     requiresParam : {
@@ -36,7 +36,7 @@ var EndpointSchema = new Schema({
     },
     apiKey : {
         type: String,
-        default : ''
+        default : ""
     },
     createdDate : { 
         type : String

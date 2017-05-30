@@ -11,8 +11,15 @@ function ChartService (widgetService) {
 
         generateChartData : function(widget) {
 
+            var method = widget.method;
+            var apiURL = widget.apiURL;
+
+            // Optional varibles
+            var apiKey = widget.apiKey || '';
+            var requestParam = widget.requestParam || '';
+
             // Make REST calls to get the data for the widget           
-            return widgetService.makeRESTCall(widget.method, widget.apiURL, widget.requestParam).then(function(apiResponse) {
+            return widgetService.makeRESTCall(method, apiURL, apiKey, requestParam).then(function(apiResponse) {
 
                 var resultArray;
 

@@ -91,7 +91,7 @@ WidgetModule.factory('WidgetService', function ($http, $q) {
 		},
 
 		// Make a rest call using the detials passed to the function
-		makeRESTCall : function(method, apiURL, requestParam) {
+		makeRESTCall : function(method, apiURL, apiKey, requestParam) {
 
 			var url;
 
@@ -113,9 +113,12 @@ WidgetModule.factory('WidgetService', function ($http, $q) {
 			// Time out of 10 seconds
 			var promise = $http(
 				{ 
-					method: method, 
-					url: url,
-					timeout: 10000
+					method : method, 
+					url : url,
+					headers : {
+						'Authorization' : apiKey
+					},
+					timeout : 10000
 				})
 			.then(function (response) {	  
 				return response;

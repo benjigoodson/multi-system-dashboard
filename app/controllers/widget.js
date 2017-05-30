@@ -32,7 +32,7 @@ controller.getAll = function getAll (callback) {
 
             // Get the method and URL for the widget
             // Add the promise to an array
-            countPromises.push(controller.getMethodAndUrl(widget.endpoint)
+            countPromises.push(controller.getEndpointDetails(widget.endpoint)
                 .then(function (endpoint) {
 
                     // If an endpoint isn't found
@@ -43,6 +43,7 @@ controller.getAll = function getAll (callback) {
                         // Set null values
                         widget.method = null;
                         widget.apiURL = null;
+                        widget.apiKey = "";
 
                         return;
                     }
@@ -50,6 +51,7 @@ controller.getAll = function getAll (callback) {
                     // Set the url and method for the widget
                     widget.method = endpoint.method;
                     widget.apiURL = endpoint.url;
+                    widget.apiKey = endpoint.apiKey;
             }))
             
         });
@@ -82,7 +84,7 @@ controller.get = function getUniqueWidget (widgetId, callback) {
     // Database query to find a widget matching a widget id
     Widget.findById(query).lean().exec().then(function (widget) {
         
-        controller.getMethodAndUrl(widget.endpoint).then( function (endpoint) {
+        controller.getEndpointDetails(widget.endpoint).then( function (endpoint) {
 
             // If an endpoint isn't found
             if(!endpoint) {
@@ -92,6 +94,7 @@ controller.get = function getUniqueWidget (widgetId, callback) {
                 // Set null values
                 widget.method = null;
                 widget.apiURL = null;
+                widget.apiKey = "";
 
                 return;
             }
@@ -126,7 +129,7 @@ controller.getForHome = function getAll (callback) {
 
             // Get the method and URL
             // Add the promise to an array
-            countPromises.push(controller.getMethodAndUrl(widget.endpoint)
+            countPromises.push(controller.getEndpointDetails(widget.endpoint)
                 .then(function (endpoint) {
 
                     // If an endpoint isn't found
@@ -137,6 +140,7 @@ controller.getForHome = function getAll (callback) {
                         // Set null values
                         widget.method = null;
                         widget.apiURL = null;
+                        widget.apiKey = "";
 
                         return;
                     }
@@ -144,6 +148,7 @@ controller.getForHome = function getAll (callback) {
                     // Set endpoint values
                     widget.method = endpoint.method;
                     widget.apiURL = endpoint.url;
+                    widget.apiKey = endpoint.apiKey;
             }))
             
         });
@@ -250,25 +255,27 @@ controller.delete = function (widgetId, callback) {
     });
 }
 
-controller.getMethodAndUrl = function(endpointId) {
+controller.getEndpointDetails = function(endpointId) {
 
     var result = {};
 
     // Database query to find an endpoint matching the passed id, returns the database promise
-    return Endpoint.findOne({_id :  endpointId}, "requestType url parentSystem").lean().exec().then(function (endpoint) {
+    return Endpoint.findOne({_id :  endpointId}, "requestType url parentSystem apiKey").lean().exec().then(function (endpoint) {
 
         // If an endpoint is found
         if(endpoint) {
-
+                        
             // Set the result method
             result.method = endpoint.requestType;
+            result.apiKey = endpoint.apiKey;
 
             // Get the system url
             return System.findOne({_id :  endpoint.parentSystem}, "url").lean().exec().then(function (system) {
                 result.url = system.url + endpoint.url;
 
                 return result;
-            })
+            });
+
         } else {
             // Resolve a null value
             Promise.resolve(null);
