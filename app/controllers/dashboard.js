@@ -4,12 +4,14 @@
 // Import models
 var Dashboard = require('../models/dashboard');
 
+var ObjectId = require('mongoose').Types.ObjectId;
+
 var controller = {};
     
-controller.getAllBasic = function getAllBasicDashboards (callback) {
+controller.getAllBasic = function getAllBasicDashboards (userId, callback) {
 
-    // Database query to get all dashboards
-    Dashboard.find().lean().exec().then(function dashboardFindAll (dashboards) {
+    // Database query to get all dashboards for the given user
+    Dashboard.find( { "createdBy.id" : new ObjectId(userId) } ).lean().exec().then(function dashboardFindAll (dashboards) {
 
         var basicDashboards = [];
 

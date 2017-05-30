@@ -13,16 +13,15 @@ DashboardModule.factory('DashboardService', function ($http) {
 		},
 
 		// Make request to get all the basic details for each dashboard
-		getAllBasic : function() {
-			
-			return $http.get(url + 'basic') .then(function(response) {
+		getAllBasic : function(userId) {
+			return $http.get(url + 'basic/' + userId) .then(function(response) {
 				return response.data;
 			}, function(error) {
 				return error.data;
 			})		
 		},
 		
-		// Make request to get a dashboard amtching the passed id
+		// Make request to get a dashboard matching the passed id
 		get : function(dashboardId) {
 			
 			return $http.get(url + dashboardId) .then(function(response) {
@@ -77,9 +76,9 @@ DashboardModule.factory('DashboardService', function ($http) {
 		},
 
 		// Make request to get all the basic dashboard details and set them on the menu
-		updateMenu : function() {
+		updateMenu : function(userId) {
 			// Load menu list dashboards
-			return this.getAllBasic().then(function(response) {
+			return this.getAllBasic(userId).then(function(response) {
 
 				if(response.success == true) {
 					self.dashboardMenu.items = response.data;

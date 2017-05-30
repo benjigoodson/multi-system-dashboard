@@ -2,8 +2,8 @@ var MainModule = angular.module('MainModule');
 
 MainModule.controller('MainController', MainController);
 
-MainController.$inject = ['$scope', '$http', '$location', '$window', 'AuthorisationService', 'DashboardService'];
-function MainController($scope, $http, $location, Window, AuthorisationService, DashboardService) { 
+MainController.$inject = ['$scope', '$http', '$location', '$window', 'AuthorisationService', 'UserService', 'DashboardService'];
+function MainController($scope, $http, $location, Window, AuthorisationService, UserService, DashboardService) { 
 
     var self = this;
 
@@ -38,12 +38,18 @@ function MainController($scope, $http, $location, Window, AuthorisationService, 
 
     $scope.update = function() {
         // Update the list of dashboards on the menu
-        DashboardService.updateMenu();
+        UserService.getCurrentUser().then(function(user) {
+            // Update the menu
+            DashboardService.updateMenu(user._id);
+        });
     }
 
     this.init = function() {
         // Update the list of dashboards on the menu
-        DashboardService.updateMenu();
+        UserService.getCurrentUser().then(function(user) {
+            // Update the menu
+            DashboardService.updateMenu(user._id);
+        });
     }
 
 };

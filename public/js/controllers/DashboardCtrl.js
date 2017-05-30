@@ -110,11 +110,16 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 				// Display a notification
 				notificationService.success(response.message);
 
-				// Update the menu
-				DashboardService.updateMenu();
+				UserService.getCurrentUser().then(function(user) {
+				
+					// Update the menu
+					DashboardService.updateMenu(user._id);
 
-				// Go to the dashboard that has just been created
-				$location.path("/dashboard/" + response.data._id);
+					// Go to the dashboard that has just been created
+					$location.path("/dashboard/" + response.data._id);
+				})
+
+
 			} else {
 				// Display an error
 				self.errorHandler("Unable to create dashboard:" + response.message);	
@@ -293,11 +298,15 @@ function DashboardController($scope, $location, $routeParams, UserService, Dashb
 						// Display a notification
 						notificationService.success(response.data.message);
 
-						// Update them menu
-						DashboardService.updateMenu();
+						UserService.getCurrentUser().then(function(user) {
+				
+							// Update the menu
+							DashboardService.updateMenu(user._id);
 
-						// Go back to the home screen
-						$location.path("/");
+							// Go back to the home screen
+							$location.path("/");
+						});
+
 					} else {
 						// Display an error
 						self.errorHandler("Unable to delete dashboard:" + response.data.message);

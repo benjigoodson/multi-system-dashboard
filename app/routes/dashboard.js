@@ -11,11 +11,15 @@ var router = express.Router();
 // Dashboards api routes
 
 // Get a basic dashboard
-router.route('/basic').get(function(req, res) {
-    console.log("Requested: GET - /api/dashboard/basic");
+router.route('/basic/:userId').get(function(req, res) {
+
+    // Get the id from the parameters passed
+    var userId = req.params.userId;
+
+    console.log("Requested: GET - /api/dashboard/basic/"  + userId);
 
     // Call controller method to get all the dashboards basic details
-    controller.getAllBasic(function(err, basicDashboards) {
+    controller.getAllBasic(userId, function(err, basicDashboards) {
 
         if(err) {
             // If there is an error thrown log the error
@@ -66,7 +70,7 @@ router.route('/:dashboard_id')
     // Get a unique dashboard
     .get(function(req, res) {
 
-        // Get the id from the paremters passed
+        // Get the id from the parameters passed
         var id = req.params.dashboard_id;
 
         console.log("Requested: GET - /api/dashboard/" + id);

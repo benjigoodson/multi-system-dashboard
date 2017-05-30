@@ -93,7 +93,7 @@ controller.update = function update (userData, callback) {
 controller.getStats = function getStats (userId, callback) {
 
     // Import database services for each entity
-    var ObjectId= require('mongoose').Types.ObjectId;
+    var ObjectId = require('mongoose').Types.ObjectId;
 
     var System = require('../models/system');
     var Endpoint = require('../models/endpoint');
