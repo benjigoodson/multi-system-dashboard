@@ -54,7 +54,11 @@ function MainController($scope, $http, $location, Window, AuthorisationService, 
 
     this.trim = function(longString) {
         var MAX_CHARS = 25;
-        return longString.substring(0, MAX_CHARS) + "...";
+        if(longString && longString.length > 25) {
+            return longString.substring(0, MAX_CHARS) + "...";
+        } else {
+            return longString;
+        }
     }
 
 };
