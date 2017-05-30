@@ -32,10 +32,14 @@ var EndpointSchema = new Schema({
     },
     requiresParam : {
         type : Boolean,
-        default : false,
+        default : false
+    },
+    apiKey : {
+        type: String,
+        default : ''
     },
     createdDate : { 
-        type : String,
+        type : String
     },
     createdBy : { 
         id : {

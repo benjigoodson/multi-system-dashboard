@@ -39,9 +39,16 @@
               </li>
               <li ng-show="edit">
                 <i class="fa fa-globe"></i> URL: <input name ="endpointUrl" id="endpointUrl" ng-model="endpointCtrl.endpoint.url" class="form-control" type="text" ng-class="{' inputError': form.endpointUrl.$invalid && !form.endpointUrl.$pristine }" required>
-                <p ng-show="form.endpointUrl.$invalid && !endpointForm.endpointUrl.$pristine" class="has-error">
+                <p ng-show="form.endpointUrl.$invalid && !form.endpointUrl.$pristine" class="has-error">
                   Please enter a url path
                 </p>
+              </li>
+              <li ng-show="!edit">
+                <i class="fa fa-key"></i> API Key: {{ mainCtrl.trim(endpointCtrl.endpoint.apiKey) }}
+              </li>
+              <li ng-show="edit">
+                <i class="fa fa-key"></i> API Key: <input name ="endpointApiKey" id="endpointApiKey" ng-model="endpointCtrl.endpoint.apiKey" class="form-control" type="text" 
+                  ng-class="{' inputError': form.endpointApiKey.$invalid && !form.endpointApiKey.$pristine } ">
               </li>
               <li>
                 <i class="fa fa-check-square-o"></i> Requires Parameter: <input type="checkbox" class="form-control" ng-disabled="!edit" ng-model="endpointCtrl.endpoint.requiresParam" ng-false-value="false" ng-true-value="true">
