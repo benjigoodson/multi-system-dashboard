@@ -5,6 +5,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var fileUpload = require('express-fileupload');
 var fs = require('fs');
+var path = require('path');
 var favicon = require('serve-favicon');
 
 //////////////// Database setup ////////////////
@@ -43,13 +44,13 @@ app.use(fileUpload());
 // Location of web files
 app.use(express.static('public'));
 
-app.use(favicon(__dirname + '/public/images/icon.png'));
+app.use(favicon(path.normalize(__dirname + '/public/images/icon.png')));
 
 // Register routes
 require('./app/routes')(app);
 
 // Ensure folder structure is correct
-var dir = __dirname + "/public/userImages";
+var dir = path.normalize(__dirname + "/public/userImages");
 
 // If the directory doesn't exist
 if(!fs.existsSync(dir)) {
@@ -67,7 +68,7 @@ if(!fs.existsSync(dir)) {
 }
 
 // Change the folder we want to check
-dir = dir + "/resized";
+dir = path.normalize(dir + "/resized");
 
 // If the directory doesn't exist
 if(!fs.existsSync(dir)) {  
