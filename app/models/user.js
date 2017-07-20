@@ -44,6 +44,13 @@ var UserSchema = new Schema({
     website : { 
         type : String ,
         default : '' 
+    },
+    resetPasswordToken : { 
+        type : String,
+        default : '' 
+    },
+    resetPasswordExpires : {
+        type : Date
     }
 }, 
 { 

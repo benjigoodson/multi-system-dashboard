@@ -13,7 +13,8 @@ var apiConfig = require('../config/api');
 module.exports = function (app) {
 
     // Array of routes that don't require the user to be authenticated to use them 
-    var unsecured_routes = ["/libs/", "/api/authenticate", "/api/user/image/small/", "/api/user/create", "/api/user/image"];
+    var unsecured_routes = ["/libs/", "/api/authenticate", "/api/user/image/small/", "/api/user/create", 
+        "/api/user/image", "/api/user/forgot"];
 
     // Use this route for every request
     app.use(function(req, res, next) {

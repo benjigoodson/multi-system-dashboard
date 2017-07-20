@@ -142,14 +142,8 @@ router.route('/:username').get(function(req, res) {
     if(username) {
 
         // Get user by the email passed
-        controller.getByUsername(username, function(err, user) {
-            if(err) { 
-                // If there is an error thrown log the error
-                console.log("Error: " + err);
-                // Return an error to the user
-                res.status(500).json({success:false, message: err});
-                return;
-            } else {
+        controller.getByUsername(username, function(user) {
+            if(user) { 
                 // Return the user
                 res.json(user);
             }
@@ -222,6 +216,89 @@ router.route('/image/small/:userId').get(function(req, res) {
             }
         });
     }
+});
+
+// Reset forgotten password
+router.route('/forgot').post(function(req, res) {
+
+    console.log("Requested: POST - /api/user/forgot");
+
+    // If there is a request body
+    if(req._body) {
+
+        // Store the email
+        var email = req.body.email;
+
+        // Call the controller function to create a new user
+        controller.forgotPassword(email, function(err, response) {
+
+            if(err) {
+                // If there is an error thrown log the error
+                console.log("Error: " + err);
+                // Return an error to the user
+                res.status(500).json({ success : false, message : err });
+                return;
+            } else {
+                // Return the result
+                res.json({ success : true, message : response });
+            }
+
+        });
+
+    }
+});
+
+// Validate password token
+router.route('/forgot/validate/:resetToken').get(function(req, res) {
+
+    var resetToken = req.params.resetToken;
+
+    console.log("Requested: GET - /api/user/forgot/validate/" + resetToken);
+
+    // Call controller resetPassword function
+    controller.validatePasswordToken(resetToken, function(err, response) {
+
+        if(err) {
+            // If there is an error thrown log the error
+            console.log("Error: " + err);
+            // Return an error to the user
+            res.status(500).json({ success : false, message : err });
+            return;
+        } else {
+            // Return message to the user
+            res.json({ success : true, message : response });
+        }
+
+    });
+
+});
+
+// Reset forgotten password
+router.route('/forgot/:resetToken').post(function(req, res) {
+
+    var resetToken = req.params.resetToken;
+    
+    console.log("Requested: GET - /api/user/forgot/" + resetToken);
+
+    // Store the new password and token 
+    var resetDetails = req.body;
+
+    // Call controller resetPassword function
+    controller.resetPassword(resetDetails.token, resetDetails.password, function(err, response) {
+
+        if(err) {
+            // If there is an error thrown log the error
+            console.log("Error: " + err);
+            // Return an error to the user
+            res.status(500).json({ success : false, message : err });
+            return;
+        } else {
+            // Return message to the user
+            res.json({ success : true, message : response });
+        }
+
+    });
+
 });
 
 module.exports = router;

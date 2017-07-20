@@ -72,7 +72,34 @@ function UserService($http, $q, $cookieStore) {
 
 		// Make request to update a user
 		update : function(id, user) {
-			return $http.put('/api/user/' + id, user) .then(function(response) {
+			return $http.put('/api/user/' + id, user).then(function(response) {
+				return response.data;
+			}, function(error) {
+				return error.data;
+			});
+		},
+
+		// Forgot password
+		forgotPassword : function(email) {
+			return $http.post('/api/user/forgot', {email : email}).then(function(response) {
+				return response.data;
+			}, function(error) {
+				return error.data;
+			});
+		},
+
+		// Reset password
+		resetPassword : function(token, newPassword) {
+			return $http.post('/api/user/forgot/' + token, { token : token, password : newPassword }).then(function(response) {
+				return response.data;
+			}, function(error) {
+				return error.data;
+			});
+		},
+
+		// Validate token
+		validateToken : function(token) {
+			return $http.get('/api/user/forgot/validate/' + token).then(function(response) {
 				return response.data;
 			}, function(error) {
 				return error.data;

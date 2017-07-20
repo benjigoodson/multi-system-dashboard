@@ -26,7 +26,7 @@ function config($routeProvider, $locationProvider) {
     // Set up the routes for the application
     $routeProvider
 
-        // home page
+        // Home page
         .when("/", {
             templateUrl : "views/home.html"
         })
@@ -44,7 +44,16 @@ function config($routeProvider, $locationProvider) {
             templateUrl : "views/register.html",
             controller : "RegisterController"
         })
-
+        // Forgot Page
+        .when("/forgot", {
+            templateUrl : "views/forgot.html",
+            controller : "ForgotController"
+        })
+        // Reset Page
+        .when("/forgot/:token", {
+            templateUrl : "views/reset.html",
+            controller : "ForgotController"
+        })
 
         // View User Profile
         .when('/user', {	
@@ -141,7 +150,14 @@ function run($rootScope, $location, $cookieStore, $http) {
     // When changing location
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
         // Redirect to login page if not logged in and trying to access a restricted page
-        var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+        var restrictedPage = true;
+
+        ['/login', '/register', '/forgot', '/error_pages'].forEach(function(unsecurePage) {
+            if($location.path().includes(unsecurePage)) {
+                restrictedPage = false;
+            }
+        }, this);
+        
         var loggedIn = $rootScope.globals.currentUser;
 
         // If user not logged in
@@ -149,12 +165,14 @@ function run($rootScope, $location, $cookieStore, $http) {
             $location.path('/login');
         }
 
-        // Global varibles used to help format the page 
-        if($location.path() === '/login' || $location.path() === '/register') {
-            $rootScope.fullPage = true;
-        } else {
-            $rootScope.fullPage = false;
-        }
+        // Global varible used to help format the page
+         $rootScope.fullPage = false;
+
+        ['/login', '/register', '/forgot', '/error_pages'].forEach(function(fullPage) {
+            if($location.path().includes(fullPage)) {
+                $rootScope.fullPage = true;
+            }
+        }, this);
 
     });
 };

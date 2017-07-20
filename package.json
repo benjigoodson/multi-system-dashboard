@@ -30,6 +30,7 @@
     "jsonwebtoken": "^7.1.9",
     "moment": "^2.16.0",
     "mongoose": "^4.6.3",
+    "nodemailer": "^4.0.1",
     "pnotify": "^3.0.0",
     "scrypt": "^6.0.3",
     "select2": "^4.0.3",

@@ -11,7 +11,7 @@ function RegisterController($location, FileUploader, UserService, notificationSe
 
         var self = this;
 
-        // Creae a new user
+        // Create a new user
         UserService.create(this.user)
             .then(function (response) {
 

@@ -1,0 +1,47 @@
+<div>
+
+  <div class="login_wrapper">
+
+    <div class="form registration_form" ng-class="registerClass" ng-controller="ForgotController as forgotCtrl">
+      <section class="login_content">
+
+        <form name="forgotForm" ng-submit="forgotCtrl.submit()" role="form">
+          
+          <h1>Forgot Password</h1>
+
+          <div ng-show="message">
+            <div class="btn-success">
+              <p> {{message}} </p>
+            </div>
+            <br />
+          </div>
+
+          <div ng-hide="message">
+            <div>
+              <input ng-model="forgotCtrl.email" type="email" class="form-control" placeholder="Email" type="email" required />
+            </div>
+            <div>
+              <button type="submit" ng-disabled="form.$invalild" class="btn btn-default submit">Submit</button>
+            </div>
+          </div>
+
+          <div class="clearfix"></div>
+
+          <div class="separator">
+
+            <p>Already a member?
+              <a href="#signin" class="to_register"> Log in </a>
+            </p>
+
+            <div class="clearfix"></div>
+
+            <div>
+              <h1><i class="fa fa-tasks"></i> Multi System Dashboarding Application </h1>
+              <p> University of Sunderland - <a href="https://eportfolio.sunderland.ac.uk/view/view.php?id=34120"> Benjamin Goodson </a> </p>
+            </div>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</div>
