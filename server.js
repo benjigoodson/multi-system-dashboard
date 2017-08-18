@@ -16,6 +16,12 @@ mongoose.Promise = global.Promise;
 // Database config values
 var db = require('./app/config/db');
 
+// Check email config is entered
+if(!process.env.EMAIL_PASSWORD) {
+  console.error("No EMAIL_PASSWORD argument set.");
+  return;
+}
+
 // Connect to our Mongo database
 console.log('Connecting to database...   ' + db.uri);
 
