@@ -9,7 +9,7 @@ function ForgotController($location, $routeParams, $scope, UserService, notifica
     this.init = function() {
 
 		// Get the token
-		this.token = $routeParams.token;
+        this.token = $routeParams.token;
 
         // Validate the token
         this.validateToken(this.token);
@@ -41,7 +41,7 @@ function ForgotController($location, $routeParams, $scope, UserService, notifica
         }  
 
         // Reset passsword
-        UserService.resetPassword(this.token, "password").then(function (response) {
+        UserService.resetPassword(this.token, $scope.resetForm.password).then(function (response) {
 
             // Display message
 			notificationService.success(response.message);

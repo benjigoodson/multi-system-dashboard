@@ -69,7 +69,7 @@ module.exports = function (app) {
                 if (err) {
                     console.log("Authentication failed.");
                     // Return a message as the token was not correct
-                    return res.json({
+                    return res.status(403).send({
                         success: false,
                         message: 'Failed to authenticate token.'
                     });    

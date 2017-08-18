@@ -33,6 +33,9 @@ function LoginController($location, $window, AuthorisationService, UserService) 
 
 			} else {
 
+				// Reset entered password
+				self.password = "";
+
 				// Set an error message
 				self.errorMessage = response.message;
 

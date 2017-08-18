@@ -303,6 +303,9 @@ function sendEmail(templateName, token, toEmail, subject) {
 
     var emailConfig = require('../config/email');
 
+    // Set the email password as the enviromental varible
+    emailConfig.pass = process.env.emailPassword;
+
     // Configure the email service
     var transporter = mailer.createTransport({
         service: emailConfig.service,

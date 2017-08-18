@@ -46,7 +46,7 @@ function UserService($http, $q, $cookieStore) {
 		// Make request to get as user by the username
 		getByUsername : function(username) {
 			return $http.get('/api/user/' + username).then(function(response) {
-				return response.data[0];
+				return response.data;
 			}, function(error) {
 				return error.data;
 			});

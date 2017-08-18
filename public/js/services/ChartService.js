@@ -25,8 +25,10 @@ function ChartService (widgetService) {
 
                 try {
                     // If no data in response
-                    if(!apiResponse || !apiResponse.status || apiResponse.status == -1 || !apiResponse.data) {
+                    if((!apiResponse || !apiResponse.status || apiResponse.status == -1 || !apiResponse.data) && !apiResponse.message) {
                         throw "No response from server.";
+                    } else if(apiResponse.message) {
+                        throw apiResponse.message;
                     } else if(apiResponse.status != 200) {
                         // If response is not 200 (Ok) then throw error
                         throw "Not an ok status from server.";
@@ -40,6 +42,10 @@ function ChartService (widgetService) {
 
                     // Get the dataset
                     resultArray = self.traverseObject(widget.datasetPath, apiResponse.data);
+
+                    if(!resultArray) {
+                        throw "Results cannot be traversed.";
+                    }
 
                     // Set the data as either an integer or an array
                     if(widget.graphType == "count") {
